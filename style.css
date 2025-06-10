@@ -33,7 +33,7 @@ a {
 }
 
 a:hover {
-    color: var(--accent-color); /* عند التمرير يتغير إلى لون التمييز */
+    color: var(--accent-color);
 }
 
 ul {
@@ -41,7 +41,7 @@ ul {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: var(--dark-bg); /* العناوين باللون الداكن */
+    color: var(--dark-bg);
     margin-bottom: 1rem;
     font-weight: bold;
 }
@@ -75,7 +75,7 @@ section {
 }
 
 .primary-btn:hover {
-    background-color: var(--secondary-color); /* لون ثانوي أغمق عند التمرير */
+    background-color: #0056b3; /* لون أغمق عند التمرير */
     transform: translateY(-2px);
 }
 
@@ -212,7 +212,7 @@ section {
     align-items: center;
     justify-content: space-around;
     padding: 100px 20px;
-    background: linear-gradient(to left, var(--primary-color) 0%, var(--secondary-color) 100%); /* تدرج لوني جديد */
+    background: linear-gradient(to left, var(--primary-color) 0%, rgba(0, 123, 255, 0.7) 100%);
     color: var(--white);
     text-align: right;
     flex-wrap: wrap-reverse; /* لترتيب الصورة على اليمين والمحتوى على اليسار في RTL */
@@ -290,13 +290,13 @@ section {
 
 .service-cards .card p {
     font-size: 1rem;
-    color: var(--secondary-color); /* نص أغمق قليلاً للوصف */
+    color: var(--secondary-color);
     margin-bottom: 20px;
 }
 
 .service-cards .card .learn-more {
     font-weight: bold;
-    color: var(--accent-color); /* لون التمييز */
+    color: var(--accent-color);
 }
 
 /* Why Choose Us */
@@ -383,8 +383,8 @@ section {
 
 /* Call to Action Banner */
 .call-to-action-banner {
-    background-color: var(--accent-color); /* لون التمييز */
-    color: var(--dark-bg); /* نص داكن على خلفية فاتحة */
+    background-color: var(--accent-color);
+    color: var(--white);
     padding: 60px 20px;
     text-align: center;
 }
@@ -392,13 +392,12 @@ section {
 .call-to-action-banner h2 {
     font-size: 2.8rem;
     margin-bottom: 20px;
-    color: var(--dark-bg); /* العناوين هنا باللون الداكن */
+    color: var(--white);
 }
 
 .call-to-action-banner p {
     font-size: 1.2rem;
     margin-bottom: 30px;
-    color: rgba(0, 0, 0, 0.8); /* نص أغمق قليلاً */
 }
 
 /* Footer */
@@ -431,7 +430,7 @@ section {
 .footer-section h3 {
     font-size: 1.5rem;
     margin-bottom: 20px;
-    color: var(--primary-color); /* عناوين الفوتر بلون الشعار */
+    color: var(--white);
 }
 
 .footer-section p {
@@ -455,7 +454,7 @@ section {
 }
 
 .footer-section ul li a:hover {
-    color: var(--accent-color); /* روابط الفوتر بلون التمييز عند التمرير */
+    color: var(--primary-color);
 }
 
 .social-links {
@@ -463,14 +462,14 @@ section {
 }
 
 .social-links a {
-    color: var(--primary-color); /* أيقونات السوشيال ميديا بلون الشعار */
+    color: var(--white);
     font-size: 1.5rem;
     margin-left: 15px; /* مسافة بين الأيقونات */
     transition: color 0.3s ease;
 }
 
 .social-links a:hover {
-    color: var(--accent-color);
+    color: var(--primary-color);
 }
 
 .footer-section .contact-info p {
@@ -495,7 +494,7 @@ section {
 
 /* Page Hero Banners (for About, Services, Contact, Portfolio, Blog) */
 .page-hero-banner {
-    background-color: var(--primary-color); /* خلفية لون الشعار */
+    background-color: var(--primary-color);
     color: var(--white);
     padding: 80px 20px;
     text-align: center;
@@ -568,7 +567,7 @@ section {
 }
 
 .service-detail-section ul li i {
-    color: var(--accent-color); /* أيقونات القوائم بلون التمييز */
+    color: var(--accent-color);
     margin-left: 10px; /* مسافة بين الأيقونة والنص */
 }
 
@@ -600,7 +599,7 @@ section {
 .about-us-content h2 {
     font-size: 2rem;
     margin-bottom: 20px;
-    border-bottom: 2px solid var(--primary-color); /* لون الخط تحت العنوان */
+    border-bottom: 2px solid var(--primary-color);
     padding-bottom: 10px;
     display: inline-block; /* لجعل الخط تحت العنوان فقط */
     width: auto;
@@ -650,7 +649,7 @@ section {
     border-radius: 50%;
     object-fit: cover;
     margin-bottom: 15px;
-    border: 3px solid var(--primary-color); /* إطار الشعار حول صور الفريق */
+    border: 3px solid var(--primary-color);
 }
 
 .team-member h3 {
@@ -719,7 +718,7 @@ section {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 188, 212, 0.85); /* تراكب أزرق شفاف بلون الشعار */
+    background-color: rgba(0, 0, 0, 0.7);
     color: var(--white);
     display: flex;
     flex-direction: column;
@@ -748,7 +747,7 @@ section {
 }
 
 .view-project-btn {
-    background-color: var(--accent-color); /* زر بلون التمييز */
+    background-color: var(--accent-color);
     color: var(--white);
     padding: 10px 20px;
     border-radius: 5px;
@@ -757,7 +756,7 @@ section {
 }
 
 .view-project-btn:hover {
-    background-color: var(--secondary-color); /* لون ثانوي أغمق عند التمرير */
+    background-color: #218838;
 }
 
 /* Contact Page */
@@ -785,7 +784,7 @@ section {
 .contact-section h2 {
     font-size: 2rem;
     margin-bottom: 30px;
-    border-bottom: 2px solid var(--primary-color); /* لون الخط تحت العنوان */
+    border-bottom: 2px solid var(--primary-color);
     padding-bottom: 10px;
     display: inline-block;
     width: auto;
@@ -847,9 +846,9 @@ section {
 .contact-form input:focus,
 .contact-form select:focus,
 .contact-form textarea:focus {
-    border-color: var(--primary-color); /* لون التركيز */
+    border-color: var(--primary-color);
     outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.25); /* ظل التركيز بلون الشعار */
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
 
 .contact-form textarea {
