@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتصل بنا - [اسم شركتك/خدماتك]</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="logo">
+                <a href="index.html">شعارك هنا</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li class="dropdown">
+                    <a href="services.html" class="dropbtn">الخدمات <i class="fas fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="services.html#content-writing">كتابة المحتوى والترجمة</a>
+                        <a href="services.html#graphic-design">التصميم الجرافيكي</a>
+                        <a href="services.html#web-dev">تطوير الويب والتطبيقات</a>
+                        <a href="services.html#network-it">الشبكات وتقنية المعلومات</a>
+                        <a href="services.html#digital-marketing">التسويق الرقمي</a>
+                        <a href="services.html#data-entry">إدخال البيانات</a>
+                        <a href="services.html#info-security">أمن المعلومات</a>
+                        <a href="services.html#erp-maint">الأنظمة الإدارية والمحاسبية</a>
+                    </div>
+                </li>
+                <li><a href="portfolio.html">أعمالنا</a></li>
+                <li><a href="about.html">من نحن</a></li>
+                <li><a href="contact.html" class="active">اتصل بنا</a></li>
+                <li><a href="blog.html">المدونة</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-hero-banner contact-hero">
+            <h1>تواصل معنا</h1>
+            <p>نحن هنا للإجابة على استفساراتك وتقديم الحلول التي تحتاجها.</p>
+        </section>
+
+        <section class="contact-section">
+            <div class="contact-info-block">
+                <h2>معلومات الاتصال</h2>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>[عنوان شركتك]</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <p><a href="tel:[رقم هاتفك]">[رقم هاتفك]</a></p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <p><a href="mailto:[بريدك الإلكتروني]">[بريدك الإلكتروني]</a></p>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d[your_latitude]!2d[your_longitude]!3d[your_zoom]!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z[اسم شركتك]!5e0!3m2!1sar!2s!4v1678888888888!5m2!1sar!2s" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+
+            <div class="contact-form-block">
+                <h2>أرسل لنا رسالة</h2>
+                <form action="submit_form.php" method="POST" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">اسمك الكامل:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">بريدك الإلكتروني:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">الموضوع:</label>
+                        <input type="text" id="subject" name="subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="service">الخدمة المهتم بها (اختياري):</label>
+                        <select id="service" name="service">
+                            <option value="">اختر خدمة</option>
+                            <option value="كتابة المحتوى والترجمة">كتابة المحتوى والترجمة</option>
+                            <option value="التصميم الجرافيكي">التصميم الجرافيكي</option>
+                            <option value="تطوير الويب والتطبيقات">تطوير الويب والتطبيقات</option>
+                            <option value="برمجة وتركيب الشبكات">برمجة وتركيب الشبكات</option>
+                            <option value="التسويق الرقمي">التسويق الرقمي</option>
+                            <option value="إدخال البيانات">إدخال البيانات</option>
+                            <option value="أمن المعلومات">أمن المعلومات</option>
+                            <option value="الأنظمة الإدارية والمحاسبية">الأنظمة الإدارية والمحاسبية</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">رسالتك:</label>
+                        <textarea id="message" name="message" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="btn primary-btn">إرسال الرسالة</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-section about-us">
+                <h3>عن خدماتنا</h3>
+                <p>نحن نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-section quick-links">
+                <h3>روابط سريعة</h3>
+                <ul>
+                    <li><a href="services.html">الخدمات</a></li>
+                    <li><a href="portfolio.html">أعمالنا</a></li>
+                    <li><a href="about.html">من نحن</a></li>
+                    <li><a href="contact.html">اتصل بنا</a></li>
+                    <li><a href="privacy-policy.html">سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            <div class="footer-section contact-info">
+                <h3>معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> [عنوان شركتك]</p>
+                <p><i class="fas fa-phone"></i> [رقم هاتفك]</p>
+                <p><i class="fas fa-envelope"></i> [بريدك الإلكتروني]</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 [اسم شركتك]. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
