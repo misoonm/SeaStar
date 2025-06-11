@@ -2,3 +2,5 @@
 User-agent: *
 Allow: /
 Sitemap:https://misoonm.github.io/SeaStar/sitemap.xml
+
+sitemap: https://a452579.sitemaphosting7.com/4549972/sitemap_4549972.xml
