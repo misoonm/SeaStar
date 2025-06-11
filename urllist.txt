@@ -1,0 +1,16 @@
+https://misoonm.github.io/SeaStar/
+https://misoonm.github.io/SeaStar/index.html
+https://misoonm.github.io/SeaStar/gallery.html
+https://misoonm.github.io/SeaStar/services.html
+https://misoonm.github.io/SeaStar/portfolio.html
+https://misoonm.github.io/SeaStar/about.html
+https://misoonm.github.io/SeaStar/contact.html
+https://misoonm.github.io/SeaStar/blog.html
+https://misoonm.github.io/SeaStar/contact.html?service=content-writing
+https://misoonm.github.io/SeaStar/contact.html?service=graphic-design
+https://misoonm.github.io/SeaStar/contact.html?service=web-dev
+https://misoonm.github.io/SeaStar/contact.html?service=network-it
+https://misoonm.github.io/SeaStar/contact.html?service=digital-marketing
+https://misoonm.github.io/SeaStar/contact.html?service=data-entry
+https://misoonm.github.io/SeaStar/contact.html?service=info-security
+https://misoonm.github.io/SeaStar/contact.html?service=erp-maint
