@@ -3,224 +3,810 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>خدماتنا - [SeaStar/خدماتك]</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>خدماتنا - SeaStar/خدماتك</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            min-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            display: block;
+            padding: 12px 15px;
+            color: #ddd;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background: rgba(11, 232, 129, 0.2);
+            color: var(--cyber-green);
+            transform: translateX(-5px);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* القسم البطولي لصفحة الخدمات */
+        .services-hero {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 150px 40px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .services-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .services-hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        /* قسم الخدمات التفصيلي */
+        .service-detail-section {
+            max-width: 1200px;
+            margin: 60px auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+        
+        .service-detail-section:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border-color: var(--cyber-purple);
+        }
+        
+        .service-content {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+        }
+        
+        .service-image {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .service-image img {
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+        
+        .service-image img:hover {
+            transform: scale(1.03);
+        }
+        
+        .service-content h2 {
+            font-size: 2.3rem;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .service-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 4px;
+            background: var(--cyber-green);
+            border-radius: 2px;
+        }
+        
+        .service-content p {
+            font-size: 1.2rem;
+            line-height: 1.9;
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .service-content ul {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .service-content li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .service-content li:last-child {
+            border-bottom: none;
+        }
+        
+        .service-content i {
+            color: var(--cyber-blue);
+            font-size: 1.4rem;
+        }
+        
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+        
+        .reverse {
+            flex-direction: row-reverse;
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .services-hero {
+                padding: 150px 20px 50px;
+            }
+            
+            .services-hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .service-detail-section {
+                padding: 30px;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .dropdown-content {
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                padding: 10px 0 0 20px;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .service-content h2 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .services-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .services-hero p {
+                font-size: 1.2rem;
+            }
+            
+            .service-content h2 {
+                font-size: 1.8rem;
+            }
+            
+            .service-content p {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
 </head>
 <body>
-    <header class="main-header">
-        <nav class="navbar">
-            <div class="logo">
-                <a href="index.html">SeaStar </a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html">الرئيسية</a></li>
-                <li class="dropdown">
-                    <a href="services.html" class="dropbtn active">الخدمات <i class="fas fa-caret-down"></i></a>
-                    <div class="dropdown-content">
-                        <a href="#content-writing">كتابة المحتوى والترجمة</a>
-                        <a href="#graphic-design">التصميم الجرافيكي</a>
-                        <a href="#web-dev">تطوير الويب والتطبيقات</a>
-                        <a href="#network-it">الشبكات وتقنية المعلومات</a>
-                        <a href="#digital-marketing">التسويق الرقمي</a>
-                        <a href="#data-entry">إدخال البيانات</a>
-                        <a href="#info-security">أمن المعلومات</a>
-                        <a href="#erp-maint">الأنظمة الإدارية والمحاسبية</a>
-                    </div>
-                </li>
-                <li><a href="portfolio.html">أعمالنا</a></li>
-                <li><a href="about.html">من نحن</a></li>
-                <li><a href="contact.html">اتصل بنا</a></li>
-                <li><a href="blog.html">المدونة</a></li>
-                <li><a href="gallery.html">معرض الصور</a></li>
+    <!-- خلفيات متحركة -->
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <!-- عناصر رسومية متحركة -->
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="gallery.html">معرض الصور</a></li>
+            <li class="dropdown">
+                <a href="services.html" class="dropbtn active">الخدمات <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="#content-writing">كتابة المحتوى والترجمة</a>
+                    <a href="#graphic-design">التصميم الجرافيكي</a>
+                    <a href="#web-dev">تطوير الويب والتطبيقات</a>
+                    <a href="#network-it">الشبكات وتقنية المعلومات</a>
+                    <a href="#digital-marketing">التسويق الرقمي</a>
+                    <a href="#data-entry">إدخال البيانات</a>
+                    <a href="#info-security">أمن المعلومات</a>
+                    <a href="#erp-maint">الأنظمة الإدارية والمحاسبية</a>
+                </div>
+            </li>
+            <li><a href="portfolio.html">أعمالنا</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <!-- القسم البطولي لصفحة الخدمات -->
+    <section class="services-hero animate">
+        <h1>خدماتنا الشاملة في تقنية المعلومات</h1>
+        <p>نقدم مجموعة واسعة من الحلول الاحترافية لدعم نمو أعمالك وتحقيق أهدافك</p>
+    </section>
+    
+    <!-- قسم خدماتنا -->
+    <section id="content-writing" class="service-detail-section animate">
+        <div class="service-content">
+            <h2>كتابة المحتوى والترجمة</h2>
+            <p>نقدم خدمات كتابة محتوى احترافية وفريدة تتناسب مع احتياجات جمهورك المستهدف، بالإضافة إلى خدمات ترجمة دقيقة واحترافية لمختلف اللغات والمجالات.</p>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> كتابة محتوى تسويقي وإعلاني</li>
+                <li><i class="fas fa-check-circle"></i> كتابة مقالات ومدونات متوافقة مع SEO</li>
+                <li><i class="fas fa-check-circle"></i> ترجمة نصوص ومستندات احترافية</li>
+                <li><i class="fas fa-check-circle"></i> تدقيق لغوي وتحرير</li>
             </ul>
-            <div class="hamburger">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
-        </nav>
-    </header>
-
-    <main>
-        <section class="page-hero-banner services-hero">
-            <h1>خدماتنا الشاملة في تقنية المعلومات</h1>
-            <p>نقدم مجموعة واسعة من الحلول الاحترافية لدعم نمو أعمالك وتحقيق أهدافك.</p>
-        </section>
-
-        <section id="content-writing" class="service-detail-section">
-            <div class="service-content">
-                <h2>كتابة المحتوى والترجمة</h2>
-                <p>نقدم خدمات كتابة محتوى احترافية وفريدة تتناسب مع احتياجات جمهورك المستهدف، بالإضافة إلى خدمات ترجمة دقيقة واحترافية لمختلف اللغات والمجالات.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> كتابة محتوى تسويقي وإعلاني</li>
-                    <li><i class="fas fa-check-circle"></i> كتابة مقالات ومدونات متوافقة مع SEO</li>
-                    <li><i class="fas fa-check-circle"></i> ترجمة نصوص ومستندات احترافية</li>
-                    <li><i class="fas fa-check-circle"></i> تدقيق لغوي وتحرير</li>
-                </ul>
-                <a href="contact.html?service=content-writing" class="btn primary-btn">اطلب الخدمة</a>
-            </div>
-            <div class="service-image">
-                <img src="1.webp" alt="كتابة المحتوى والترجمة">
-            </div>
-        </section>
-
-        <section id="graphic-design" class="service-detail-section reverse">
-            <div class="service-content">
-                <h2>التصميم الجرافيكي</h2>
-                <p>نصمم لك هوية بصرية قوية ومميزة، وشعارات جذابة، ومواد تسويقية احترافية تبرز علامتك التجارية في السوق.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> تصميم شعارات وهوية بصرية متكاملة</li>
-                    <li><i class="fas fa-check-circle"></i> تصميم مواد تسويقية (بروشورات، فلايرات، بوسترات)</li>
-                    <li><i class="fas fa-check-circle"></i> تصميم إعلانات ومنشورات وسائل التواصل الاجتماعي</li>
-                    <li><i class="fas fa-check-circle"></i> تصميم واجهات المستخدم (UI/UX)</li>
-                </ul>
-                <a href="contact.html?service=graphic-design" class="btn primary-btn">اطلب الخدمة</a>
-            </div>
-            <div class="service-image">
-                <img src="5.jpg" alt="التصميم الجرافيكي">
-            </div>
-        </section>
-
-        <section id="web-dev" class="service-detail-section">
-            <div class="service-content">
-                <h2>تطوير مواقع وتطبيقات الويب</h2>
-                <p>نصمم ونطور مواقع ويب عصرية، متجاوبة، وتطبيقات ويب قوية تلبي احتياجات عملك وتوفر تجربة مستخدم فريدة.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> تطوير مواقع إلكترونية مخصصة (Personalized Websites)</li>
-                    <li><i class="fas fa-check-circle"></i> تطوير متاجر إلكترونية (E-commerce)</li>
-                    <li><i class="fas fa-check-circle"></i> تطوير تطبيقات ويب مخصصة</li>
-                    <li><i class="fas fa-check-circle"></i> صيانة وتطوير المواقع والتطبيقات الحالية</li>
-                </ul>
-                <a href="contact.html?service=web-dev" class="btn primary-btn">اطلب الخدمة</a>
-            </div>
-            <div class="service-image">
-                <img src="2.png" alt="تطوير الويب والتطبيقات">
-            </div>
-        </section>
-
-        <section id="network-it" class="service-detail-section reverse">
-            <div class="service-content">
-                <h2>برمجة وتركيب الشبكات</h2>
-                <p>نقدم حلولًا متكاملة لتركيب وبرمجة الشبكات، بما في ذلك التصميم، التنفيذ، والصيانة، لضمان بنية تحتية قوية وآمنة لعملك.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> تصميم وتنفيذ شبكات LAN/WAN</li>
-                    <li><i class="fas fa-check-circle"></i> إعداد وتكوين الخوادم والأجهزة الشبكية</li>
-                    <li><i class="fas fa-check-circle"></i> حلول الاتصال اللاسلكي الآمنة</li>
-                    <li><i class="fas fa-check-circle"></i> إدارة وصيانة الشبكات</li>
-                </ul>
-                <a href="contact.html?service=network-it" class="btn primary-btn">اطلب الخدمة</a>
-            </div>
-            <div class="service-image">
-                <img src="3.png" alt="الشبكات وتقنية المعلومات">
-            </div>
-        </section>
-        
-        <section id="digital-marketing" class="service-detail-section">
-            <div class="service-content">
-                <h2>التسويق الرقمي</h2>
-                <p>نساعدك على الوصول إلى جمهورك المستهدف وتحقيق أهدافك التسويقية عبر استراتيجيات رقمية مبتكرة وفعالة.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> تحسين محركات البحث (SEO)</li>
-                    <li><i class="fas fa-check-circle"></i> التسويق عبر وسائل التواصل الاجتماعي</li>
-                    <li><i class="fas fa-check-circle"></i> إعلانات الدفع بالنقرة (PPC)</li>
-                    <li><i class="fas fa-check-circle"></i> التسويق بالمحتوى والبريد الإلكتروني</li>
-                </ul>
-                <a href="contact.html?service=digital-marketing" class="btn primary-btn">اطلب الخدمة</a>
-            </div>
-            <div class="service-image">
-                <img src="4.jpg" alt="التسويق الرقمي">
-            </div>
-        </section>
-
-        <section id="data-entry" class="service-detail-section reverse">
-            <div class="service-content">
-                <h2>إدخال البيانات</h2>
-                <p>خدمات إدخال البيانات بدقة وسرعة لضمان تنظيم معلوماتك وتحديثها بشكل مستمر، مما يوفر وقتك وجهدك.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> إدخال بيانات المنتجات وقواعد البيانات</li>
-                    <li><i class="fas fa-check-circle"></i> تحويل البيانات الرقمية والورقية</li>
-                    <li><i class="fas fa-check-circle"></i> إدارة وتحديث البيانات</li>
-                    <li><i class="fas fa-check-circle"></i> تدقيق وتصحيح الأخطاء</li>
-                </ul>
-                <a href="contact.html?service=data-entry" class="btn primary-btn">اطلب الخدمة</a>
-            </div>
-            <div class="service-image">
-                <img src="5.jpg" alt="إدخال البيانات">
-            </div>
-        </section>
-
-        <section id="info-security" class="service-detail-section">
-            <div class="service-content">
-                <h2>أمن المعلومات</h2>
-                <p>نقدم حلولاً متكاملة لأمن المعلومات لحماية بياناتك وأنظمتك من التهديدات السيبرانية، وضمان استمرارية عملك.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> تقييم الثغرات الأمنية واختبار الاختراق</li>
-                    <li><i class="fas fa-check-circle"></i> تطبيق سياسات الأمن وحلول الحماية</li>
-                    <li><i class="fas fa-check-circle"></i> استعادة البيانات بعد الكوارث</li>
-                    <li><i class="fas fa-check-circle"></i> تدريب ورفع الوعي الأمني</li>
-                </ul>
-                <a href="contact.html?service=info-security" class="btn primary-btn">اطلب الخدمة</a>
-            </div>
-            <div class="service-image">
-                <img src="4.jpg" alt="أمن المعلومات">
-            </div>
-        </section>
-
-        <section id="erp-maint" class="service-detail-section reverse">
-            <div class="service-content">
-                <h2>برمجة وصيانة الأنظمة الإدارية والمحاسبية</h2>
-                <p>تطوير وصيانة أنظمة تخطيط موارد المؤسسات (ERP) والأنظمة المحاسبية المخصصة لتلبية احتياجات عملك وتحسين كفاءة العمليات.</p>
-                <ul>
-                    <li><i class="fas fa-check-circle"></i> تطوير أنظمة ERP مخصصة</li>
-                    <li><i class="fas fa-check-circle"></i> برمجة أنظمة محاسبية متكاملة</li>
-                    <li><i class="fas fa-check-circle"></i> صيانة وتحديث الأنظمة الحالية</li>
-                    <li><i class="fas fa-check-circle"></i> دمج الأنظمة مع بعضها البعض</li>
-                </ul>
-                <a href="contact.html?service=erp-maint" class="btn primary-btn">اطلب الخدمة</a>
-            </div>
-            <div class="service-image">
-                <img src="2.png" alt="الأنظمة الإدارية والمحاسبية">
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="main-footer">
+            <a href="contact.html?service=content-writing" class="btn primary-btn">اطلب الخدمة</a>
+        </div>
+        <div class="service-image">
+            <img src="1.webp" alt="كتابة المحتوى والترجمة">
+        </div>
+    </section>
+    
+    <section id="graphic-design" class="service-detail-section reverse animate">
+        <div class="service-content">
+            <h2>التصميم الجرافيكي</h2>
+            <p>نصمم لك هوية بصرية قوية ومميزة، وشعارات جذابة، ومواد تسويقية احترافية تبرز علامتك التجارية في السوق.</p>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> تصميم شعارات وهوية بصرية متكاملة</li>
+                <li><i class="fas fa-check-circle"></i> تصميم مواد تسويقية (بروشورات، فلايرات، بوسترات)</li>
+                <li><i class="fas fa-check-circle"></i> تصميم إعلانات ومنشورات وسائل التواصل الاجتماعي</li>
+                <li><i class="fas fa-check-circle"></i> تصميم واجهات المستخدم (UI/UX)</li>
+            </ul>
+            <a href="contact.html?service=graphic-design" class="btn primary-btn">اطلب الخدمة</a>
+        </div>
+        <div class="service-image">
+            <img src="5.jpg" alt="التصميم الجرافيكي">
+        </div>
+    </section>
+    
+    <section id="web-dev" class="service-detail-section animate">
+        <div class="service-content">
+            <h2>تطوير مواقع وتطبيقات الويب</h2>
+            <p>نصمم ونطور مواقع ويب عصرية، متجاوبة، وتطبيقات ويب قوية تلبي احتياجات عملك وتوفر تجربة مستخدم فريدة.</p>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> تطوير مواقع إلكترونية مخصصة (Personalized Websites)</li>
+                <li><i class="fas fa-check-circle"></i> تطوير متاجر إلكترونية (E-commerce)</li>
+                <li><i class="fas fa-check-circle"></i> تطوير تطبيقات ويب مخصصة</li>
+                <li><i class="fas fa-check-circle"></i> صيانة وتطوير المواقع والتطبيقات الحالية</li>
+            </ul>
+            <a href="contact.html?service=web-dev" class="btn primary-btn">اطلب الخدمة</a>
+        </div>
+        <div class="service-image">
+            <img src="2.png" alt="تطوير الويب والتطبيقات">
+        </div>
+    </section>
+    
+    <section id="network-it" class="service-detail-section reverse animate">
+        <div class="service-content">
+            <h2>برمجة وتركيب الشبكات</h2>
+            <p>نقدم حلولًا متكاملة لتركيب وبرمجة الشبكات، بما في ذلك التصميم، التنفيذ، والصيانة، لضمان بنية تحتية قوية وآمنة لعملك.</p>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> تصميم وتنفيذ شبكات LAN/WAN</li>
+                <li><i class="fas fa-check-circle"></i> إعداد وتكوين الخوادم والأجهزة الشبكية</li>
+                <li><i class="fas fa-check-circle"></i> حلول الاتصال اللاسلكي الآمنة</li>
+                <li><i class="fas fa-check-circle"></i> إدارة وصيانة الشبكات</li>
+            </ul>
+            <a href="contact.html?service=network-it" class="btn primary-btn">اطلب الخدمة</a>
+        </div>
+        <div class="service-image">
+            <img src="3.png" alt="الشبكات وتقنية المعلومات">
+        </div>
+    </section>
+    
+    <section id="digital-marketing" class="service-detail-section animate">
+        <div class="service-content">
+            <h2>التسويق الرقمي</h2>
+            <p>نساعدك على الوصول إلى جمهورك المستهدف وتحقيق أهدافك التسويقية عبر استراتيجيات رقمية مبتكرة وفعالة.</p>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> تحسين محركات البحث (SEO)</li>
+                <li><i class="fas fa-check-circle"></i> التسويق عبر وسائل التواصل الاجتماعي</li>
+                <li><i class="fas fa-check-circle"></i> إعلانات الدفع بالنقرة (PPC)</li>
+                <li><i class="fas fa-check-circle"></i> التسويق بالمحتوى والبريد الإلكتروني</li>
+            </ul>
+            <a href="contact.html?service=digital-marketing" class="btn primary-btn">اطلب الخدمة</a>
+        </div>
+        <div class="service-image">
+            <img src="4.jpg" alt="التسويق الرقمي">
+        </div>
+    </section>
+    
+    <section id="data-entry" class="service-detail-section reverse animate">
+        <div class="service-content">
+            <h2>إدخال البيانات</h2>
+            <p>خدمات إدخال البيانات بدقة وسرعة لضمان تنظيم معلوماتك وتحديثها بشكل مستمر، مما يوفر وقتك وجهدك.</p>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> إدخال بيانات المنتجات وقواعد البيانات</li>
+                <li><i class="fas fa-check-circle"></i> تحويل البيانات الرقمية والورقية</li>
+                <li><i class="fas fa-check-circle"></i> إدارة وتحديث البيانات</li>
+                <li><i class="fas fa-check-circle"></i> تدقيق وتصحيح الأخطاء</li>
+            </ul>
+            <a href="contact.html?service=data-entry" class="btn primary-btn">اطلب الخدمة</a>
+        </div>
+        <div class="service-image">
+            <img src="5.jpg" alt="إدخال البيانات">
+        </div>
+    </section>
+    
+    <section id="info-security" class="service-detail-section animate">
+        <div class="service-content">
+            <h2>أمن المعلومات</h2>
+            <p>نقدم حلولاً متكاملة لأمن المعلومات لحماية بياناتك وأنظمتك من التهديدات السيبرانية، وضمان استمرارية عملك.</p>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> تقييم الثغرات الأمنية واختبار الاختراق</li>
+                <li><i class="fas fa-check-circle"></i> تطبيق سياسات الأمن وحلول الحماية</li>
+                <li><i class="fas fa-check-circle"></i> استعادة البيانات بعد الكوارث</li>
+                <li><i class="fas fa-check-circle"></i> تدريب ورفع الوعي الأمني</li>
+            </ul>
+            <a href="contact.html?service=info-security" class="btn primary-btn">اطلب الخدمة</a>
+        </div>
+        <div class="service-image">
+            <img src="4.jpg" alt="أمن المعلومات">
+        </div>
+    </section>
+    
+    <section id="erp-maint" class="service-detail-section reverse animate">
+        <div class="service-content">
+            <h2>برمجة وصيانة الأنظمة الإدارية والمحاسبية</h2>
+            <p>تطوير وصيانة أنظمة تخطيط موارد المؤسسات (ERP) والأنظمة المحاسبية المخصصة لتلبية احتياجات عملك وتحسين كفاءة العمليات.</p>
+            <ul>
+                <li><i class="fas fa-check-circle"></i> تطوير أنظمة ERP مخصصة</li>
+                <li><i class="fas fa-check-circle"></i> برمجة أنظمة محاسبية متكاملة</li>
+                <li><i class="fas fa-check-circle"></i> صيانة وتحديث الأنظمة الحالية</li>
+                <li><i class="fas fa-check-circle"></i> دمج الأنظمة مع بعضها البعض</li>
+            </ul>
+            <a href="contact.html?service=erp-maint" class="btn primary-btn">اطلب الخدمة</a>
+        </div>
+        <div class="service-image">
+            <img src="2.png" alt="الأنظمة الإدارية والمحاسبية">
+        </div>
+    </section>
+    
+    <!-- التذييل -->
+    <footer>
         <div class="footer-content">
-            <div class="footer-section about-us">
-                <h3>عن خدماتنا</h3>
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
                 <p>نحن نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
                 <div class="social-links">
                     <a href="https://www.facebook.com/bdallhbasalmwyd"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://x.com/roadalnah?t=ZPXrR4wMQBpobUA4TSo0jw&s=09"><i class="fab fa-twitter"></i></a>
-                    <a href="https://x.com/roadalnah?t=ZPXrR4wMQBpobUA4TSo0jw&s=09"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://x.com/shahidalmoayad?t=UH2dq3o35lw83uhd8giyvw&s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
                     <a href="https://www.instagram.com/abdab_mo?igsh=eXRqbXJ4bjhkbjJk"><i class="fab fa-instagram"></i></a>
                 </div>
             </div>
-            <div class="footer-section quick-links">
-                <h3>روابط سريعة</h3>
-                <ul>
-                    <li><a href="gallery.html">معرض الصور</a></li>
-                    <li><a href="services.html">الخدمات</a></li>
-                    <li><a href="portfolio.html">أعمالنا</a></li>
-                    <li><a href="about.html">من نحن</a></li>
-                    <li><a href="contact.html">اتصل بنا</a></li>
-                    <li><a href="privacy-policy.html">سياسة الخصوصية</a></li>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="services.html"><i class="fas fa-arrow-left"></i> الخدمات</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> أعمالنا</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> من نحن</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-arrow-left"></i> سياسة الخصوصية</a></li>
                 </ul>
             </div>
-            <div class="footer-section contact-info">
-                <h3>معلومات الاتصال</h3>
-                <p><i class="fas fa-map-marker-alt"></i> [ صنعاء, دارس, المدينة الخضراء]</p>
-                <p><i class="fas fa-phone"></i> [+967779168887 ]</p>
-                <p><i class="fas fa-envelope"></i> [ prcmased@gmail.com]</p>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
             </div>
         </div>
+        
         <div class="footer-bottom">
-            <p>&copy; 2025 [ SeaStar]. جميع الحقوق محفوظة.</p>
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
-
-    <script src="script.js"></script>
+    
+    <script>
+        // إضافة تأثيرات الظهور عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // قائمة الهاتف المحمول
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        });
+    </script>
 </body>
 </html>
