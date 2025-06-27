@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سياسة الخصوصية - SeaStar/خدماتك</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            min-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            display: block;
+            padding: 12px 15px;
+            color: #ddd;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background: rgba(11, 232, 129, 0.2);
+            color: var(--cyber-green);
+            transform: translateX(-5px);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* القسم البطولي لصفحة سياسة الخصوصية */
+        .privacy-hero {
+            min-height: 50vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 150px 40px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .privacy-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .privacy-hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        /* قسم سياسة الخصوصية */
+        .privacy-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 100px;
+        }
+        
+        .privacy-section {
+            margin-bottom: 50px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .privacy-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .privacy-section h2 {
+            font-size: 2.2rem;
+            color: var(--cyber-green);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .privacy-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 4px;
+            background: var(--cyber-green);
+            border-radius: 2px;
+        }
+        
+        .privacy-section p {
+            font-size: 1.2rem;
+            line-height: 1.9;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .privacy-section ul {
+            padding-right: 30px;
+            margin: 25px 0;
+        }
+        
+        .privacy-section li {
+            margin-bottom: 15px;
+            padding-right: 20px;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        .privacy-section li::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            background: var(--cyber-blue);
+            border-radius: 50%;
+        }
+        
+        .highlight-box {
+            background: rgba(11, 232, 129, 0.1);
+            border-left: 4px solid var(--cyber-green);
+            border-radius: 5px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+        
+        .contact-info-box {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: rgba(0, 168, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 40px;
+            border: 1px solid rgba(0, 168, 255, 0.2);
+        }
+        
+        .contact-info-box i {
+            font-size: 2.5rem;
+            color: var(--cyber-blue);
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .contact-info-box p {
+            margin: 0;
+        }
+        
+        .contact-info-box a {
+            color: var(--cyber-green);
+            text-decoration: none;
+        }
+        
+        .contact-info-box a:hover {
+            text-decoration: underline;
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .privacy-hero {
+                padding: 150px 20px 50px;
+            }
+            
+            .privacy-hero h1 {
+                font-size: 2.8rem;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .dropdown-content {
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                padding: 10px 0 0 20px;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .privacy-content {
+                padding: 30px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .privacy-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .privacy-hero p {
+                font-size: 1.2rem;
+            }
+            
+            .privacy-section h2 {
+                font-size: 1.8rem;
+            }
+            
+            .contact-info-box {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفيات متحركة -->
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <!-- عناصر رسومية متحركة -->
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="gallery.html">معرض الصور</a></li>
+            <li class="dropdown">
+                <a href="services.html" class="dropbtn">الخدمات <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="services.html#content-writing">كتابة المحتوى والترجمة</a>
+                    <a href="services.html#graphic-design">التصميم الجرافيكي</a>
+                    <a href="services.html#web-dev">تطوير الويب والتطبيقات</a>
+                    <a href="services.html#network-it">الشبكات وتقنية المعلومات</a>
+                    <a href="services.html#digital-marketing">التسويق الرقمي</a>
+                    <a href="services.html#data-entry">إدخال البيانات</a>
+                    <a href="services.html#info-security">أمن المعلومات</a>
+                    <a href="services.html#erp-maint">الأنظمة الإدارية والمحاسبية</a>
+                </div>
+            </li>
+            <li><a href="portfolio.html">أعمالنا</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+            <li><a href="privacy-policy.html" class="active">سياسة الخصوصية</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <!-- القسم البطولي لصفحة سياسة الخصوصية -->
+    <section class="privacy-hero animate">
+        <h1>سياسة الخصوصية</h1>
+        <p>نحن نحرص على خصوصيتك ونحمي معلوماتك الشخصية وفقًا لأعلى المعايير</p>
+    </section>
+    
+    <!-- قسم محتوى سياسة الخصوصية -->
+    <div class="privacy-content animate">
+        <div class="privacy-section">
+            <h2>مقدمة</h2>
+            <p>نحن في SeaStar ندرك أهمية خصوصية زوارنا وعملائنا، ونلتزم بحماية معلوماتكم الشخصية وفقًا لأعلى المعايير الأمنية. توضح سياسة الخصوصية هذه كيفية جمعنا واستخدامنا وحماية معلوماتكم الشخصية.</p>
+            <p>باستخدام موقعنا الإلكتروني والخدمات المرتبطة به، فإنك توافق على شروط سياسة الخصوصية هذه.</p>
+        </div>
+        
+        <div class="privacy-section">
+            <h2>المعلومات التي نجمعها</h2>
+            <p>قد نجمع أنواعًا مختلفة من المعلومات بناءً على كيفية تفاعلك مع خدماتنا:</p>
+            
+            <div class="highlight-box">
+                <h3>معلومات تقدمها لنا مباشرة</h3>
+                <ul>
+                    <li>الاسم الكامل ومعلومات الاتصال عند التسجيل أو طلب الخدمات</li>
+                    <li>معلومات الدفع والفوترة عند إجراء عمليات شراء</li>
+                    <li>المحتوى الذي ترسله عبر نماذج الاتصال أو الدعم الفني</li>
+                    <li>السيرة الذاتية والمعلومات المهنية عند التقدم للوظائف</li>
+                </ul>
+            </div>
+            
+            <div class="highlight-box">
+                <h3>معلومات نجمعها تلقائيًا</h3>
+                <ul>
+                    <li>بيانات استخدام الموقع مثل الصفحات التي تزورها ووقت الزيارة</li>
+                    <li>معلومات الجهاز والمتصفح ونظام التشغيل</li>
+                    <li>عنوان IP والموقع الجغرافي التقريبي</li>
+                    <li>بيانات ملفات تعريف الارتباط (Cookies) والتقنيات المماثلة</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="privacy-section">
+            <h2>كيف نستخدم المعلومات</h2>
+            <p>نستخدم المعلومات التي نجمعها للأغراض التالية:</p>
+            
+            <ul>
+                <li>تقديم الخدمات المطلوبة والوفاء بالالتزامات التعاقدية</li>
+                <li>تحسين تجربة المستخدم وتطوير خدماتنا ومنتجاتنا</li>
+                <li>الرد على استفساراتكم وطلبات الدعم الفني</li>
+                <li>إرسال تحديثات ورسائل ترويجية (بموافقتكم)</li>
+                <li>تحليل استخدام الموقع لتحسين أدائه ووظائفه</li>
+                <li>منع الاحتيال وحماية أمن أنظمتنا وخدماتنا</li>
+                <li>الامتثال للقوانين واللوائح المعمول بها</li>
+            </ul>
+        </div>
+        
+        <div class="privacy-section">
+            <h2>حماية المعلومات</h2>
+            <p>نحن نستخدم مجموعة من الإجراءات الأمنية الفنية والإدارية لحماية معلوماتك الشخصية:</p>
+            
+            <ul>
+                <li>تشفير البيانات أثناء النقل والتخزين</li>
+                <li>جدران الحماية وأنظمة الكشف عن التسلل</li>
+                <li>الوصول المحدود إلى المعلومات على أساس الحاجة للمعرفة</li>
+                <li>مراجعات أمنية منتظمة واختبارات الاختراق</li>
+                <li>تدريب الموظفين على أفضل ممارسات حماية البيانات</li>
+            </ul>
+            
+            <p>على الرغم من بذلنا قصارى جهدنا لحماية معلوماتك، لا يمكن ضمان أمان المعلومات المنقولة عبر الإنترنت بنسبة 100%.</p>
+        </div>
+        
+        <div class="privacy-section">
+            <h2>مشاركة المعلومات مع أطراف ثالثة</h2>
+            <p>لا نبيع معلوماتك الشخصية لأي طرف ثالث. قد نشارك معلوماتك في الحالات التالية فقط:</p>
+            
+            <ul>
+                <li>مع مقدمي الخدمات الذين يعملون نيابة عننا والملتزمين بمعايير الخصوصية نفسها</li>
+                <li>عند الالتزام القانوني للاستجابة لأمر قضائي أو طلب حكومي</li>
+                <li>في حالات الاندماج أو الاستحواذ أو بيع الأصول</li>
+                <li>لحماية حقوق وممتلكات SeaStar وعملائنا والجمهور</li>
+            </ul>
+        </div>
+        
+        <div class="privacy-section">
+            <h2>ملفات تعريف الارتباط (Cookies)</h2>
+            <p>نستخدم ملفات تعريف الارتباط وتقنيات التتبع المماثلة لتحسين تجربة المستخدم وتحليل حركة المرور على الموقع. يمكنك التحكم في ملفات تعريف الارتباط من خلال إعدادات متصفحك.</p>
+            
+            <p>أنواع ملفات تعريف الارتباط التي نستخدمها:</p>
+            <ul>
+                <li>ملفات أساسية: ضرورية لتشغيل الموقع</li>
+                <li>ملفات أداء: تساعدنا في فهم كيفية استخدام الزوار لموقعنا</li>
+                <li>ملفات وظيفية: تعزز تجربة التصفح وتذكر تفضيلاتك</li>
+                <li>ملفات إعلانية: تستخدم لعرض إعلانات مستهدفة</li>
+            </ul>
+        </div>
+        
+        <div class="privacy-section">
+            <h2>حقوقك في خصوصية البيانات</h2>
+            <p>لديك الحقوق التالية فيما يتعلق بمعلوماتك الشخصية:</p>
+            
+            <ul>
+                <li>طلب الوصول إلى معلوماتك الشخصية</li>
+                <li>طلب تصحيح أي معلومات غير دقيقة</li>
+                <li>طلب حذف معلوماتك الشخصية في ظروف معينة</li>
+                <li>معالجة تقييد معالجة معلوماتك</li>
+                <li>طلب نقل بياناتك إلى منظمة أخرى</li>
+                <li>الاعتراض على معالجة معلوماتك لأغراض تسويقية</li>
+            </ul>
+            
+            <p>لتنفيذ أي من هذه الحقوق، يرجى الاتصال بنا باستخدام معلومات الاتصال المذكورة أدناه.</p>
+        </div>
+        
+        <div class="privacy-section">
+            <h2>التغييرات على سياسة الخصوصية</h2>
+            <p>قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر. سننشر أي تغييرات على هذه الصفحة وسنحدد تاريخ التحديث في أعلى الصفحة.</p>
+            
+            <p>نشجعك على مراجعة سياسة الخصوصية بشكل دوري للبقاء على اطلاع على ممارساتنا.</p>
+        </div>
+        
+        <div class="contact-info-box">
+            <i class="fas fa-headset"></i>
+            <div>
+                <h3>لأي استفسارات حول سياسة الخصوصية</h3>
+                <p>يمكنك التواصل معنا عبر البريد الإلكتروني: <a href="mailto:privacy@seastar.com">privacy@seastar.com</a></p>
+                <p>أو عن طريق الهاتف: <a href="tel:+967779168887">+967 779 168 887</a></p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- التذييل -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نحن نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/bdallhbasalmwyd"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/shahidalmoayad?t=UH2dq3o35lw83uhd8giyvw&s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/abdab_mo?igsh=eXRqbXJ4bjhkbjJk"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="services.html"><i class="fas fa-arrow-left"></i> الخدمات</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> أعمالنا</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> من نحن</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-arrow-left"></i> سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // إضافة تأثيرات الظهور عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // قائمة الهاتف المحمول
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
