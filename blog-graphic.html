@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أحدث اتجاهات التصميم الجرافيكي لعام 2025 - SeaStar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            min-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 12px 15px;
+            color: #ddd;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(11, 232, 129, 0.2);
+            color: var(--cyber-green);
+            transform: translateX(-5px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+
+        /* القسم البطولي */
+        .hero-section {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            padding: 150px 40px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            flex: 1;
+            padding: 0 30px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* قسم المحتوى التعليمي */
+        .section {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* محتوى المدونة */
+        .blog-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 50px;
+        }
+
+        .blog-item {
+            margin-bottom: 60px;
+        }
+
+        .blog-item h3 {
+            font-size: 2rem;
+            color: var(--cyber-green);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .blog-item h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 120px;
+            height: 3px;
+            background: var(--cyber-blue);
+            border-radius: 3px;
+        }
+
+        .blog-item p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .blog-visual {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        .blog-image {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .blog-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .blog-description {
+            flex: 1;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border-left: 4px solid var(--cyber-green);
+        }
+
+        .blog-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .icon-box {
+            text-align: center;
+            width: 150px;
+        }
+
+        .icon-box i {
+            font-size: 3rem;
+            color: var(--cyber-blue);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .icon-box:hover i {
+            color: var(--cyber-green);
+            transform: scale(1.2);
+        }
+
+        .icon-box h4 {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        /* جدول الميزات */
+        .feature-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .feature-table th {
+            background: var(--cyber-blue);
+            padding: 20px;
+            font-size: 1.2rem;
+            text-align: right;
+        }
+
+        .feature-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .feature-table tr:hover {
+            background: rgba(0, 168, 255, 0.1);
+        }
+
+        /* قسم الحث على الاتصال */
+        .call-to-action-banner {
+            background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-blue));
+            border-radius: 20px;
+            padding: 70px 40px;
+            text-align: center;
+            margin: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .call-to-action-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .call-to-action-banner p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .primary-btn {
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section {
+            padding: 20px;
+        }
+
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .hero-section {
+                padding-top: 120px;
+            }
+
+            .blog-visual {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .dropdown-content {
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                padding: 10px 0 0 20px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .section {
+                padding: 80px 20px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .blog-content {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .section-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .blog-item h3 {
+                font-size: 1.6rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="gallery.html">معرض الصور</a></li>
+            <li class="dropdown">
+                <a href="services.html" class="dropbtn">الخدمات <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="services.html#content-writing">كتابة المحتوى والترجمة</a>
+                    <a href="services.html#graphic-design">التصميم الجرافيكي</a>
+                    <a href="services.html#web-dev">تطوير الويب والتطبيقات</a>
+                    <a href="services.html#network-it">الشبكات وتقنية المعلومات</a>
+                    <a href="services.html#digital-marketing">التسويق الرقمي</a>
+                    <a href="services.html#data-entry">إدخال البيانات</a>
+                    <a href="services.html#info-security">أمن المعلومات</a>
+                    <a href="services.html#erp-maint">الأنظمة الإدارية والمحاسبية</a>
+                </div>
+            </li>
+            <li><a href="portfolio.html">أعمالنا</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html" class="active">المدونة</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>أحدث اتجاهات التصميم الجرافيكي لعام 2025</h1>
+            <p>استلهم من أحدث الأفكار والأساليب في عالم التصميم الجرافيكي. نستكشف معًا الاتجاهات التي ستشكل ملامح العلامات التجارية هذا العام.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">التصميم الجرافيكي: فن يتطور باستمرار</h2>
+            <p class="section-subtitle">اكتشف كيف يمكن للاتجاهات الجديدة أن تمنح علامتك التجارية مظهراً عصرياً ومميزاً.</p>
+        </div>
+
+        <div class="blog-content animate">
+            <div class="blog-item">
+                <h3>1. العودة إلى البساطة والتصميم المسطح المحسن (Neo-Minimalism)</h3>
+                <p>بعد فترة من التعقيد، يعود التصميم إلى **البساطة والنقاء**، ولكن مع لمسة عصرية. لم يعد التصميم المسطح مملاً، بل أصبح يركز على التفاصيل الدقيقة، التدرجات اللونية الناعمة، والخطوط النظيفة لخلق مظهر أنيق وعصري.</p>
+
+                <div class="blog-visual">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1549490349-f033c4155b1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="التصميم المسطح المحسن">
+                    </div>
+                    <div class="blog-description">
+                        <h4>خصائص النيو-مينيماليزم:</h4>
+                        <ul>
+                            <li><strong>الخطوط الواضحة:</strong> استخدام خطوط بسيطة وسهلة القراءة.</li>
+                            <li><strong>التباعد الأبيض:</strong> مساحات فارغة كبيرة لتسليط الضوء على المحتوى.</li>
+                            <li><strong>اللوحات اللونية المحدودة:</strong> التركيز على عدد قليل من الألوان المتناسقة.</li>
+                            <li><strong>الأيقونات المبسطة:</strong> تصميم أيقونات واضحة ومباشرة.</li>
+                            <li><strong>التفاصيل الدقيقة:</strong> لمسات خفية تضيف عمقًا دون تعقيد.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-item">
+                <h3>2. جماليات الذكاء الاصطناعي (AI Aesthetics)</h3>
+                <p>مع تقدم الذكاء الاصطناعي، بدأت الأعمال الفنية المولدة بواسطة **الذكاء الاصطناعي** في الظهور كاتجاه رئيسي. يمكن أن تمنح هذه الأعمال التصميمات مظهرًا مستقبليًا وفريدًا، يجمع بين الخيال والإبداع البشري وتقنيات التعلم الآلي.</p>
+
+                <div class="blog-icons">
+                    <div class="icon-box">
+                        <i class="fas fa-robot"></i>
+                        <h4>الفن المولد بالذكاء الاصطناعي</h4>
+                        <p>صور ورسوم فريدة</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-brain"></i>
+                        <h4>التعلم الآلي</h4>
+                        <p>تخصيص التصميمات</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-magic"></i>
+                        <h4>التوليد التلقائي</h4>
+                        <p>إبداع بلا حدود</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-layer-group"></i>
+                        <h4>التركيبات المعقدة</h4>
+                        <p>دمج العناصر بسلاسة</p>
+                    </div>
+                </div>
+
+                <div class="blog-visual">
+                    <div class="blog-description">
+                        <h4>تطبيقات الذكاء الاصطناعي في التصميم:</h4>
+                        <ul>
+                            <li><strong>توليد الخلفيات:</strong> إنشاء خلفيات فريدة وجذابة.</li>
+                            <li><strong>إنشاء الشخصيات:</strong> تصميم شخصيات كرتونية أو واقعية.</li>
+                            <li><strong>تحسين الصور:</strong> تعديل الألوان والإضاءة تلقائيًا.</li>
+                            <li><strong>تصميم الشعارات:</strong> اقتراح أفكار شعارات مبتكرة.</li>
+                        </ul>
+                    </div>
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1620207418302-df6168e1467e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="جماليات الذكاء الاصطناعي">
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-item">
+                <h3>3. تدرجات الألوان الحيوية والشفافة (Vibrant Gradients & Glassmorphism)</h3>
+                <p>لا تزال **التدرجات اللونية** تحظى بشعبية، ولكنها تتجه نحو الألوان الأكثر حيوية، مع إضافة تأثيرات الشفافية والضبابية (مثل **Glassmorphism**) لإضفاء شعور بالعمق والأبعاد، مما يجعل التصميم يبدو وكأنه زجاجي أو بلوري.</p>
+
+                <div class="blog-icons">
+                    <div class="icon-box">
+                        <i class="fas fa-palette"></i>
+                        <h4>تدرجات لونية حيوية</h4>
+                        <p>ألوان جريئة ومشرقة</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-glass-martini-alt"></i>
+                        <h4>تأثير الزجاجية</h4>
+                        <p>شفافية وضبابية</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-compress-arrows-alt"></i>
+                        <h4>العمق والأبعاد</h4>
+                        <p>تصميم ثلاثي الأبعاد</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-lightbulb"></i>
+                        <h4>الإضاءة المتغيرة</h4>
+                        <p>لإبراز التفاصيل</p>
+                    </div>
+                </div>
+
+                <div class="blog-visual">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1616781440788-b4b9b6e9a0f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="تدرجات الألوان والزجاجية">
+                    </div>
+                    <div class="blog-description">
+                        <h4>نصائح لاستخدام التدرجات والزجاجية:</h4>
+                        <ul>
+                            <li><strong>التوازن:</strong> استخدمها بحذر لتجنب الفوضى.</li>
+                            <li><strong>التباين:</strong> تأكد من وضوح النصوص والأيقونات فوقها.</li>
+                            <li><strong>التناسق:</strong> حافظ على نمط موحد عبر جميع التصميمات.</li>
+                            <li><strong>الرسوم المتحركة:</strong> إضافة حركات بسيطة لتأثير ديناميكي.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-item">
+                <h3>4. التصميم المستوحى من الرجعية (Retro Futurism & Y2K Aesthetics)</h3>
+                <p>يعود المصممون إلى الماضي، مستوحين من **جماليات الثمانينات والتسعينات وأوائل الألفية الجديدة (Y2K)**. يمزج هذا الاتجاه بين الحنين إلى الماضي والرؤى المستقبلية، باستخدام خطوط جريئة، ألوان نيون، وتأثيرات بكسلية.</p>
+
+                <div class="blog-visual">
+                    <div class="blog-description">
+                        <h4>عناصر التصميم الرجعي المستقبلي:</h4>
+                        <ul>
+                            <li><strong>خطوط جريئة ومستقبلية:</strong> غالباً ما تكون بأسلوب فن الديكو.</li>
+                            <li><strong>لوحات ألوان النيون:</strong> ألوان زاهية ومشرقة.</li>
+                            <li><strong>الأنماط الهندسية المتكررة:</strong> لإنشاء خلفيات فريدة.</li>
+                            <li><strong>الصور الفضائية والسايبربانك:</strong> لإضفاء شعور بالمستقبل.</li>
+                        </ul>
+                    </div>
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1620207418302-df6168e1467e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="التصميم الرجعي المستقبلي">
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-item">
+                <h3>5. التركيز على الطباعة الجريئة والتعبيرية (Bold & Expressive Typography)</h3>
+                <p>لم تعد الطباعة مجرد وسيلة لنقل المعلومات، بل أصبحت **عنصراً فنياً بحد ذاتها**. يتجه التصميم نحو استخدام الخطوط الكبيرة، الجريئة، والتعبيرية، مع إمكانية التلاعب بالأحرف لإضافة لمسة فنية فريدة.</p>
+
+                <table class="feature-table">
+                    <thead>
+                        <tr>
+                            <th>الاتجاه</th>
+                            <th>الوصف</th>
+                            <th>التأثير</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>**الخطوط المتغيرة** (Variable Fonts)</td>
+                            <td>خطوط تسمح بتعديل الوزن، العرض، والإمالة في ملف واحد.</td>
+                            <td>مرونة أكبر في التصميم، تقليل حجم الملفات.</td>
+                        </tr>
+                        <tr>
+                            <td>**الطباعة اليدوية ثلاثية الأبعاد**</td>
+                            <td>إضافة عمق وملمس للخطوط اليدوية.</td>
+                            <td>تأثير بصري جذاب وفريد.</td>
+                        </tr>
+                        <tr>
+                            <td>**الخطوط المقطوعة/المهدمة**</td>
+                            <td>أحرف تبدو وكأنها مقطوعة أو مفقودة أجزاء منها.</td>
+                            <td>شعور بالفن التجريدي والتمرد.</td>
+                        </tr>
+                        <tr>
+                            <td>**مزج الخطوط المختلفة**</td>
+                            <td>الجمع بين أنواع خطوط متباينة (مثل Serif و Sans-serif).</td>
+                            <td>خلق تباين بصري مثير للاهتمام.</td>
+                        </tr>
+                        <tr>
+                            <td>**الطباعة المتحركة**</td>
+                            <td>إضافة حركات بسيطة للنصوص لجذب الانتباه.</td>
+                            <td>زيادة التفاعل والديناميكية.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="blog-item">
+                <h3>6. دمج العناصر اليدوية والعضوية (Hand-Drawn & Organic Elements)</h3>
+                <p>يستمر الاتجاه نحو الأصالة واللمسة الإنسانية. يتم دمج **الرسومات اليدوية، الأشكال العضوية، والقوام الطبيعي** لإضفاء شعور بالدفء والتميز على التصميمات الرقمية.</p>
+
+                <div class="blog-visual">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1510525000727-b5cc857e49e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="العناصر اليدوية والعضوية">
+                    </div>
+                    <div class="blog-description">
+                        <h4>كيفية استخدام العناصر العضوية:</h4>
+                        <ul>
+                            <li><strong>الرسوم التوضيحية المرسومة باليد:</strong> لإضفاء طابع شخصي.</li>
+                            <li><strong>الأشكال غير المنتظمة:</strong> كخلفيات أو فواصل.</li>
+                            <li><strong>الفرشاة والقوام:</strong> لإضافة عمق وملمس.</li>
+                            <li><strong>اللوحات المائية والتلوين الرقمي:</strong> لمسة فنية ناعمة.</li>
+                            <li><strong>الخطوط غير المتساوية:</strong> تعزيز الشعور بالواقعية.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="call-to-action-banner animate">
+            <h2>هل تبحث عن تصميم جرافيكي يواكب أحدث الاتجاهات؟</h2>
+            <p>دع فريق SeaStar المبدع يحول رؤيتك إلى تصميمات استثنائية وجذابة لعام 2025 وما بعده.</p>
+            <a href="contact.html" class="btn primary-btn">اطلب تصميمك الآن</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نحن نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/bdallhbasalmwyd"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/shahidalmoayad?t=UH2dq3o35lw83uhd8giyvw&s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/abdab_mo?igsh=eXRqbXJ4bjhkbjJk"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="services.html"><i class="fas fa-arrow-left"></i> الخدمات</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> أعمالنا</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> من نحن</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-arrow-left"></i> سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        // إضافة تأثيرات الظهور عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // قائمة الهاتف المحمول
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
