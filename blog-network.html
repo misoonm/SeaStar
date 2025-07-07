@@ -1,1 +1,997 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أساسيات الشبكات: دليل المبتدئين - SeaStar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            min-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            display: block;
+            padding: 12px 15px;
+            color: #ddd;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background: rgba(11, 232, 129, 0.2);
+            color: var(--cyber-green);
+            transform: translateX(-5px);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* القسم البطولي */
+        .hero-section {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            padding: 150px 40px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            text-align: center;
+        }
+        
+        .hero-content {
+            flex: 1;
+            padding: 0 30px;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .hero-content p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        /* قسم المحتوى التعليمي */
+        .section {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* محتوى الشبكات */
+        .network-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 50px;
+        }
+        
+        .network-item {
+            margin-bottom: 60px;
+        }
+        
+        .network-item h3 {
+            font-size: 2rem;
+            color: var(--cyber-green);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .network-item h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 120px;
+            height: 3px;
+            background: var(--cyber-blue);
+            border-radius: 3px;
+        }
+        
+        .network-item p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .network-visual {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            margin: 40px 0;
+        }
+        
+        .network-image {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .network-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .network-image:hover img {
+            transform: scale(1.05);
+        }
+        
+        .network-description {
+            flex: 1;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border-left: 4px solid var(--cyber-green);
+        }
+        
+        .network-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .icon-box {
+            text-align: center;
+            width: 150px;
+        }
+        
+        .icon-box i {
+            font-size: 3rem;
+            color: var(--cyber-blue);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .icon-box:hover i {
+            color: var(--cyber-green);
+            transform: scale(1.2);
+        }
+        
+        .icon-box h4 {
+            font-size: 1.2rem;
+            color: white;
+        }
+        
+        /* جدول البروتوكولات */
+        .protocol-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        
+        .protocol-table th {
+            background: var(--cyber-blue);
+            padding: 20px;
+            font-size: 1.2rem;
+            text-align: right;
+        }
+        
+        .protocol-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .protocol-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .protocol-table tr:hover {
+            background: rgba(0, 168, 255, 0.1);
+        }
+        
+        /* قسم الحث على الاتصال */
+        .call-to-action-banner {
+            background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-blue));
+            border-radius: 20px;
+            padding: 70px 40px;
+            text-align: center;
+            margin: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .call-to-action-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .call-to-action-banner p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .hero-section {
+                padding-top: 120px;
+            }
+            
+            .network-visual {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .dropdown-content {
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                padding: 10px 0 0 20px;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .section {
+                padding: 80px 20px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .network-content {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .network-item h3 {
+                font-size: 1.6rem;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفيات متحركة -->
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <!-- عناصر رسومية متحركة -->
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="gallery.html">معرض الصور</a></li>
+            <li class="dropdown">
+                <a href="services.html" class="dropbtn">الخدمات <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="services.html#content-writing">كتابة المحتوى والترجمة</a>
+                    <a href="services.html#graphic-design">التصميم الجرافيكي</a>
+                    <a href="services.html#web-dev">تطوير الويب والتطبيقات</a>
+                    <a href="services.html#network-it">الشبكات وتقنية المعلومات</a>
+                    <a href="services.html#digital-marketing">التسويق الرقمي</a>
+                    <a href="services.html#data-entry">إدخال البيانات</a>
+                    <a href="services.html#info-security">أمن المعلومات</a>
+                    <a href="services.html#erp-maint">الأنظمة الإدارية والمحاسبية</a>
+                </div>
+            </li>
+            <li><a href="portfolio.html">أعمالنا</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <!-- القسم البطولي -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>أساسيات الشبكات: دليل المبتدئين</h1>
+            <p>كل ما تحتاج معرفته لتبدأ في عالم الشبكات. دليلك المبسط للمفاهيم الأساسية التي يجب على كل مبتدئ فهمها.</p>
+        </div>
+    </section>
+    
+    <!-- المحتوى التعليمي -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">دخول إلى عالم الشبكات</h2>
+            <p class="section-subtitle">دليلك الشامل لفهم أساسيات الشبكات ومكوناتها وأنواعها</p>
+        </div>
+        
+        <div class="network-content animate">
+            <div class="network-item">
+                <h3>ما هي الشبكات ولماذا نحتاجها؟</h3>
+                <p>الشبكة هي نظام يربط بين أجهزة الحاسوب والأجهزة الطرفية الأخرى للسماح بمشاركة الموارد والبيانات. بدون الشبكات، سيكون كل جهاز حاسوب معزولًا ولن نتمكن من مشاركة المعلومات أو الموارد بسهولة.</p>
+                
+                <div class="network-visual">
+                    <div class="network-image">
+                        <img src="https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="مفهوم الشبكات">
+                    </div>
+                    <div class="network-description">
+                        <h4>فوائد الشبكات:</h4>
+                        <ul>
+                            <li>مشاركة الموارد (طابعات، ملفات، برامج)</li>
+                            <li>التواصل الفعال (بريد إلكتروني، دردشة، مؤتمرات)</li>
+                            <li>الوصول إلى الإنترنت</li>
+                            <li>إدارة مركزية للبيانات</li>
+                            <li>زيادة الإنتاجية والتعاون</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="network-item">
+                <h3>أنواع الشبكات الرئيسية</h3>
+                <p>تختلف الشبكات حسب حجمها ونطاق تغطيتها الجغرافية، ويمكن تصنيفها إلى عدة أنواع رئيسية:</p>
+                
+                <div class="network-icons">
+                    <div class="icon-box">
+                        <i class="fas fa-home"></i>
+                        <h4>شبكة محلية (LAN)</h4>
+                        <p>تغطي منطقة صغيرة مثل منزل أو مكتب</p>
+                    </div>
+                    
+                    <div class="icon-box">
+                        <i class="fas fa-city"></i>
+                        <h4>شبكة مدينة (MAN)</h4>
+                        <p>تغطي مدينة أو منطقة حضرية</p>
+                    </div>
+                    
+                    <div class="icon-box">
+                        <i class="fas fa-globe"></i>
+                        <h4>شبكة واسعة (WAN)</h4>
+                        <p>تغطي مناطق جغرافية واسعة</p>
+                    </div>
+                    
+                    <div class="icon-box">
+                        <i class="fas fa-wifi"></i>
+                        <h4>شبكة لاسلكية (WLAN)</h4>
+                        <p>اتصال لاسلكي بدون كابلات</p>
+                    </div>
+                </div>
+                
+                <div class="network-visual">
+                    <div class="network-description">
+                        <h4>مقارنة بين أنواع الشبكات:</h4>
+                        <ul>
+                            <li><strong>LAN:</strong> سرعة عالية، تكلفة منخفضة، مساحة محدودة</li>
+                            <li><strong>MAN:</strong> تغطي مدينة كاملة، تستخدم بواسطة الشركات الكبيرة</li>
+                            <li><strong>WAN:</strong> تربط بين دول أو قارات، تستخدم خطوط اتصال خاصة</li>
+                            <li><strong>WLAN:</strong> مرونة في الحركة، سهولة التوسيع</li>
+                        </ul>
+                    </div>
+                    <div class="network-image">
+                        <img src="https://images.unsplash.com/photo-1558494948-4f0e4c9b84b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="أنواع الشبكات">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="network-item">
+                <h3>مكونات الشبكة الأساسية</h3>
+                <p>تتكون أي شبكة من عدة عناصر أساسية تعمل معًا لتحقيق الاتصال:</p>
+                
+                <div class="network-icons">
+                    <div class="icon-box">
+                        <i class="fas fa-laptop"></i>
+                        <h4>الأجهزة الطرفية</h4>
+                        <p>حواسيب، طابعات، هواتف</p>
+                    </div>
+                    
+                    <div class="icon-box">
+                        <i class="fas fa-server"></i>
+                        <h4>الخوادم</h4>
+                        <p>تقدم الخدمات للشبكة</p>
+                    </div>
+                    
+                    <div class="icon-box">
+                        <i class="fas fa-hdd"></i>
+                        <h4>وسائط الاتصال</h4>
+                        <p>كابلات، موجات لاسلكية</p>
+                    </div>
+                    
+                    <div class="icon-box">
+                        <i class="fas fa-network-wired"></i>
+                        <h4>أجهزة الربط</h4>
+                        <p>راوترات، سويتشات</p>
+                    </div>
+                    
+                    <div class="icon-box">
+                        <i class="fas fa-code"></i>
+                        <h4>البروتوكولات</h4>
+                        <p>قواعد اتصال موحدة</p>
+                    </div>
+                </div>
+                
+                <div class="network-visual">
+                    <div class="network-image">
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="مكونات الشبكة">
+                    </div>
+                    <div class="network-description">
+                        <h4>دور كل مكون:</h4>
+                        <ul>
+                            <li><strong>الأجهزة الطرفية:</strong> تستخدم للوصول إلى الشبكة</li>
+                            <li><strong>الخوادم:</strong> تقدم خدمات مثل تخزين الملفات، البريد الإلكتروني</li>
+                            <li><strong>وسائط الاتصال:</strong> تنقل البيانات بين الأجهزة</li>
+                            <li><strong>أجهزة الربط:</strong> تنظم وتوجه تدفق البيانات</li>
+                            <li><strong>البروتوكولات:</strong> تحدد قواعد الاتصال بين الأجهزة</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="network-item">
+                <h3>طوبولوجيا الشبكات (تصميمها الهيكلي)</h3>
+                <p>طوبولوجيا الشبكة تشير إلى الطريقة التي يتم بها ربط الأجهزة معًا وتنظيمها في الشبكة:</p>
+                
+                <div class="network-visual">
+                    <div class="network-description">
+                        <h4>أنواع الطوبولوجيا:</h4>
+                        <ul>
+                            <li><strong>الناقل (Bus):</strong> جميع الأجهزة متصلة بكابل رئيسي</li>
+                            <li><strong>النجمة (Star):</strong> جميع الأجهزة متصلة بجهاز مركزي</li>
+                            <li><strong>الحلقة (Ring):</strong> الأجهزة متصلة في حلقة مغلقة</li>
+                            <li><strong>الشبكة (Mesh):</strong> كل جهاز متصل بجميع الأجهزة</li>
+                            <li><strong>الشجرة (Tree):</strong> مزيج من النجمة والناقل</li>
+                        </ul>
+                    </div>
+                    <div class="network-image">
+                        <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="طوبولوجيا الشبكات">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="network-item">
+                <h3>البروتوكولات الأساسية</h3>
+                <p>البروتوكولات هي مجموعة من القواعد والمعايير التي تحكم كيفية اتصال الأجهزة في الشبكة:</p>
+                
+                <table class="protocol-table">
+                    <thead>
+                        <tr>
+                            <th>البروتوكول</th>
+                            <th>الوظيفة</th>
+                            <th>الاستخدام الشائع</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>TCP/IP</td>
+                            <td>مجموعة بروتوكولات أساسية للإنترنت</td>
+                            <td>الاتصالات عبر الإنترنت</td>
+                        </tr>
+                        <tr>
+                            <td>HTTP/HTTPS</td>
+                            <td>نقل صفحات الويب</td>
+                            <td>تصفح الإنترنت</td>
+                        </tr>
+                        <tr>
+                            <td>FTP</td>
+                            <td>نقل الملفات</td>
+                            <td>تحميل وتنزيل الملفات</td>
+                        </tr>
+                        <tr>
+                            <td>SMTP/POP3</td>
+                            <td>إرسال واستقبال البريد الإلكتروني</td>
+                            <td>خدمات البريد الإلكتروني</td>
+                        </tr>
+                        <tr>
+                            <td>DNS</td>
+                            <td>ترجمة أسماء النطاقات إلى عناوين IP</td>
+                            <td>الوصول إلى المواقع باستخدام أسماء</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="network-item">
+                <h3>أمن الشبكات للمبتدئين</h3>
+                <p>حماية الشبكة أمر بالغ الأهمية في عالمنا الرقمي. إليك أساسيات أمن الشبكات:</p>
+                
+                <div class="network-visual">
+                    <div class="network-image">
+                        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="أمن الشبكات">
+                    </div>
+                    <div class="network-description">
+                        <h4>نصائح أمنية أساسية:</h4>
+                        <ul>
+                            <li>استخدم كلمات مرور قوية وتغييرها بانتظام</li>
+                            <li>ثبّت جدار حماية (Firewall)</li>
+                            <li>حدث أنظمة التشغيل والبرامج باستمرار</li>
+                            <li>استخدم شبكات VPN للاتصالات الخارجية</li>
+                            <li>قم بتشفير البيانات الحساسة</li>
+                            <li>أنشئ نسخ احتياطية منتظمة للبيانات</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="call-to-action-banner animate">
+            <h2>هل ترغب في تعلم المزيد عن الشبكات؟</h2>
+            <p>انضم إلى دوراتنا التدريبية المتخصصة وطور مهاراتك في مجال الشبكات</p>
+            <a href="contact.html" class="btn primary-btn">سجل الآن</a>
+        </div>
+    </section>
+    
+    <!-- التذييل -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نحن نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/bdallhbasalmwyd"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/shahidalmoayad?t=UH2dq3o35lw83uhd8giyvw&s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/abdab_mo?igsh=eXRqbXJ4bjhkbjJk"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="services.html"><i class="fas fa-arrow-left"></i> الخدمات</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> أعمالنا</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> من نحن</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-arrow-left"></i> سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // إضافة تأثيرات الظهور عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // قائمة الهاتف المحمول
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
