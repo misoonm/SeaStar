@@ -1,1 +1,986 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أهمية تطوير تطبيقات الويب في العصر الحديث - SeaStar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            min-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 12px 15px;
+            color: #ddd;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(11, 232, 129, 0.2);
+            color: var(--cyber-green);
+            transform: translateX(-5px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+
+        /* القسم البطولي */
+        .hero-section {
+            min-height: 70vh;
+            display: flex;
+            align-items: center;
+            padding: 150px 40px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            text-align: center;
+        }
+
+        .hero-content {
+            flex: 1;
+            padding: 0 30px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* قسم المحتوى التعليمي */
+        .section {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* محتوى الشبكات - تم تغيير الاسم ليناسب المحتوى العام */
+        .blog-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 50px;
+        }
+
+        .blog-item {
+            margin-bottom: 60px;
+        }
+
+        .blog-item h3 {
+            font-size: 2rem;
+            color: var(--cyber-green);
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .blog-item h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 120px;
+            height: 3px;
+            background: var(--cyber-blue);
+            border-radius: 3px;
+        }
+
+        .blog-item p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .blog-visual {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        .blog-image {
+            flex: 1;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .blog-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+
+        .blog-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .blog-description {
+            flex: 1;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border-left: 4px solid var(--cyber-green);
+        }
+
+        .blog-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .icon-box {
+            text-align: center;
+            width: 150px;
+        }
+
+        .icon-box i {
+            font-size: 3rem;
+            color: var(--cyber-blue);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .icon-box:hover i {
+            color: var(--cyber-green);
+            transform: scale(1.2);
+        }
+
+        .icon-box h4 {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        /* جدول البروتوكولات - تم تغيير الاسم ليناسب المحتوى العام */
+        .feature-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .feature-table th {
+            background: var(--cyber-blue);
+            padding: 20px;
+            font-size: 1.2rem;
+            text-align: right;
+        }
+
+        .feature-table td {
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .feature-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .feature-table tr:hover {
+            background: rgba(0, 168, 255, 0.1);
+        }
+
+        /* قسم الحث على الاتصال */
+        .call-to-action-banner {
+            background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-blue));
+            border-radius: 20px;
+            padding: 70px 40px;
+            text-align: center;
+            margin: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .call-to-action-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .call-to-action-banner p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .primary-btn {
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section {
+            padding: 20px;
+        }
+
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .hero-section {
+                padding-top: 120px;
+            }
+
+            .blog-visual {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .dropdown-content {
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                padding: 10px 0 0 20px;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .section {
+                padding: 80px 20px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .blog-content {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .section-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .blog-item h3 {
+                font-size: 1.6rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="gallery.html">معرض الصور</a></li>
+            <li class="dropdown">
+                <a href="services.html" class="dropbtn">الخدمات <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="services.html#content-writing">كتابة المحتوى والترجمة</a>
+                    <a href="services.html#graphic-design">التصميم الجرافيكي</a>
+                    <a href="services.html#web-dev">تطوير الويب والتطبيقات</a>
+                    <a href="services.html#network-it">الشبكات وتقنية المعلومات</a>
+                    <a href="services.html#digital-marketing">التسويق الرقمي</a>
+                    <a href="services.html#data-entry">إدخال البيانات</a>
+                    <a href="services.html#info-security">أمن المعلومات</a>
+                    <a href="services.html#erp-maint">الأنظمة الإدارية والمحاسبية</a>
+                </div>
+            </li>
+            <li><a href="portfolio.html">أعمالنا</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html" class="active">المدونة</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>أهمية تطوير تطبيقات الويب في العصر الحديث</h1>
+            <p>تطبيقات الويب أصبحت أساسية لأي عمل ناجح. تعرف على فوائدها وكيف يمكنها تحويل عملك إلى منصة رقمية متكاملة.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">لماذا تطبيقات الويب هي المستقبل؟</h2>
+            <p class="section-subtitle">اكتشف القوة التي تقدمها تطبيقات الويب لعملك في بيئة رقمية متغيرة.</p>
+        </div>
+
+        <div class="blog-content animate">
+            <div class="blog-item">
+                <h3>توسيع الوصول والانتشار العالمي</h3>
+                <p>تسمح تطبيقات الويب لعملك بالوصول إلى جمهور أوسع بكثير مقارنة بالتطبيقات التقليدية. يمكن للمستخدمين الوصول إليها من أي مكان في العالم باستخدام متصفح ويب، دون الحاجة إلى تثبيت أي برامج إضافية.</p>
+
+                <div class="blog-visual">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1517430816045-df4b740510b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="توسيع الوصول">
+                    </div>
+                    <div class="blog-description">
+                        <h4>المزايا الرئيسية:</h4>
+                        <ul>
+                            <li><strong>الوصول العالمي:</strong> لا قيود جغرافية على المستخدمين.</li>
+                            <li><strong>سهولة الاستخدام:</strong> لا حاجة للتنزيل أو التثبيت.</li>
+                            <li><strong>التوافقية:</strong> تعمل على أنظمة تشغيل وأجهزة مختلفة.</li>
+                            <li><strong>التحديثات الفورية:</strong> يتم تحديث التطبيق مركزيًا لجميع المستخدمين.</li>
+                            <li><strong>تحسين محركات البحث:</strong> يمكن فهرسة محتوى الويب بسهولة.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-item">
+                <h3>تحسين تجربة المستخدم والكفاءة التشغيلية</h3>
+                <p>تقدم تطبيقات الويب تجربة مستخدم سلسة ومتكاملة. كما أنها تساهم في تحسين الكفاءة التشغيلية للشركات من خلال أتمتة العمليات وتوفير أدوات قوية للإدارة والتفاعل مع العملاء.</p>
+
+                <div class="blog-icons">
+                    <div class="icon-box">
+                        <i class="fas fa-desktop"></i>
+                        <h4>تجربة سلسة</h4>
+                        <p>تفاعل مباشر وسهل</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-cogs"></i>
+                        <h4>أتمتة العمليات</h4>
+                        <p>تقليل الجهد اليدوي</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>تحليلات وتقارير</h4>
+                        <p>فهم سلوك المستخدم</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-shield-alt"></i>
+                        <h4>أمان البيانات</h4>
+                        <p>حماية معلومات المستخدمين</p>
+                    </div>
+                </div>
+
+                <div class="blog-visual">
+                    <div class="blog-description">
+                        <h4>كيف تدعم الكفاءة:</h4>
+                        <ul>
+                            <li><strong>إدارة علاقات العملاء (CRM):</strong> تتبع التفاعلات والبيانات.</li>
+                            <li><strong>أنظمة إدارة المحتوى (CMS):</strong> سهولة تحديث المحتوى.</li>
+                            <li><strong>بوابات الدفع الإلكتروني:</strong> معاملات آمنة ومريحة.</li>
+                            <li><strong>التعاون الجماعي:</strong> أدوات للمشاريع والفرق عن بعد.</li>
+                        </ul>
+                    </div>
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="تجربة المستخدم والكفاءة">
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-item">
+                <h3>مكونات تطبيق الويب الأساسية</h3>
+                <p>لفهم تطبيقات الويب، من المهم معرفة المكونات الأساسية التي تشكلها وتجعلها تعمل بفعالية:</p>
+
+                <div class="blog-icons">
+                    <div class="icon-box">
+                        <i class="fas fa-code-branch"></i>
+                        <h4>الواجهة الأمامية (Frontend)</h4>
+                        <p>ما يراه المستخدم ويتفاعل معه</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-database"></i>
+                        <h4>الواجهة الخلفية (Backend)</h4>
+                        <p>المنطق والخوادم وقواعد البيانات</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-cloud"></i>
+                        <h4>الاستضافة</h4>
+                        <p>المكان الذي يعيش فيه التطبيق</p>
+                    </div>
+
+                    <div class="icon-box">
+                        <i class="fas fa-lock"></i>
+                        <h4>الأمان</h4>
+                        <p>حماية البيانات والمعاملات</p>
+                    </div>
+                </div>
+
+                <div class="blog-visual">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1549683935-4309a74421b5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="مكونات تطبيقات الويب">
+                    </div>
+                    <div class="blog-description">
+                        <h4>شرح المكونات:</h4>
+                        <ul>
+                            <li><strong>الواجهة الأمامية:</strong> تُبنى باستخدام HTML, CSS, JavaScript.</li>
+                            <li><strong>الواجهة الخلفية:</strong> تُبنى باستخدام لغات مثل Python, Node.js, PHP, Ruby.</li>
+                            <li><strong>الاستضافة:</strong> تُوفرها خدمات مثل AWS, Google Cloud, Azure.</li>
+                            <li><strong>الأمان:</strong> يتضمن شهادات SSL، التشفير، وحماية قواعد البيانات.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-item">
+                <h3>أنواع تطبيقات الويب الشائعة</h3>
+                <p>تتنوع تطبيقات الويب لتلبي احتياجات مختلفة للأعمال والمستخدمين:</p>
+
+                <div class="blog-visual">
+                    <div class="blog-description">
+                        <h4>أمثلة على الأنواع:</h4>
+                        <ul>
+                            <li><strong>المواقع الإحصائية:</strong> لعرض المعلومات فقط.</li>
+                            <li><strong>تطبيقات التجارة الإلكترونية:</strong> مثل المتاجر عبر الإنترنت.</li>
+                            <li><strong>تطبيقات الويب التفاعلية (SPA):</strong> توفر تجربة أقرب لتطبيقات سطح المكتب.</li>
+                            <li><strong>بوابات الويب:</strong> نقطة وصول مركزية للمعلومات والخدمات.</li>
+                            <li><strong>المدونات والمنتديات:</strong> للمحتوى والتفاعل المجتمعي.</li>
+                        </ul>
+                    </div>
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="أنواع تطبيقات الويب">
+                    </div>
+                </div>
+            </div>
+
+            <div class="blog-item">
+                <h3>تقنيات تطوير الويب الحديثة</h3>
+                <p>يتطور عالم تطوير الويب باستمرار. إليك بعض أبرز التقنيات والأطر التي تشكل حاضر ومستقبل هذا المجال:</p>
+
+                <table class="feature-table">
+                    <thead>
+                        <tr>
+                            <th>التقنية/الإطار</th>
+                            <th>الوصف</th>
+                            <th>الاستخدام الشائع</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>React.js</td>
+                            <td>مكتبة JavaScript لبناء واجهات المستخدم</td>
+                            <td>تطبيقات الويب التفاعلية، لوحات التحكم</td>
+                        </tr>
+                        <tr>
+                            <td>Angular</td>
+                            <td>إطار عمل شامل لبناء تطبيقات الويب الديناميكية</td>
+                            <td>تطبيقات المؤسسات، تطبيقات الصفحة الواحدة</td>
+                        </tr>
+                        <tr>
+                            <td>Vue.js</td>
+                            <td>إطار عمل تدريجي لواجهات المستخدم</td>
+                            <td>المشاريع الصغيرة والمتوسطة، التكامل السريع</td>
+                        </tr>
+                        <tr>
+                            <td>Node.js</td>
+                            <td>بيئة تشغيل JavaScript على الخادم</td>
+                            <td>الواجهات الخلفية السريعة، API</td>
+                        </tr>
+                        <tr>
+                            <td>Python/Django</td>
+                            <td>لغة برمجة وإطار عمل للواجهة الخلفية</td>
+                            <td>تطوير سريع، تطبيقات معقدة، تعلم الآلة</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="blog-item">
+                <h3>نصائح لمشروع تطبيق ويب ناجح</h3>
+                <p>إذا كنت تفكر في تطوير تطبيق ويب لعملك، إليك بعض النصائح الأساسية لضمان النجاح:</p>
+
+                <div class="blog-visual">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1587440026857-e6dd9d57a414?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="مشروع تطبيق ويب ناجح">
+                    </div>
+                    <div class="blog-description">
+                        <h4>إرشادات لمشروعك:</h4>
+                        <ul>
+                            <li><strong>تحديد الأهداف بوضوح:</strong> ما الذي تريد تحقيقه؟</li>
+                            <li><strong>فهم الجمهور المستهدف:</strong> من هم مستخدموك؟</li>
+                            <li><strong>التصميم المتجاوب (Responsive):</strong> ليعمل على كل الأجهزة.</li>
+                            <li><strong>اختيار التقنيات المناسبة:</strong> بناءً على احتياجاتك.</li>
+                            <li><strong>التركيز على تجربة المستخدم (UX):</strong> سهولة الاستخدام.</li>
+                            <li><strong>الأمان والخصوصية:</strong> أساس لا غنى عنه.</li>
+                            <li><strong>الدعم والتحديث المستمر:</strong> لضمان استمرارية النجاح.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="call-to-action-banner animate">
+            <h2>هل أنت مستعد لتحويل فكرتك إلى تطبيق ويب ناجح؟</h2>
+            <p>تواصل مع فريقنا المتخصص في SeaStar لتحصل على استشارة مجانية وتبدأ رحلتك الرقمية.</p>
+            <a href="contact.html" class="btn primary-btn">ابدأ مشروعك الآن</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نحن نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/bdallhbasalmwyd"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/shahidalmoayad?t=UH2dq3o35lw83uhd8giyvw&s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/abdab_mo?igsh=eXRqbXJ4bjhkbjJk"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="services.html"><i class="fas fa-arrow-left"></i> الخدمات</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> أعمالنا</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> من نحن</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-arrow-left"></i> سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        // إضافة تأثيرات الظهور عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // قائمة الهاتف المحمول
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
 
