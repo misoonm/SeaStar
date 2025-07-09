@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اليوم الأول: مقدمة إلى عالم الذكاء الاصطناعي - أكاديمية SeaStar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --deep-space: #0a0e2a;
+            --galaxy-blue: #1a1f4d;
+            --neon-blue: #4e54c8;
+            --neon-purple: #8f94fb;
+            --ai-green: #00ff9d;
+            --ai-pink: #ff00cc;
+            --ai-orange: #ff7e5f;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --ai-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-space), var(--galaxy-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(79, 84, 200, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(143, 148, 251, 0.1) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 157, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 204, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .ai-element {
+            position: fixed;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .neon-pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--ai-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(0, 255, 157, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 157, 0); }
+        }
+        
+        .ai-chip {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            transform: rotate(45deg);
+            z-index: -1;
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--ai-green), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--ai-green);
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--ai-green);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(79, 84, 200, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 84, 200, 0.5);
+        }
+        
+        /* القسم البطولي */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--ai-green), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .day-counter {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 30px;
+            border-radius: 50px;
+            margin-top: 20px;
+            border: 1px solid var(--neon-blue);
+        }
+        
+        .day-counter i {
+            color: var(--ai-green);
+            font-size: 1.2rem;
+        }
+        
+        /* الأقسام العامة */
+        section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--ai-green), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* محتوى اليوم */
+        .content-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        
+        .content-text {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .content-visual {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .visual-card {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+        }
+        
+        .topic-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--ai-green);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .topic-title i {
+            background: rgba(0, 255, 157, 0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .topic-content {
+            margin-bottom: 30px;
+        }
+        
+        .topic-content p {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+        
+        .timeline {
+            width: 100%;
+            position: relative;
+            margin: 40px 0;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 50%;
+            width: 4px;
+            background: var(--neon-blue);
+            transform: translateX(50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+            padding-right: 50%;
+            padding-left: 30px;
+        }
+        
+        .timeline-item:nth-child(even) {
+            padding-right: 30px;
+            padding-left: 50%;
+        }
+        
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: -10px;
+            width: 20px;
+            height: 20px;
+            background: var(--ai-green);
+            border-radius: 50%;
+            z-index: 1;
+        }
+        
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: auto;
+            right: -10px;
+        }
+        
+        .timeline-year {
+            font-weight: bold;
+            color: var(--ai-green);
+            margin-bottom: 10px;
+        }
+        
+        /* أنواع الذكاء الاصطناعي */
+        .ai-types {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .ai-type-card {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .ai-type-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--ai-green);
+        }
+        
+        .ai-icon {
+            font-size: 3rem;
+            color: var(--ai-green);
+            margin-bottom: 20px;
+        }
+        
+        .ai-type-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--ai-green);
+        }
+        
+        /* تطبيقات الذكاء الاصطناعي */
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .app-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--neon-purple);
+        }
+        
+        .app-icon {
+            font-size: 2.5rem;
+            color: var(--neon-purple);
+            margin-bottom: 20px;
+        }
+        
+        .app-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        /* قسم الأسئلة الشائعة */
+        .faq-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 50px;
+            margin: 80px 0;
+        }
+        
+        .faq-item {
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 30px;
+        }
+        
+        .faq-question {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--ai-green);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-answer {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        /* قسم الانتقال للجزء التالي */
+        .next-section {
+            text-align: center;
+            background: linear-gradient(135deg, var(--ai-pink), var(--neon-blue));
+            border-radius: 20px;
+            padding: 80px 40px;
+            margin: 50px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .next-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+        
+        .next-text {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+        
+        .next-btn {
+            padding: 18px 45px;
+            background: var(--deep-space);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .next-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            background: rgba(10, 14, 42, 0.9);
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 20px 30px;
+            margin-top: 100px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--ai-green);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--ai-green);
+            padding-right: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--ai-green);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.4rem;
+            }
+            
+            .hero p, .section-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .timeline::before {
+                right: 30px;
+            }
+            
+            .timeline-item {
+                padding-right: 0;
+                padding-left: 70px;
+            }
+            
+            .timeline-item:nth-child(even) {
+                padding-right: 0;
+                padding-left: 70px;
+            }
+            
+            .timeline-content::before {
+                left: -40px;
+            }
+            
+            .timeline-item:nth-child(even) .timeline-content::before {
+                right: auto;
+                left: -40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding-top: 150px;
+                min-height: 50vh;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .content-container {
+                flex-direction: column;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* تأثيرات الذكاء الاصطناعي */
+        .ai-brain {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="rgba(0, 255, 157, 0.1)" d="M12,3A9,9 0 0,1 21,12A9,9 0 0,1 12,21A9,9 0 0,1 3,12A9,9 0 0,1 12,3M12,19C15.31,19 18,16.31 18,13C18,10.07 15.94,7.56 13.14,7.11L14.25,5.41L13.11,4.58L11.5,6.5L9.89,4.58L8.75,5.41L9.86,7.11C7.06,7.56 5,10.07 5,13C5,16.31 7.69,19 11,19H12M8,12H10V10H8V12M14,10H16V12H14V10Z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .ai-circuit {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="rgba(143, 148, 251, 0.1)" d="M8,3V5H11V10.27C10.38,10.63 10,11.29 10,12V13H14V12C14,11.29 13.62,10.63 13,10.27V5H16V3H8M10,15V16C10,17.1 10.9,18 12,18C13.1,18 14,17.1 14,16V15H10Z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        /* مؤشرات التقدم */
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .progress-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+        
+        .progress-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step.active .progress-circle {
+            background: var(--neon-blue);
+            border-color: var(--ai-green);
+            box-shadow: 0 0 15px rgba(78, 84, 200, 0.7);
+        }
+        
+        .progress-step.completed .progress-circle {
+            background: var(--ai-green);
+            color: var(--deep-space);
+        }
+        
+        .progress-label {
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        /* رسوم بيانية */
+        .chart-container {
+            width: 100%;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin: 30px 0;
+            display: flex;
+            align-items: flex-end;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        .chart-bar {
+            flex: 1;
+            background: linear-gradient(to top, var(--neon-blue), var(--neon-purple));
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            min-width: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+        
+        .chart-label {
+            padding: 10px 0;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        .chart-value {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-weight: bold;
+            color: var(--ai-green);
+        }
+        
+        /* كود الـ AI */
+        .code-block {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+            border-left: 4px solid var(--ai-green);
+            overflow-x: auto;
+        }
+        
+        .code-keyword {
+            color: var(--neon-purple);
+        }
+        
+        .code-comment {
+            color: var(--ai-green);
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفيات متحركة -->
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <!-- عناصر رسومية متحركة -->
+    <div class="ai-brain" style="top: 10%; left: 15%;"></div>
+    <div class="ai-circuit" style="bottom: 15%; right: 10%;"></div>
+    <div class="neon-pulse" style="top: 20%; left: 20%;"></div>
+    <div class="neon-pulse" style="bottom: 25%; right: 25%;"></div>
+    <div class="ai-chip" style="width: 100px; height: 100px; top: 30%; right: 15%;"></div>
+    
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="logo">أكاديمية SeaStar</div>
+        <div class="nav-links">
+            <a href="index.html">الرئيسية</a>
+            <a href="#day1" class="active">اليوم الأول</a>
+            <a href="#day2">اليوم الثاني</a>
+            <a href="#day3">اليوم الثالث</a>
+            <a href="#contact">اتصل بنا</a>
+        </div>
+        <button class="nav-btn">
+            <i class="fas fa-robot"></i> ابدأ التعلم
+        </button>
+    </nav>
+    
+    <!-- القسم البطولي -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>اليوم الأول: مقدمة إلى عالم الذكاء الاصطناعي</h1>
+            <p>انطلق في رحلتك الاستثنائية لاستكشاف عالم الذكاء الاصطناعي المذهل! في هذا اليوم، سنتعرف على المفاهيم الأساسية، التاريخ المثير، والأنواع المختلفة للذكاء الاصطناعي، وكيف أصبح جزءاً لا يتجزأ من حياتنا اليومية.</p>
+            
+            <div class="day-counter">
+                <i class="fas fa-calendar-alt"></i>
+                <span>اليوم الأول من دورة الذكاء الاصطناعي - رحلة في عالم المستقبل</span>
+            </div>
+        </div>
+    </section>
+    
+    <!-- مؤشر التقدم -->
+    <section>
+        <div class="progress-container">
+            <div class="progress-step active">
+                <div class="progress-circle">1</div>
+                <div class="progress-label">مقدمة إلى الذكاء الاصطناعي</div>
+            </div>
+            <div class="progress-step">
+                <div class="progress-circle">2</div>
+                <div class="progress-label">أسرار التعلم الآلي</div>
+            </div>
+            <div class="progress-step">
+                <div class="progress-circle">3</div>
+                <div class="progress-label">تطبيقات متقدمة</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ما هو الذكاء الاصطناعي -->
+    <section id="what-is-ai">
+        <div class="section-header">
+            <h2 class="section-title">ما هو الذكاء الاصطناعي؟</h2>
+            <p class="section-subtitle">تعريف مبسط وشامل لأهم تقنية في عصرنا الحديث</p>
+        </div>
+        
+        <div class="content-container">
+            <div class="content-text">
+                <div class="topic-title">
+                    <i class="fas fa-brain"></i>
+                    <h3>تعريف الذكاء الاصطناعي</h3>
+                </div>
+                <div class="topic-content">
+                    <p>الذكاء الاصطناعي (Artificial Intelligence) هو مجال من مجالات علوم الحاسوب يهدف إلى إنشاء أنظمة قادرة على أداء مهام تتطلب عادةً ذكاءً بشرياً. هذه الأنظمة قادرة على التعلم، التفكير، حل المشكلات، فهم اللغة، والتعرف على الأنماط.</p>
+                    
+                    <p>ببساطة، الذكاء الاصطناعي هو محاولة جعل الآلات "تفكر" وتتصرف مثل البشر، لكن بشكل أسرع وأكثر دقة في مجالات محددة.</p>
+                    
+                    <div class="chart-container">
+                        <div class="chart-bar" style="height: 70%;">
+                            <div class="chart-value">70%</div>
+                            <div class="chart-label">دقة الذكاء الاصطناعي</div>
+                        </div>
+                        <div class="chart-bar" style="height: 40%;">
+                            <div class="chart-value">40%</div>
+                            <div class="chart-label">دقة البشر</div>
+                        </div>
+                        <div class="chart-bar" style="height: 90%;">
+                            <div class="chart-value">90%</div>
+                            <div class="chart-label">سرعة الذكاء الاصطناعي</div>
+                        </div>
+                        <div class="chart-bar" style="height: 60%;">
+                            <div class="chart-value">60%</div>
+                            <div class="chart-label">سرعة البشر</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="topic-title">
+                    <i class="fas fa-cogs"></i>
+                    <h3>كيف يعمل الذكاء الاصطناعي؟</h3>
+                </div>
+                <div class="topic-content">
+                    <p>يعتمد الذكاء الاصطناعي على ثلاثة عناصر أساسية:</p>
+                    
+                    <ul class="day-points">
+                        <li><strong>البيانات:</strong> الوقود الذي يغذي أنظمة الذكاء الاصطناعي</li>
+                        <li><strong>الخوارزميات:</strong> مجموعة القواعد والتعليمات التي تحدد كيفية معالجة البيانات</li>
+                        <li><strong>قوة الحوسبة:</strong> القدرة الحاسوبية اللازمة لمعالجة كميات هائلة من البيانات</li>
+                    </ul>
+                    
+                    <div class="code-block">
+                        <span class="code-comment"># مثال بسيط على خوارزمية ذكاء اصطناعي</span><br>
+                        <span class="code-keyword">def</span> predict_weather(temperature, humidity):<br>
+                        &nbsp;&nbsp;<span class="code-keyword">if</span> temperature > 30 <span class="code-keyword">and</span> humidity > 70:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> "ممطر"<br>
+                        &nbsp;&nbsp;<span class="code-keyword">else</span>:<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> "مشمس"
+                    </div>
+                </div>
+            </div>
+            
+            <div class="content-visual">
+                <div class="visual-card">
+                    <i class="fas fa-robot fa-5x" style="color: var(--ai-green);"></i>
+                    <h3>الذكاء الاصطناعي في أرقام</h3>
+                    <p>بحلول عام 2030، من المتوقع أن يساهم الذكاء الاصطناعي بـ</p>
+                    <h2 style="font-size: 3rem; color: var(--ai-green); margin: 10px 0;">15.7 تريليون دولار</h2>
+                    <p>في الاقتصاد العالمي، وهو ما يعادل الناتج المحلي الإجمالي الحالي للصين والهند مجتمعتين!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- تاريخ الذكاء الاصطناعي -->
+    <section id="ai-history" style="background: rgba(0,0,0,0.2); border-radius: 20px;">
+        <div class="section-header">
+            <h2 class="section-title">رحلة تطور الذكاء الاصطناعي عبر التاريخ</h2>
+            <p class="section-subtitle">من الخيال العلمي إلى واقع ملموس في حياتنا اليومية</p>
+        </div>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">1950</div>
+                    <p>آلان تورينج يطرح "اختبار تورينج" لتحديد ما إذا كان يمكن اعتبار الآلة ذكية</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">1956</div>
+                    <p>ولادة مصطلح "الذكاء الاصطناعي" في مؤتمر دارتموث، بداية البحث المنظم في المجال</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">1997</div>
+                    <p>سوبر كمبيوتر "ديب بلو" من IBM يهزم بطل العالم في الشطرنج جاري كاسباروف</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2011</div>
+                    <p>IBM واتسون يفوز في برنامج المسابقة الشهير Jeopardy! ضد بطلين بشريين</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2016</div>
+                    <p>ألفاجو من DeepMind تهزم بطل العالم في لعبة GO لي سيدول</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-year">2020 - الآن</div>
+                    <p>ثورة الذكاء الاصطناعي التوليدي مع ظهور نماذج مثل ChatGPT وDALL-E وMidjourney</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- أنواع الذكاء الاصطناعي -->
+    <section id="ai-types">
+        <div class="section-header">
+            <h2 class="section-title">أنواع الذكاء الاصطناعي</h2>
+            <p class="section-subtitle">من الأنظمة الضيقة إلى الذكاء الفائق</p>
+        </div>
+        
+        <div class="ai-types">
+            <div class="ai-type-card">
+                <div class="ai-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <h3 class="ai-type-title">الذكاء الاصطناعي الضيق (ANI)</h3>
+                <p>أنظمة متخصصة في مجال واحد فقط، مثل الترجمة الآلية، التعرف على الصور، أو لعب الشطرنج. هذا هو النوع الأكثر شيوعاً اليوم.</p>
+            </div>
+            
+            <div class="ai-type-card">
+                <div class="ai-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 class="ai-type-title">الذكاء الاصطناعي العام (AGI)</h3>
+                <p>أنظمة تمتلك ذكاءً معادلاً للذكاء البشري، قادرة على فهم وتعلم أي مهمة فكرية يمكن للإنسان القيام بها. لا يزال هذا النوع قيد التطوير.</p>
+            </div>
+            
+            <div class="ai-type-card">
+                <div class="ai-icon">
+                    <i class="fas fa-stars"></i>
+                </div>
+                <h3 class="ai-type-title">الذكاء الاصطناعي الفائق (ASI)</h3>
+                <p>أنظمة تفوق الذكاء البشري في جميع المجالات، بما في ذلك الإبداع والحكمة العامة. هذا النوع لا يزال نظرياً وهو موضوع نقاشات فلسفية وعلمية عميقة.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- التعلم الآلي -->
+    <section id="machine-learning" style="background: rgba(0,0,0,0.2); border-radius: 20px;">
+        <div class="section-header">
+            <h2 class="section-title">التعلم الآلي: قلب الذكاء الاصطناعي النابض</h2>
+            <p class="section-subtitle">كيف تتعلم الآلات من البيانات؟</p>
+        </div>
+        
+        <div class="content-container">
+            <div class="content-visual">
+                <div class="visual-card">
+                    <i class="fas fa-chart-line fa-5x" style="color: var(--neon-purple);"></i>
+                    <h3>دورة التعلم الآلي</h3>
+                    <p>1. جمع البيانات</p>
+                    <p>2. تنظيف البيانات</p>
+                    <p>3. بناء النموذج</p>
+                    <p>4. تدريب النموذج</p>
+                    <p>5. تقييم النموذج</p>
+                    <p>6. نشر النموذج</p>
+                </div>
+            </div>
+            
+            <div class="content-text">
+                <div class="topic-content">
+                    <p>التعلم الآلي (Machine Learning) هو جزء أساسي من الذكاء الاصطناعي يركز على تطوير خوارزميات تسمح للحواسيب "بالتعلم" من البيانات دون أن تكون مبرمجة بشكل صريح لأداء المهمة.</p>
+                    
+                    <p>أنواع التعلم الآلي:</p>
+                    
+                    <ul class="day-points">
+                        <li><strong>التعلم المراقب (Supervised Learning):</strong> النموذج يتعلم من أمثلة مع تسميات (مثل تصنيف الصور)</li>
+                        <li><strong>التعلم غير المراقب (Unsupervised Learning):</strong> النموذج يكتشف أنماطاً في بيانات غير موسومة (مثل تجميع العملاء)</li>
+                        <li><strong>التعلم المعزز (Reinforcement Learning):</strong> النموذج يتعلم من خلال التجربة والخطأ مع نظام مكافآت (مثل ألعاب الفيديو)</li>
+                    </ul>
+                    
+                    <div class="ai-types" style="margin-top: 30px;">
+                        <div class="ai-type-card" style="min-width: auto;">
+                            <div class="ai-icon">
+                                <i class="fas fa-tags"></i>
+                            </div>
+                            <h3 class="ai-type-title">التعلم المراقب</h3>
+                            <p>يستخدم عند وجود بيانات تاريخية مع نتائج معروفة</p>
+                        </div>
+                        
+                        <div class="ai-type-card" style="min-width: auto;">
+                            <div class="ai-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <h3 class="ai-type-title">التعلم غير المراقب</h3>
+                            <p>يستخدم لاكتشاف الهياكل والأنماط المخفية</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- تطبيقات يومية -->
+    <section id="ai-applications">
+        <div class="section-header">
+            <h2 class="section-title">تطبيقات يومية للذكاء الاصطناعي</h2>
+            <p class="section-subtitle">كيف يدخل الذكاء الاصطناعي في تفاصيل حياتنا اليومية؟</p>
+        </div>
+        
+        <div class="applications-grid">
+            <div class="app-card">
+                <div class="app-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h3 class="app-title">الترجمة الفورية</h3>
+                <p>خدمات الترجمة مثل Google Translate تستخدم الذكاء الاصطناعي لفهم السياق وترجمة النصوص بدقة عالية.</p>
+            </div>
+            
+            <div class="app-card">
+                <div class="app-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3 class="app-title">توصيات المنتجات</h3>
+                <p>منصات مثل أمازون ونتفليكس تستخدم الذكاء الاصطناعي لتحليل سلوكك وتقديم توصيات شخصية.</p>
+            </div>
+            
+            <div class="app-card">
+                <div class="app-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3 class="app-title">المساعدات الذكية</h3>
+                <p>Siri، Google Assistant وAlexa تستخدم الذكاء الاصطناعي لفهم الأوامر الصوتية والرد عليها.</p>
+            </div>
+            
+            <div class="app-card">
+                <div class="app-icon">
+                    <i class="fas fa-camera"></i>
+                </div>
+                <h3 class="app-title">التعرف على الوجوه</h3>
+                <p>الهواتف الذكية تستخدم الذكاء الاصطناعي للتعرف على الوجوه وتصنيف الصور تلقائياً.</p>
+            </div>
+            
+            <div class="app-card">
+                <div class="app-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h3 class="app-title">السيارات الذاتية القيادة</h3>
+                <p>تسلا ووايمو تستخدمان الذكاء الاصطناعي لتحليل البيئة المحيطة واتخاذ قرارات القيادة.</p>
+            </div>
+            
+            <div class="app-card">
+                <div class="app-icon">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <h3 class="app-title">التشخيص الطبي</h3>
+                <p>أنظمة الذكاء الاصطناعي تساعد الأطباء في تحليل الصور الطبية وتشخيص الأمراض بدقة عالية.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- قسم الأسئلة الشائعة -->
+    <section id="faq">
+        <div class="section-header">
+            <h2 class="section-title">أسئلة شائعة عن الذكاء الاصطناعي</h2>
+            <p class="section-subtitle">إجابات على أكثر الأسئلة التي تطرح حول الذكاء الاصطناعي</p>
+        </div>
+        
+        <div class="faq-section">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-down"></i>
+                    هل الذكاء الاصطناعي سيقضي على وظائف البشر؟
+                </div>
+                <div class="faq-answer">
+                    <p>الذكاء الاصطناعي سيغير طبيعة العمل، لكنه لن يقضي على الوظائف تماماً. التقديرات تشير إلى أن الذكاء الاصطناعي سيخلق وظائف جديدة أكثر مما سيحل محل وظائف حالية. المهم هو تطوير المهارات التي تكمل الذكاء الاصطناعي بدلاً من منافسته.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-down"></i>
+                    ما الفرق بين الذكاء الاصطناعي والتعلم الآلي؟
+                </div>
+                <div class="faq-answer">
+                    <p>الذكاء الاصطناعي هو المفهوم الأوسع لإنشاء آلات ذكية قادرة على محاكاة الذكاء البشري. بينما التعلم الآلي هو مجموعة فرعية من الذكاء الاصطناعي تركز على تطوير أنظمة تتعلم من البيانات دون برمجة صريحة.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-down"></i>
+                    هل يمكن للذكاء الاصطناعي أن يطور وعياً ذاتياً؟
+                </div>
+                <div class="faq-answer">
+                    <p>حالياً، لا يوجد أي دليل على أن أنظمة الذكاء الاصطناعي تمتلك وعياً أو مشاعر. هذه الأنظمة تحاكي الذكاء لكنها تفتقر إلى الوعي الذاتي. النقاش حول إمكانية تطوير الذكاء الاصطناعي لوعي ذاتي لا يزال نظرياً وفلسفياً في الغالب.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <i class="fas fa-chevron-down"></i>
+                    كيف أبدأ في تعلم الذكاء الاصطناعي؟
+                </div>
+                <div class="faq-answer">
+                    <p>يمكنك البدء بتعلم أساسيات البرمجة (خاصة لغة بايثون)، ثم الانتقال إلى الرياضيات الأساسية (الإحصاء، الجبر الخطي، التفاضل والتكامل). بعد ذلك، يمكنك تعلم أساسيات التعلم الآلي ثم التعلم العميق. هذه الدورة هي نقطة انطلاق ممتازة!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- الانتقال للجزء التالي -->
+    <section class="next-section">
+        <h2 class="next-title">هل أنت مستعد للانتقال إلى المستوى التالي؟</h2>
+        <p class="next-text">في اليوم الثاني، سنتعمق في عالم التعلم الآلي والبيانات، ونتعلم كيف تتعلم الآلات من البيانات لاتخاذ القرارات الذكية.</p>
+        
+        <a href="iot2.html" class="next-btn">
+            <i class="fas fa-arrow-right"></i> انتقل إلى اليوم الثاني
+        </a>
+    </section>
+    
+    <!-- التذييل -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">أكاديمية SeaStar</h3>
+                <p>نقدم دورات متخصصة في التقنيات الحديثة لتأهيل جيل المستقبل لمتطلبات سوق العمل في العصر الرقمي.</p>
+                
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="#day1">اليوم الأول</a></li>
+                    <li><a href="#day2">اليوم الثاني</a></li>
+                    <li><a href="#day3">اليوم الثالث</a></li>
+                    <li><a href="#">المدربين</a></li>
+                    <li><a href="#">المدونة</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">اتصل بنا</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> info@seastar-academy.com</li>
+                    <li><i class="fas fa-phone"></i> +967 123 456 789</li>
+                    <li><i class="fas fa-map-marker-alt"></i> اليمن، صنعاء - المدينة التقنية</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 أكاديمية SeaStar. جميع الحقوق محفوظة.
+        </div>
+    </footer>
+    
+    <script>
+        // إضافة تأثيرات الظهور عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // تفعيل الأسئلة الشائعة
+            document.querySelectorAll('.faq-question').forEach(question => {
+                question.addEventListener('click', function() {
+                    const faqItem = this.parentElement;
+                    faqItem.classList.toggle('active');
+                });
+            });
+            
+            // تحريك العناصر الرسومية
+            function moveElements() {
+                document.querySelectorAll('.ai-element, .neon-pulse').forEach(el => {
+                    const speed = 0.05;
+                    const x = (Math.sin(Date.now() * speed * 0.001) * 5) + 'px';
+                    const y = (Math.cos(Date.now() * speed * 0.001) * 5) + 'px';
+                    el.style.transform = `translate(${x}, ${y})`;
+                });
+                
+                requestAnimationFrame(moveElements);
+            }
+            
+            moveElements();
+            
+            // إنشاء مخطط بياني تفاعلي
+            const chartBars = document.querySelectorAll('.chart-bar');
+            chartBars.forEach(bar => {
+                bar.addEventListener('mouseover', function() {
+                    this.style.transform = 'scale(1.05)';
+                    this.style.boxShadow = '0 0 20px rgba(143, 148, 251, 0.5)';
+                });
+                
+                bar.addEventListener('mouseout', function() {
+                    this.style.transform = 'scale(1)';
+                    this.style.boxShadow = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
