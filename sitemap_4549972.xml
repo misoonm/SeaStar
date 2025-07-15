@@ -4,97 +4,175 @@
 
   <url>
        <loc>https://misoonm.github.io/SeaStar/</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>1.0000</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/index.html</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.8000</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/gallery.html</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.8000</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/services.html</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.8000</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/portfolio.html</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.8000</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/about.html</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.8000</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/contact.html</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.8000</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/blog.html</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.8000</priority>
   </url>
   <url>
+       <loc>https://misoonm.github.io/SeaStar/iot.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.9500</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/privacy-policy.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.9500</priority>
+  </url>
+  <url>
        <loc>https://misoonm.github.io/SeaStar/contact.html?service=content-writing</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.6400</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/contact.html?service=graphic-design</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.6400</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/contact.html?service=web-dev</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.6400</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/contact.html?service=network-it</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.6400</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/contact.html?service=digital-marketing</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.6400</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/contact.html?service=data-entry</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.6400</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/contact.html?service=info-security</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.6400</priority>
   </url>
   <url>
        <loc>https://misoonm.github.io/SeaStar/contact.html?service=erp-maint</loc>
-       <lastmod>2025-06-11T17:36:14+00:00</lastmod>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/seastar43.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/Sea12.pdf</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/blog-ifosec.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/blog-erpselect.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/blog-graphic.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/blog-taswiq.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/blog-webapp.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/blog-network.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/iot1.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/iot2.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
+       <changefreq>daily</changefreq>
+       <priority>0.6400</priority>
+  </url>
+  <url>
+       <loc>https://misoonm.github.io/SeaStar/iot3.html</loc>
+       <lastmod>2025-07-14T18:08:47+00:00</lastmod>
        <changefreq>daily</changefreq>
        <priority>0.6400</priority>
   </url>

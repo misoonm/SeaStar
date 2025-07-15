@@ -6,6 +6,8 @@ https://misoonm.github.io/SeaStar/portfolio.html
 https://misoonm.github.io/SeaStar/about.html
 https://misoonm.github.io/SeaStar/contact.html
 https://misoonm.github.io/SeaStar/blog.html
+https://misoonm.github.io/SeaStar/iot.html
+https://misoonm.github.io/SeaStar/privacy-policy.html
 https://misoonm.github.io/SeaStar/contact.html?service=content-writing
 https://misoonm.github.io/SeaStar/contact.html?service=graphic-design
 https://misoonm.github.io/SeaStar/contact.html?service=web-dev
@@ -14,3 +16,14 @@ https://misoonm.github.io/SeaStar/contact.html?service=digital-marketing
 https://misoonm.github.io/SeaStar/contact.html?service=data-entry
 https://misoonm.github.io/SeaStar/contact.html?service=info-security
 https://misoonm.github.io/SeaStar/contact.html?service=erp-maint
+https://misoonm.github.io/SeaStar/seastar43.html
+https://misoonm.github.io/SeaStar/Sea12.pdf
+https://misoonm.github.io/SeaStar/blog-ifosec.html
+https://misoonm.github.io/SeaStar/blog-erpselect.html
+https://misoonm.github.io/SeaStar/blog-graphic.html
+https://misoonm.github.io/SeaStar/blog-taswiq.html
+https://misoonm.github.io/SeaStar/blog-webapp.html
+https://misoonm.github.io/SeaStar/blog-network.html
+https://misoonm.github.io/SeaStar/iot1.html
+https://misoonm.github.io/SeaStar/iot2.html
+https://misoonm.github.io/SeaStar/iot3.html
