@@ -188,6 +188,125 @@
             border-radius: 3px;
         }
         
+        /* أشرطة الأخبار المتحركة */
+        .news-ticker-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            height: 40px;
+            margin-top: 80px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ticker-label {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--dark-blue));
+            color: white;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-width: 130px;
+        }
+        
+        .ticker-label i {
+            margin-left: 10px;
+            color: var(--cyber-green);
+        }
+        
+        .ticker-content {
+            position: absolute;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding-right: 20px;
+            animation: tickerAnimation 30s linear infinite;
+        }
+        
+        .ticker-content a {
+            color: white;
+            text-decoration: none;
+            margin: 0 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-content a:hover {
+            color: var(--cyber-green);
+            transform: translateY(-2px);
+        }
+        
+        .ticker-content a i {
+            margin-left: 10px;
+            color: var(--cyber-blue);
+        }
+        
+        @keyframes tickerAnimation {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* شريط جديدنا المتحرك */
+        .new-feature-bar {
+            background: linear-gradient(90deg, rgba(0, 168, 255, 0.2), rgba(11, 232, 129, 0.2));
+            overflow: hidden;
+            height: 50px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.3);
+            position: relative;
+        }
+        
+        .new-feature-content {
+            position: absolute;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            animation: featureAnimation 20s linear infinite;
+            padding: 0 20px;
+        }
+        
+        .new-feature-content a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .new-feature-content a:hover {
+            color: var(--cyber-green);
+            text-shadow: 0 0 10px rgba(11, 232, 129, 0.7);
+        }
+        
+        .new-feature-content a i {
+            color: var(--cyber-blue);
+            font-size: 1.5rem;
+            animation: pulseIcon 2s infinite;
+        }
+        
+        @keyframes featureAnimation {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        @keyframes pulseIcon {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
         /* القسم البطولي */
         .hero-section {
             min-height: 100vh;
@@ -698,6 +817,20 @@
             .section-subtitle {
                 font-size: 1.2rem;
             }
+            
+            .ticker-label {
+                font-size: 0.9rem;
+                min-width: 110px;
+            }
+            
+            .ticker-content a {
+                font-size: 0.9rem;
+                margin: 0 15px;
+            }
+            
+            .new-feature-content a {
+                font-size: 1rem;
+            }
         }
         
         @keyframes fadeIn {
@@ -741,7 +874,6 @@
             <li><a href="about.html">من نحن</a></li>
             <li><a href="contact.html">اتصل بنا</a></li>
             <li><a href="blog.html">المدونة</a></li>
-            
         </ul>
         <div class="hamburger">
             <div class="bar"></div>
@@ -749,6 +881,31 @@
             <div class="bar"></div>
         </div>
     </nav>
+    
+    <!-- شريط آخر الأخبار المتحركة -->
+    <div class="news-ticker-container">
+        <div class="ticker-label">
+            <i class="fas fa-newspaper"></i> آخر الأخبار
+        </div>
+        <div class="ticker-content">
+            <a href="news.html#1"><i class="fas fa-arrow-left"></i>لادارة المؤسسات التعليمية  SeaStar تواصل معنا للحصول على نسخة تجريبية مجانية من نظام</a>
+            <a href="news.html#1"><i class="fas fa-arrow-left"></i> SeaStar تطلق خدمة إنشاء الباركود الجديدة</a>
+            <a href="news.html#2"><i class="fas fa-arrow-left"></i> إطلاق دورة تدريبية جديدة في الذكاء الاصطناعي رابط الدوره اسفل الصفحة </a>
+            <a href="news.html#3"><i class="fas fa-arrow-left"></i> خصم 20% على خدمات التصميم الجرافيكي خلال الشهر الحالي</a>
+            <a href="news.html#4"><i class="fas fa-arrow-left"></i> تعاون جديد مع شركة التقنية المتطورة لتقديم حلول متكاملة</a>
+            <a href="news.html#5"><i class="fas fa-arrow-left"></i> ورشة عمل مجانية حول التسويق الرقمي يوم الخميس القادم</a>
+        </div>
+    </div>
+    
+    <!-- شريط جديدنا المتحرك -->
+    <div class="new-feature-bar">
+        <div class="new-feature-content">
+            <a href="barcode.html">
+                <i class="fas fa-qrcode"></i>
+                الآن وعن طريق SeaStar بات بإمكانك إنشاء باركود بسهولة لكل البيانات التي تريدها
+            </a>
+        </div>
+    </div>
     
     <section class="hero-section">
         <div class="hero-content">
@@ -879,7 +1036,7 @@
                     <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
                     <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
                     <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
-                   </div>
+                </div>
             </div>
             
             <div class="footer-section">
