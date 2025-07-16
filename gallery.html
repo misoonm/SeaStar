@@ -3,242 +3,472 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>معرض الصور الفني</title>
+    <title>معرض الصور - SeaStar</title>
+    <meta name="description" content="معرض أعمال SeaStar في التصميم الجرافيكي، تطوير الويب، التسويق الرقمي والمزيد">
+    <meta name="keywords" content="معرض صور SeaStar, أعمال تصميم, مشاريع تطوير ويب, هويات بصرية, شعارات, مواقع إلكترونية">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
-            color: #fff;
-            min-height: 100vh;
-            padding: 20px;
-            position: relative;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
             overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
         }
         
-        body::before {
-            content: "";
-            position: absolute;
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
             z-index: -1;
         }
         
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
         }
         
-        header {
-            text-align: center;
-            padding: 30px 0;
-            margin-bottom: 30px;
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .dropdown {
             position: relative;
         }
         
-        h1 {
-            font-size: 3.5rem;
-            margin-bottom: 15px;
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
-            background: linear-gradient(to right, #ffd700, #ff9800);
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            min-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            display: block;
+            padding: 12px 15px;
+            color: #ddd;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background: rgba(11, 232, 129, 0.2);
+            color: var(--cyber-green);
+            transform: translateX(-5px);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* أشرطة الأخبار المتحركة */
+        .news-ticker-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            height: 40px;
+            margin-top: 80px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ticker-label {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--dark-blue));
+            color: white;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-width: 130px;
+        }
+        
+        .ticker-label i {
+            margin-left: 10px;
+            color: var(--cyber-green);
+        }
+        
+        .ticker-content {
+            position: absolute;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding-right: 20px;
+            animation: tickerAnimation 30s linear infinite;
+        }
+        
+        .ticker-content a {
+            color: white;
+            text-decoration: none;
+            margin: 0 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-content a:hover {
+            color: var(--cyber-green);
+            transform: translateY(-2px);
+        }
+        
+        .ticker-content a i {
+            margin-left: 10px;
+            color: var(--cyber-blue);
+        }
+        
+        @keyframes tickerAnimation {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* القسم البطولي */
+        .gallery-hero {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 150px 40px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery-hero h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            animation: glow 2s infinite alternate;
+            line-height: 1.3;
         }
         
-        @keyframes glow {
-            from { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-            to { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6); }
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            color: #ffd700;
+        .gallery-hero p {
+            font-size: 1.4rem;
             max-width: 700px;
-            margin: 0 auto 25px;
-            line-height: 1.6;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.85);
         }
         
-        .filter-bar {
+        /* قسم معرض الصور */
+        .section {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .gallery-filter {
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
             gap: 15px;
-            margin: 30px 0;
+            margin-bottom: 40px;
         }
         
         .filter-btn {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-            border: 2px solid rgba(255, 215, 0, 0.5);
-            padding: 10px 25px;
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
             border-radius: 50px;
-            font-size: 1.1rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
+            font-weight: 600;
+            font-size: 1rem;
         }
         
         .filter-btn:hover, .filter-btn.active {
-            background: rgba(255, 215, 0, 0.3);
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
         }
         
-        .gallery {
+        .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 25px;
-            margin-top: 20px;
         }
         
         .gallery-item {
+            position: relative;
             border-radius: 15px;
             overflow: hidden;
-            position: relative;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
             height: 300px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
         }
         
         .gallery-item:hover {
-            transform: translateY(-10px) scale(1.03);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(0, 168, 255, 0.4);
+            border-color: var(--cyber-green);
+            z-index: 10;
         }
         
         .gallery-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: all 0.5s ease;
         }
         
         .gallery-item:hover img {
             transform: scale(1.1);
         }
         
-        .gallery-item .overlay {
+        .item-overlay {
             position: absolute;
             bottom: 0;
             left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-            color: #fff;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.85);
             padding: 20px;
             transform: translateY(100%);
-            transition: transform 0.4s ease;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            border-top: 2px solid var(--cyber-green);
         }
         
-        .gallery-item:hover .overlay {
+        .gallery-item:hover .item-overlay {
             transform: translateY(0);
         }
         
-        .gallery-item h3 {
-            margin-bottom: 8px;
-            font-size: 1.4rem;
-            color: #ffd700;
+        .item-overlay h3 {
+            color: var(--cyber-green);
+            font-size: 1.3rem;
+            margin-bottom: 10px;
         }
         
-        .gallery-item p {
+        .item-overlay p {
+            color: rgba(255, 255, 255, 0.8);
             font-size: 0.95rem;
-            opacity: 0.9;
-            line-height: 1.5;
         }
         
-        /* Lightbox Styles */
+        /* Lightbox */
         .lightbox {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.9);
-            display: flex;
+            z-index: 2000;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-        
-        .lightbox.active {
-            opacity: 1;
-            pointer-events: all;
         }
         
         .lightbox-content {
-            position: relative;
             max-width: 90%;
             max-height: 90%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: relative;
         }
         
         .lightbox-img {
-            max-width: 90vw;
+            max-width: 100%;
             max-height: 80vh;
             border-radius: 10px;
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            border: 2px solid var(--cyber-green);
+            box-shadow: 0 0 50px rgba(0, 168, 255, 0.5);
         }
         
         .lightbox-caption {
-            color: #fff;
-            font-size: 1.4rem;
-            margin-top: 20px;
+            color: white;
             text-align: center;
-            max-width: 700px;
-            padding: 0 20px;
+            margin-top: 15px;
+            font-size: 1.2rem;
         }
         
         .close-btn {
             position: absolute;
-            top: 30px;
+            top: 20px;
             right: 30px;
+            color: white;
             font-size: 2.5rem;
-            color: #fff;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            z-index: 2001;
         }
         
         .close-btn:hover {
-            color: #ffd700;
+            color: var(--cyber-green);
+            transform: rotate(90deg);
         }
         
-        .nav-btn {
+        .prev-btn, .next-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255, 215, 0, 0.2);
             color: white;
-            border: none;
-            font-size: 2rem;
+            font-size: 2.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2001;
+            background: rgba(0, 0, 0, 0.5);
             width: 60px;
             height: 60px;
-            border-radius: 50%;
-            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-        }
-        
-        .nav-btn:hover {
-            background: rgba(255, 215, 0, 0.4);
-            transform: translateY(-50%) scale(1.1);
+            border-radius: 50%;
         }
         
         .prev-btn {
@@ -249,354 +479,507 @@
             right: 30px;
         }
         
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 50px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 1.1rem;
-            color: #ffd700;
+        .prev-btn:hover, .next-btn:hover {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.2);
         }
         
-        .social-icons {
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin-top: 20px;
         }
         
-        .social-icons a {
-            display: inline-flex;
+        .social-links a {
+            display: flex;
             align-items: center;
             justify-content: center;
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: rgba(255, 215, 0, 0.2);
-            color: #ffd700;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
             font-size: 1.5rem;
             transition: all 0.3s ease;
-            text-decoration: none;
         }
         
-        .social-icons a:hover {
-            background: rgba(255, 215, 0, 0.4);
+        .social-links a:hover {
+            background: var(--cyber-green);
             transform: translateY(-5px);
+            color: var(--dark-blue);
         }
         
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            h1 {
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .dropdown-content {
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                padding: 10px 0 0 20px;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .section {
+                padding: 80px 20px;
+            }
+            
+            .gallery-hero h1 {
                 font-size: 2.5rem;
             }
             
-            .gallery {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            }
-            
-            .filter-bar {
-                gap: 10px;
-            }
-            
-            .filter-btn {
-                padding: 8px 15px;
-                font-size: 1rem;
-            }
-            
-            .nav-btn {
-                width: 50px;
-                height: 50px;
-                font-size: 1.5rem;
+            .section-title {
+                font-size: 2.2rem;
             }
         }
         
-        @media (max-width: 480px) {
-            h1 {
+        @media (max-width: 600px) {
+            .gallery-hero h1 {
                 font-size: 2rem;
             }
             
-            .gallery {
+            .gallery-hero p {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .gallery-grid {
                 grid-template-columns: 1fr;
             }
             
-            .filter-bar {
-                flex-direction: column;
-                align-items: center;
+            .ticker-label {
+                font-size: 0.9rem;
+                min-width: 110px;
             }
+            
+            .ticker-content a {
+                font-size: 0.9rem;
+                margin: 0 15px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-camera-retro"></i> معرض الصور الفني</h1>
-            <p class="subtitle">استمتع بمجموعة مختارة من الصور الفنية الرائعة لاعمالنا. انقر على أي صورة لمشاهدتها بحجم أكبر والاطلاع على تفاصيلها.</p>
-        </header>
-        
-        <div class="filter-bar">
-            <button class="filter-btn active">الكل</button>
-            <button class="filter-btn">جرافيك</button>
-            <button class="filter-btn">انظمة</button>
-            <button class="filter-btn">شبكات</button>
-            <button class="filter-btn">مدوناتنا</button>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li class="dropdown">
+                <a href="services.html" class="dropbtn">الخدمات <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="services.html#content-writing">كتابة المحتوى والترجمة</a>
+                    <a href="services.html#graphic-design">التصميم الجرافيكي</a>
+                    <a href="services.html#web-dev">تطوير الويب والتطبيقات</a>
+                    <a href="services.html#network-it">الشبكات وتقنية المعلومات</a>
+                    <a href="services.html#digital-marketing">التسويق الرقمي</a>
+                    <a href="services.html#data-entry">إدخال البيانات</a>
+                    <a href="services.html#info-security">أمن المعلومات</a>
+                    <a href="services.html#erp-maint">الأنظمة الإدارية والمحاسبية</a>
+                </div>
+            </li>
+            <li><a href="portfolio.html">أعمالنا</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+            <li><a href="gallery.html" class="active">معرض الصور</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <!-- شريط آخر الأخبار المتحركة -->
+    <div class="news-ticker-container">
+        <div class="ticker-label">
+            <i class="fas fa-newspaper"></i> آخر الأخبار
+        </div>
+        <div class="ticker-content">
+            <a href="https://wa.me/+967777220455?text=أريد%20نسخة%20تجريبية%20لنظام%20swastar%20لمؤسستي التعليمية"><i class="fas fa-arrow-left"></i>لادارة المؤسسات التعليمية  SeaStar تواصل معنا للحصول على نسخة تجريبية مجانية من نظام</a>
+            <a href="qrsea.html"><i class="fas fa-arrow-left"></i> SeaStar تطلق خدمة إنشاء الباركود الجديدة</a>
+            <a href="iot.html"><i class="fas fa-arrow-left"></i> إطلاق دورة تدريبية جديدة في الذكاء الاصطناعي</a>
+            <a href="news.html#3"><i class="fas fa-arrow-left"></i> خصم 20% على خدمات التصميم الجرافيكي خلال الشهر الحالي</a>
+            <a href="news.html#4"><i class="fas fa-arrow-left"></i> تعاون جديد مع شركة التقنية المتطورة لتقديم حلول متكاملة</a>
+            <a href="news.html#5"><i class="fas fa-arrow-left"></i> ورشة عمل مجانية حول التسويق الرقمي يوم الخميس القادم</a>
+        </div>
+    </div>
+    
+    <section class="gallery-hero">
+        <h1 class="animate">معرض أعمالنا المصورة</h1>
+        <p class="animate">استكشف مجموعة من أعمالنا في التصميم الجرافيكي، تطوير الويب، الهويات البصرية والمزيد</p>
+    </section>
+
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">معرض الصور</h2>
+            <p class="section-subtitle">تصفح مجموعة من أعمالنا الإبداعية في مختلف المجالات التقنية</p>
         </div>
         
-        <div class="gallery">
-            <div class="gallery-item" data-category="جرافيك">
-                <img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="الغابة الخضراء">
-                <div class="overlay">
-                    <h3>الغابة الخضراء</h3>
-                    <p>غابة استوائية ممطرة مع ضوء الشمس يتخلل الأشجار</p>
+        <div class="gallery-filter animate">
+            <button class="filter-btn active" data-filter="all">الكل</button>
+            <button class="filter-btn" data-filter="design">تصميم الجرافيك</button>
+            <button class="filter-btn" data-filter="web">تطوير الويب</button>
+            <button class="filter-btn" data-filter="branding">الهوية البصرية</button>
+            <button class="filter-btn" data-filter="marketing">التسويق الرقمي</button>
+        </div>
+
+        <div class="gallery-grid">
+            <!-- تصميم الجرافيك -->
+            <div class="gallery-item design animate">
+                <img src="1.webp" alt="تصميم شعار SeaStar">
+                <div class="item-overlay">
+                    <h3>تصميم شعار SeaStar</h3>
+                    <p>شعار حديث يعكس التقنية والابتكار</p>
                 </div>
             </div>
             
-            <div class="gallery-item" data-category="انظمة">
-                <img src="2.png" alt="المدينة الحديثة">
-                <div class="overlay">
-                    <h3>نظام اداري ومحاسبي 
-</h3>
-                    <p>للجامعات والمعاهد والكليات</p>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="انظمة">
-                <img src="21.png" alt="الواجهة الاساسية للنظام ">
-                <div class="overlay">
-                    <h3>نظام ادارة الجامعات</h3>
-                    <p>  نظام يلبي كل احتياجات شؤون الطلاب</p>
-                </div>
-            </div>
-
-
-<div class="gallery-item" data-category="انظمة">
-                <img src="23.png" alt="الواجهة الاساسية للنظام ">
-                <div class="overlay">
-                    <h3>نظام ادارة الجامعات</h3>
-                    <p>  نظام يلبي كل احتياجات شؤون الطلاب</p>
-                </div>
-            </div>
-
-
-<div class="gallery-item" data-category="انظمة">
-                <img src="24.png" alt="الواجهة الاساسية للنظام ">
-                <div class="overlay">
-                    <h3>نظام ادارة الجامعات</h3>
-                    <p>  نظام يلبي كل احتياجات شؤون الطلاب</p>
-                </div>
-            </div>
-
-<div class="gallery-item" data-category="انظمة">
-                <img src="25.png" alt="الواجهة الاساسية للنظام ">
-                <div class="overlay">
-                    <h3>نظام ادارة الجامعات</h3>
-                    <p>  نظام يلبي كل احتياجات شؤون الطلاب</p>
-                </div>
-            </div>
-
-<div class="gallery-item" data-category="انظمة">
-                <img src="26.png" alt="الواجهة الاساسية للنظام ">
-                <div class="overlay">
-                    <h3>نظام ادارة الجامعات</h3>
-                    <p>  نظام يلبي كل احتياجات شؤون الطلاب</p>
-                </div>
-            </div>
-
-            <div class="gallery-item" data-category="شبكات">
-                <img src="65.jpg" alt="  تركيب شبكة كاميرات ">
-                <div class="overlay">
-                    <h3>شبكة كاميرات</h3>
-                    <p> كيف تبني شبكتك </p>
-                </div>
-            </div>
-
-<div class="gallery-item" data-category="شبكات">
-                <img src="64.jpeg" alt="  تركيب شبكة  ">
-                <div class="overlay">
-                    <h3>شبكة </h3>
-                    <p> كيف تبني شبكتك </p>
-                </div>
-            </div>
-
-<div class="gallery-item" data-category="شبكات">
-                <img src="63.jpg" alt="  تركيب شبكة  ">
-                <div class="overlay">
-                    <h3>شبكة </h3>
-                    <p> كيف تبني شبكتك </p>
-                </div>
-            </div>
-
-<div class="gallery-item" data-category="شبكات">
-                <img src="62.jpg" alt="  تركيب شبكة  ">
-                <div class="overlay">
-                    <h3>شبكة </h3>
-                    <p> كيف تبني شبكتك </p>
-                </div>
-            </div>
-
-<div class="gallery-item" data-category="شبكات">
-                <img src="61.jpg" alt="  تركيب شبكة  ">
-                <div class="overlay">
-                    <h3>شبكة </h3>
-                    <p> كيف تبني شبكتك </p>
-                </div>
-            </div>
-            <div class="gallery-item" data-category=“شبكات“>
-                <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="الفن التجريدي">
-                <div class="overlay">
-                    <h3>ألوان متدفقة</h3>
-                    <p>لوحة فنية تجريدية بألوان مائية متدفقة</p>
+            <div class="gallery-item design animate">
+                <img src="2.webp" alt="تصميم بروشور">
+                <div class="item-overlay">
+                    <h3>تصميم بروشور</h3>
+                    <p>بروشور تسويقي لشركة تقنية</p>
                 </div>
             </div>
             
-            <div class="gallery-item" data-category="الطبيعة">
-                <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="الجبل الشامخ">
-                <div class="overlay">
-                    <h3>الجبل الشامخ</h3>
-                    <p>قمم جبال مغطاة بالثلوج في يوم صافٍ</p>
+            <div class="gallery-item design animate">
+                <img src="3.webp" alt="تصميم بوستر">
+                <div class="item-overlay">
+                    <h3>تصميم بوستر</h3>
+                    <p>بوستر إعلاني لمؤتمر تقني</p>
                 </div>
             </div>
             
-            <div class="gallery-item" data-category="البورتريه">
-                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="بورتريه إمرأة">
-                <div class="overlay">
-                    <h3>نظرة عميقة</h3>
-                    <p>بورتريه لامرأة بنظرة عميقة وتعبير قوي</p>
+            <!-- تطوير الويب -->
+            <div class="gallery-item web animate">
+                <img src="4.webp" alt="تصميم موقع ويب">
+                <div class="item-overlay">
+                    <h3>تصميم موقع ويب</h3>
+                    <p>واجهة مستخدم حديثة لموقع شركة</p>
                 </div>
             </div>
             
-            <div class="gallery-item" data-category="المدن">
-                <img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="الشارع التاريخي">
-                <div class="overlay">
-                    <h3>الشارع التاريخي</h3>
-                    <p>شارع تاريخي بألوان زاهية ومقاهي جانبية</p>
+            <div class="gallery-item web animate">
+                <img src="5.webp" alt="تطبيق ويب">
+                <div class="item-overlay">
+                    <h3>تطبيق ويب</h3>
+                    <p>لوحة تحكم لنظام إداري متكامل</p>
                 </div>
             </div>
             
-            <div class="gallery-item" data-category="الفن التجريدي">
-                <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="أشكال هندسية">
-                <div class="overlay">
-                    <h3>أشكال هندسية</h3>
-                    <p>تركيب فني بأشكال هندسية وألوان متناغمة</p>
+            <div class="gallery-item web animate">
+                <img src="6.webp" alt="موقع تجارة إلكترونية">
+                <div class="item-overlay">
+                    <h3>موقع تجارة إلكترونية</h3>
+                    <p>تصميم متكامل لموقع بيع منتجات</p>
                 </div>
             </div>
             
-            <div class="gallery-item" data-category="الطبيعة">
-                <img src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="الصحراء">
-                <div class="overlay">
-                    <h3>صحراء شاسعة</h3>
-                    <p>منظر خلاب للكثبان الرملية في الصحراء</p>
+            <!-- الهوية البصرية -->
+            <div class="gallery-item branding animate">
+                <img src="7.webp" alt="هوية بصرية">
+                <div class="item-overlay">
+                    <h3>هوية بصرية متكاملة</h3>
+                    <p>تصميم هوية بصرية لشركة ناشئة</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item branding animate">
+                <img src="8.webp" alt="أدوات مكتبية">
+                <div class="item-overlay">
+                    <h3>أدوات مكتبية</h3>
+                    <p>تصميم بطاقات عمل ومظاريف</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item branding animate">
+                <img src="9.webp" alt="تغليف منتجات">
+                <div class="item-overlay">
+                    <h3>تغليف منتجات</h3>
+                    <p>تصميم عبوات لمنتجات تقنية</p>
+                </div>
+            </div>
+            
+            <!-- التسويق الرقمي -->
+            <div class="gallery-item marketing animate">
+                <img src="10.webp" alt="إعلانات وسائل التواصل">
+                <div class="item-overlay">
+                    <h3>إعلانات وسائل التواصل</h3>
+                    <p>تصميم إعلانات لفيسبوك وإنستجرام</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item marketing animate">
+                <img src="11.webp" alt="تصميم بانر">
+                <div class="item-overlay">
+                    <h3>تصميم بانر</h3>
+                    <p>بانر إعلاني لموقع إلكتروني</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item marketing animate">
+                <img src="12.webp" alt="إنفوجرافيك">
+                <div class="item-overlay">
+                    <h3>إنفوجرافيك تعليمي</h3>
+                    <p>تصميم رسومي لمحتوى تعليمي</p>
                 </div>
             </div>
         </div>
-        
-        <div class="lightbox">
-            <span class="close-btn">&times;</span>
-            <button class="nav-btn prev-btn"><i class="fas fa-chevron-right"></i></button>
-            <button class="nav-btn next-btn"><i class="fas fa-chevron-left"></i></button>
-            <div class="lightbox-content">
-                <img class="lightbox-img" src="" alt="">
-                <div class="lightbox-caption"></div>
-            </div>
+    </section>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <span class="close-btn" id="close-btn">&times;</span>
+        <span class="prev-btn" id="prev-btn"><i class="fas fa-chevron-right"></i></span>
+        <span class="next-btn" id="next-btn"><i class="fas fa-chevron-left"></i></span>
+        <div class="lightbox-content">
+            <img src="" alt="" class="lightbox-img" id="lightbox-img">
+            <div class="lightbox-caption" id="lightbox-caption"></div>
         </div>
-        
-        <footer>
-            <p>© 2025 SeaStar - جميع الحقوق محفوظة</p>
-            <div class="social-icons">                                  
-                   <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نحن نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
                     <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
                     <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
                     <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
-                      </div>
-        </footer>
-    </div>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="services.html"><i class="fas fa-arrow-left"></i> الخدمات</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> أعمالنا</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> من نحن</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li> 
+                    <li><a href="iot.html"><i class="fas fa-arrow-left"></i> دورة الذكاء الاصطناعي</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-arrow-left"></i> سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
     
     <script>
+        // إضافة تأثيرات الظهور عند التمرير
         document.addEventListener('DOMContentLoaded', function() {
-            // Lightbox functionality
-            const galleryItems = document.querySelectorAll('.gallery-item');
-            const lightbox = document.querySelector('.lightbox');
-            const lightboxImg = document.querySelector('.lightbox-img');
-            const lightboxCaption = document.querySelector('.lightbox-caption');
-            const closeBtn = document.querySelector('.close-btn');
-            const prevBtn = document.querySelector('.prev-btn');
-            const nextBtn = document.querySelector('.next-btn');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
             
-            let currentIndex = 0;
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
             
-            // Open lightbox
-            galleryItems.forEach((item, index) => {
-                item.addEventListener('click', () => {
-                    currentIndex = index;
-                    updateLightbox();
-                    lightbox.classList.add('active');
-                    document.body.style.overflow = 'hidden';
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
                 });
             });
             
-            // Close lightbox
-            closeBtn.addEventListener('click', () => {
-                lightbox.classList.remove('active');
-                document.body.style.overflow = 'auto';
+            // قائمة الهاتف المحمول
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
             });
             
-            lightbox.addEventListener('click', (e) => {
-                if (e.target === lightbox) {
-                    lightbox.classList.remove('active');
-                    document.body.style.overflow = 'auto';
-                }
-            });
-            
-            // Navigation
-            prevBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-                updateLightbox();
-            });
-            
-            nextBtn.addEventListener('click', () => {
-                currentIndex = (currentIndex + 1) % galleryItems.length;
-                updateLightbox();
-            });
-            
-            // Keyboard navigation
-            document.addEventListener('keydown', (e) => {
-                if (lightbox.classList.contains('active')) {
-                    if (e.key === 'ArrowLeft') {
-                        currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
-                        updateLightbox();
-                    } else if (e.key === 'ArrowRight') {
-                        currentIndex = (currentIndex + 1) % galleryItems.length;
-                        updateLightbox();
-                    } else if (e.key === 'Escape') {
-                        lightbox.classList.remove('active');
-                        document.body.style.overflow = 'auto';
-                    }
-                }
-            });
-            
-            function updateLightbox() {
-                const activeItem = galleryItems[currentIndex];
-                const imgSrc = activeItem.querySelector('img').src;
-                const caption = activeItem.querySelector('h3').textContent;
-                
-                lightboxImg.src = imgSrc;
-                lightboxCaption.textContent = caption;
-            }
-            
-            // Filter functionality
+            // فلتر معرض الصور
             const filterBtns = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
             
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
-                    // Remove active class from all buttons
+                    // إزالة الفئة النشطة من جميع الأزرار
                     filterBtns.forEach(b => b.classList.remove('active'));
-                    
-                    // Add active class to clicked button
+                    // إضافة الفئة النشطة للزر المحدد
                     btn.classList.add('active');
                     
-                    const filter = btn.textContent;
+                    const filter = btn.getAttribute('data-filter');
                     
                     galleryItems.forEach(item => {
-                        if (filter === 'الكل' || item.dataset.category === filter) {
+                        if (filter === 'all' || item.classList.contains(filter)) {
                             item.style.display = 'block';
                         } else {
                             item.style.display = 'none';
@@ -605,26 +988,79 @@
                 });
             });
             
-            // Animation on scroll
-            const observerOptions = {
-                threshold: 0.1
-            };
+            // Lightbox functionality
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const closeBtn = document.getElementById('close-btn');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
             
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = 1;
-                        entry.target.style.transform = 'translateY(0)';
-                    }
+            const galleryImages = document.querySelectorAll('.gallery-item img');
+            let currentImageIndex = 0;
+            
+            // Open lightbox with clicked image
+            galleryImages.forEach((img, index) => {
+                img.addEventListener('click', () => {
+                    currentImageIndex = index;
+                    updateLightbox();
+                    lightbox.style.display = 'flex';
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling
                 });
-            }, observerOptions);
-            
-            galleryItems.forEach(item => {
-                item.style.opacity = 0;
-                item.style.transform = 'translateY(30px)';
-                item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                observer.observe(item);
             });
+            
+            // Close lightbox
+            closeBtn.addEventListener('click', () => {
+                lightbox.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Enable scrolling
+            });
+            
+            // Previous image
+            prevBtn.addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+                updateLightbox();
+            });
+            
+            // Next image
+            nextBtn.addEventListener('click', () => {
+                currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+                updateLightbox();
+            });
+            
+            // Close lightbox when clicking outside image
+            lightbox.addEventListener('click', (e) => {
+                if (e.target === lightbox) {
+                    lightbox.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (lightbox.style.display === 'flex') {
+                    if (e.key === 'Escape') {
+                        lightbox.style.display = 'none';
+                        document.body.style.overflow = 'auto';
+                    } else if (e.key === 'ArrowLeft') {
+                        currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+                        updateLightbox();
+                    } else if (e.key === 'ArrowRight') {
+                        currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+                        updateLightbox();
+                    }
+                }
+            });
+            
+            function updateLightbox() {
+                const currentImg = galleryImages[currentImageIndex];
+                lightboxImg.src = currentImg.src;
+                lightboxImg.alt = currentImg.alt;
+                
+                // Get caption from overlay
+                const parentItem = currentImg.closest('.gallery-item');
+                const overlay = parentItem.querySelector('.item-overlay');
+                lightboxCaption.textContent = overlay.querySelector('h3').textContent + ' - ' + overlay.querySelector('p').textContent;
+            }
         });
     </script>
 </body>
