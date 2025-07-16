@@ -3,147 +3,881 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أعمالنا - [SeaStar /خدماتك]</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>أعمالنا - SeaStar</title>
+    <meta name="description" content="استكشف مشاريع SeaStar الناجحة في تطوير الويب، التصميم الجرافيكي، كتابة المحتوى، التسويق الرقمي والمزيد.">
+    <meta name="keywords" content="معرض أعمال SeaStar, مشاريع تطوير الويب, تصميم جرافيكي, كتابة محتوى, تسويق رقمي, برمجة مواقع, تصميم شعارات">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            min-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            display: block;
+            padding: 12px 15px;
+            color: #ddd;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background: rgba(11, 232, 129, 0.2);
+            color: var(--cyber-green);
+            transform: translateX(-5px);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* أشرطة الأخبار المتحركة */
+        .news-ticker-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            height: 40px;
+            margin-top: 80px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ticker-label {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--dark-blue));
+            color: white;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-width: 130px;
+        }
+        
+        .ticker-label i {
+            margin-left: 10px;
+            color: var(--cyber-green);
+        }
+        
+        .ticker-content {
+            position: absolute;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding-right: 20px;
+            animation: tickerAnimation 30s linear infinite;
+        }
+        
+        .ticker-content a {
+            color: white;
+            text-decoration: none;
+            margin: 0 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-content a:hover {
+            color: var(--cyber-green);
+            transform: translateY(-2px);
+        }
+        
+        .ticker-content a i {
+            margin-left: 10px;
+            color: var(--cyber-blue);
+        }
+        
+        @keyframes tickerAnimation {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* القسم البطولي */
+        .portfolio-hero {
+            min-height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 150px 40px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .portfolio-hero h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .portfolio-hero p {
+            font-size: 1.4rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        /* قسم معرض الأعمال */
+        .section {
+            padding: 80px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .portfolio-filter {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .filter-btn {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .portfolio-item {
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            height: 350px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 40px rgba(0, 168, 255, 0.4);
+            border-color: var(--cyber-green);
+        }
+        
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .portfolio-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        .item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 25px;
+            transform: translateY(100%);
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            border-top: 2px solid var(--cyber-green);
+        }
+        
+        .portfolio-item:hover .item-overlay {
+            transform: translateY(0);
+        }
+        
+        .item-overlay h3 {
+            color: var(--cyber-green);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .item-overlay p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        
+        .view-project-btn {
+            display: inline-flex;
+            padding: 10px 25px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .view-project-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.4);
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .dropdown-content {
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                padding: 10px 0 0 20px;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .section {
+                padding: 80px 20px;
+            }
+            
+            .portfolio-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .portfolio-hero h1 {
+                font-size: 2rem;
+            }
+            
+            .portfolio-hero p {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .ticker-label {
+                font-size: 0.9rem;
+                min-width: 110px;
+            }
+            
+            .ticker-content a {
+                font-size: 0.9rem;
+                margin: 0 15px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
 </head>
 <body>
-    <header class="main-header">
-        <nav class="navbar">
-            <div class="logo">
-                <a href="index.html"> SeaStar</a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html">الرئيسية</a></li>
-                <li class="dropdown">
-                    <a href="services.html" class="dropbtn">الخدمات <i class="fas fa-caret-down"></i></a>
-                    <div class="dropdown-content">
-                        <a href="services.html#content-writing">كتابة المحتوى والترجمة</a>
-                        <a href="services.html#graphic-design">التصميم الجرافيكي</a>
-                        <a href="services.html#web-dev">تطوير الويب والتطبيقات</a>
-                        <a href="services.html#network-it">الشبكات وتقنية المعلومات</a>
-                        <a href="services.html#digital-marketing">التسويق الرقمي</a>
-                        <a href="services.html#data-entry">إدخال البيانات</a>
-                        <a href="services.html#info-security">أمن المعلومات</a>
-                        <a href="services.html#erp-maint">الأنظمة الإدارية والمحاسبية</a>
-                    </div>
-                </li>
-                <li><a href="portfolio.html" class="active">أعمالنا</a></li>
-                <li><a href="about.html">من نحن</a></li>
-                <li><a href="contact.html">اتصل بنا</a></li>
-                <li><a href="blog.html">المدونة</a></li>
-                <li><a href="gallery.html">معرض الصور</a></li>
-            </ul>
-            <div class="hamburger">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-            </div>
-        </nav>
-    </header>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li class="dropdown">
+                <a href="services.html" class="dropbtn">الخدمات <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="services.html#content-writing">كتابة المحتوى والترجمة</a>
+                    <a href="services.html#graphic-design">التصميم الجرافيكي</a>
+                    <a href="services.html#web-dev">تطوير الويب والتطبيقات</a>
+                    <a href="services.html#network-it">الشبكات وتقنية المعلومات</a>
+                    <a href="services.html#digital-marketing">التسويق الرقمي</a>
+                    <a href="services.html#data-entry">إدخال البيانات</a>
+                    <a href="services.html#info-security">أمن المعلومات</a>
+                    <a href="services.html#erp-maint">الأنظمة الإدارية والمحاسبية</a>
+                </div>
+            </li>
+            <li><a href="portfolio.html" class="active">أعمالنا</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+            <li><a href="gallery.html">معرض الصور</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <!-- شريط آخر الأخبار المتحركة -->
+    <div class="news-ticker-container">
+        <div class="ticker-label">
+            <i class="fas fa-newspaper"></i> آخر الأخبار
+        </div>
+        <div class="ticker-content">
+            <a href="https://wa.me/+967777220455?text=أريد%20نسخة%20تجريبية%20لنظام%20swastar%20لمؤسستي التعليمية"><i class="fas fa-arrow-left"></i>لادارة المؤسسات التعليمية  SeaStar تواصل معنا للحصول على نسخة تجريبية مجانية من نظام</a>
+            <a href="qrsea.html"><i class="fas fa-arrow-left"></i> SeaStar تطلق خدمة إنشاء الباركود الجديدة</a>
+            <a href="iot.html"><i class="fas fa-arrow-left"></i> إطلاق دورة تدريبية جديدة في الذكاء الاصطناعي</a>
+            <a href="news.html#3"><i class="fas fa-arrow-left"></i> خصم 20% على خدمات التصميم الجرافيكي خلال الشهر الحالي</a>
+            <a href="news.html#4"><i class="fas fa-arrow-left"></i> تعاون جديد مع شركة التقنية المتطورة لتقديم حلول متكاملة</a>
+            <a href="news.html#5"><i class="fas fa-arrow-left"></i> ورشة عمل مجانية حول التسويق الرقمي يوم الخميس القادم</a>
+        </div>
+    </div>
+    
+    <section class="portfolio-hero">
+        <h1 class="animate">أعمالنا ومشاريعنا الناجحة</h1>
+        <p class="animate">استكشف مجموعة من المشاريع التي أنجزناها لعملائنا في مختلف المجالات</p>
+    </section>
 
-    <main>
-        <section class="page-hero-banner portfolio-hero">
-            <h1>أعمالنا ومشاريعنا الناجحة</h1>
-            <p>استكشف مجموعة من المشاريع التي أنجزناها لعملائنا في مختلف المجالات.</p>
-        </section>
-
-        <section class="portfolio-filter">
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">معرض أعمالنا</h2>
+            <p class="section-subtitle">تصفح مشاريعنا المميزة في مختلف المجالات التقنية</p>
+        </div>
+        
+        <div class="portfolio-filter animate">
             <button class="filter-btn active" data-filter="all">الكل</button>
             <button class="filter-btn" data-filter="web-dev">تطوير الويب</button>
             <button class="filter-btn" data-filter="graphic-design">التصميم الجرافيكي</button>
             <button class="filter-btn" data-filter="content-writing">كتابة المحتوى</button>
             <button class="filter-btn" data-filter="digital-marketing">التسويق الرقمي</button>
-            </section>
+        </div>
 
-        <section class="portfolio-grid">
-
-            <div class="portfolio-item web-dev">
+        <div class="portfolio-grid">
+            <div class="portfolio-item web-dev animate">
                 <img src="190729.jpg" alt="مشروع موقع إلكتروني">
                 <div class="item-overlay">
-                    <h3> منشئ الباركود  QR SeaStar الاحترافي</h3>
-                    <p>تطبيق ويب متكامل لانشاء الباركود لكل البيانات التي تحتاجها  .</p>
-                    <a href="qrsea.html" class="btn view-project-btn">عرض المشروع</a>
+                    <h3>منشئ الباركود QR SeaStar الاحترافي</h3>
+                    <p>تطبيق ويب متكامل لانشاء الباركود لكل البيانات التي تحتاجها</p>
+                    <a href="qrsea.html" class="view-project-btn">
+                        عرض المشروع <i class="fas fa-arrow-left"></i>
+                    </a>
                 </div>
             </div>
             
-            <div class="portfolio-item web-dev">
+            <div class="portfolio-item web-dev animate">
                 <img src="1750603529490.jpg" alt="مشروع موقع إلكتروني">
                 <div class="item-overlay">
-                    <h3> ممزات نظام [سيستار] الاحترافي</h3>
-                    <p>نظام اداري ومحاسبي متكامل لادارة الجامعات والمدارس.</p>
-                    <a href="seastar43.html" class="btn view-project-btn">عرض المشروع</a>
+                    <h3>مميزات نظام سيستار الاحترافي</h3>
+                    <p>نظام اداري ومحاسبي متكامل لادارة الجامعات والمدارس</p>
+                    <a href="seastar43.html" class="view-project-btn">
+                        عرض المشروع <i class="fas fa-arrow-left"></i>
+                    </a>
                 </div>
             </div>
-            <div class="portfolio-item graphic-design">
+            
+            <div class="portfolio-item graphic-design animate">
                 <img src="1.webp" alt="مشروع تصميم شعار">
                 <div class="item-overlay">
-                    <h3>تصميم الهوية البصرية لـ [ SeaStar]</h3>
-                    <p>شعار وتصميمات بصرية عصرية لشركة ناشئة.</p>
-                    <a href="gallery.html" class="btn view-project-btn">عرض المشروع</a>
+                    <h3>تصميم الهوية البصرية لـ SeaStar</h3>
+                    <p>شعار وتصميمات بصرية عصرية لشركة ناشئة</p>
+                    <a href="gallery.html" class="view-project-btn">
+                        عرض المشروع <i class="fas fa-arrow-left"></i>
+                    </a>
                 </div>
             </div>
-            <div class="portfolio-item content-writing">
+            
+            <div class="portfolio-item content-writing animate">
                 <img src="5.jpg" alt="مشروع كتابة مقالات">
                 <div class="item-overlay">
-                    <h3> كتابة محتوى مدونة لـ [ seaStar ]</h3>
-                    <p>مقالات متوافقة مع SEO لزيادة الزوار.</p>
-                    <a href="gallery.html" class="btn view-project-btn">عرض المشروع</a>
+                    <h3>كتابة محتوى مدونة لـ SeaStar</h3>
+                    <p>مقالات متوافقة مع SEO لزيادة الزوار</p>
+                    <a href="gallery.html" class="view-project-btn">
+                        عرض المشروع <i class="fas fa-arrow-left"></i>
+                    </a>
                 </div>
             </div>
-            <div class="portfolio-item digital-marketing">
+            
+            <div class="portfolio-item digital-marketing animate">
                 <img src="1750603529490.jpg" alt="مشروع حملة تسويقية">
                 <div class="item-overlay">
-                    <h3>   نظام سي ستار النسخة الاحترافية لادارة المدارس والجامعات [SeaStar ]</h3>
-                    <p>نظام اداري ومحاسبي متكامل.انقر على الرابط لتحميل العرض التوضيحي</p>
-                    <a href="Sea12.pdf" class="btn view-project-btn">عرض المشروع</a>
+                    <h3>نظام سي ستار النسخة الاحترافية</h3>
+                    <p>نظام اداري ومحاسبي متكامل لادارة المدارس والجامعات</p>
+                    <a href="Sea12.pdf" class="view-project-btn">
+                        عرض المشروع <i class="fas fa-arrow-left"></i>
+                    </a>
                 </div>
             </div>
-            <div class="portfolio-item digital-marketing">
+            
+            <div class="portfolio-item digital-marketing animate">
                 <img src="Road.jpg" alt="مشروع بناء موقع ويب">
                 <div class="item-overlay">
-                    <h3>      مشروع تصميم وبرمجة موقع ويب ل [كلية رواد النهضة ]</h3>
-                    <p> موقع ويب بتصميم احترافي ومتجاوب مع جميع الاجهزة </p>
-                    <a href="https://abdtot.github.io/Roadalnahdah" class="btn view-project-btn">عرض المشروع</a>
+                    <h3>تصميم وبرمجة موقع ويب لكلية رواد النهضة</h3>
+                    <p>موقع ويب بتصميم احترافي ومتجاوب مع جميع الاجهزة</p>
+                    <a href="https://abdtot.github.io/Roadalnahdah" class="view-project-btn">
+                        عرض المشروع <i class="fas fa-arrow-left"></i>
+                    </a>
                 </div>
             </div>
-            </section>
-    </main>
+        </div>
+    </section>
 
-    <footer class="main-footer">
+    <footer>
         <div class="footer-content">
-            <div class="footer-section about-us">
-                <h3>عن خدماتنا</h3>
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
                 <p>نحن نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
                 <div class="social-links">
                     <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
                     <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
                     <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
                     <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
-              </div>
+                </div>
             </div>
-            <div class="footer-section quick-links">
-                <h3>روابط سريعة</h3>
-                <ul>
-                    <li><a href="services.html">الخدمات</a></li>
-                    <li><a href="portfolio.html">أعمالنا</a></li>
-                    <li><a href="about.html">من نحن</a></li>
-                    <li><a href="contact.html">اتصل بنا</a></li>
-                    <li><a href="privacy-policy.html">سياسة الخصوصية</a></li>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="services.html"><i class="fas fa-arrow-left"></i> الخدمات</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> أعمالنا</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> من نحن</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li> 
+                    <li><a href="iot.html"><i class="fas fa-arrow-left"></i> دورة الذكاء الاصطناعي</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-arrow-left"></i> سياسة الخصوصية</a></li>
                 </ul>
             </div>
-            <div class="footer-section contact-info">
-                <h3>معلومات الاتصال</h3>
-                <p><i class="fas fa-map-marker-alt"></i> [ صنعاء, دارس, المدينة الخضراء]</p>
-                <p><i class="fas fa-phone"></i> [+967779168887 ]</p>
-                <p><i class="fas fa-envelope"></i> [ prcmased@gmail.com]</p>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
             </div>
         </div>
+        
         <div class="footer-bottom">
-            <p>&copy; 2025 [ SeaStar]. جميع الحقوق محفوظة.</p>
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
         </div>
     </footer>
-
-    <script src="script.js"></script>
+    
+    <script>
+        // إضافة تأثيرات الظهور عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // قائمة الهاتف المحمول
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+            
+            // فلتر معرض الأعمال
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
+            
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // إزالة الفئة النشطة من جميع الأزرار
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // إضافة الفئة النشطة للزر المحدد
+                    btn.classList.add('active');
+                    
+                    const filter = btn.getAttribute('data-filter');
+                    
+                    portfolioItems.forEach(item => {
+                        if (filter === 'all' || item.classList.contains(filter)) {
+                            item.style.display = 'block';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
