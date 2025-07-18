@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام SeaStar - إنشاء بطاقات الهوية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #8e44ad;
+            --cyber-indigo: #6a11cb;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(142, 68, 173, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(106, 17, 203, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(142, 68, 173, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(142, 68, 173, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-purple);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-purple);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(142, 68, 173, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(142, 68, 173, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(142, 68, 173, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(142, 68, 173, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-indigo), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-purple);
+            background: rgba(142, 68, 173, 0.1);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* القسم البطولي */
+        .hero-section {
+            min-height: 30vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 150px 40px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--cyber-indigo), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+        
+        /* أقسام لوحة التحكم */
+        .dashboard-section {
+            padding: 30px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, var(--cyber-indigo), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--cyber-purple);
+            border-radius: 3px;
+        }
+        
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: var(--cyber-purple);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .btn i {
+            font-size: 0.9rem;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(90deg, var(--cyber-indigo), var(--cyber-purple));
+            color: white;
+            box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3);
+        }
+        
+        .primary-btn:hover {
+            box-shadow: 0 10px 25px rgba(142, 68, 173, 0.5);
+        }
+        
+        /* تخطيط إدارة بطاقات الهوية */
+        .id-card-container {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+        }
+        
+        /* معاينة بطاقة الهوية */
+        .preview-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .preview-title {
+            font-size: 1.4rem;
+            color: var(--cyber-purple);
+        }
+        
+        .id-card {
+            width: 100%;
+            max-width: 380px;
+            height: 220px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin: 0 auto;
+            display: flex;
+        }
+        
+        .id-card-front {
+            width: 100%;
+            height: 100%;
+            padding: 15px;
+            color: #333;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 15px;
+            position: relative;
+        }
+        
+        .id-card-back {
+            width: 100%;
+            height: 100%;
+            padding: 15px;
+            color: #333;
+            position: relative;
+            display: none;
+        }
+        
+        .id-photo {
+            width: 100%;
+            height: 120px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .id-photo img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .id-logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .id-logo img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .id-qr {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .id-qr img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .id-signature {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 80px;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .id-signature img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        .id-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+            background: var(--cyber-indigo);
+            color: white;
+            padding: 3px;
+            border-radius: 3px;
+        }
+        
+        .id-details {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .id-field {
+            display: flex;
+            font-size: 0.8rem;
+        }
+        
+        .id-label {
+            font-weight: 600;
+            min-width: 100px;
+        }
+        
+        .id-value {
+            flex-grow: 1;
+        }
+        
+        /* نموذج إنشاء بطاقة الهوية */
+        .id-form-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-title {
+            font-size: 1.4rem;
+            color: var(--cyber-purple);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .input-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .input-label.required:after {
+            content: ' *';
+            color: var(--cyber-red);
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            width: 100%;
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--cyber-purple);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        /* قائمة بطاقات الهوية */
+        .cards-list-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .cards-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .cards-title {
+            font-size: 1.4rem;
+            color: var(--cyber-purple);
+        }
+        
+        .cards-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .cards-table th, .cards-table td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .cards-table th {
+            color: var(--cyber-purple);
+            font-weight: 700;
+        }
+        
+        .cards-table tbody tr {
+            transition: all 0.3s ease;
+        }
+        
+        .cards-table tbody tr:hover {
+            background: rgba(142, 68, 173, 0.1);
+        }
+        
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.9rem;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .edit-btn {
+            background: rgba(255, 221, 89, 0.1);
+        }
+        
+        .edit-btn:hover {
+            background: rgba(255, 221, 89, 0.3);
+        }
+        
+        .delete-btn {
+            background: rgba(255, 63, 52, 0.1);
+        }
+        
+        .delete-btn:hover {
+            background: rgba(255, 63, 52, 0.3);
+        }
+        
+        .action-cell {
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* حقول التخصيص */
+        .customize-section {
+            background: rgba(106, 17, 203, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(142, 68, 173, 0.3);
+        }
+        
+        .customize-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .customize-title {
+            font-size: 1.2rem;
+            color: var(--cyber-purple);
+        }
+        
+        .fields-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .field-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 8px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--cyber-purple);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .upload-btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .upload-btn:hover {
+            background: var(--cyber-purple);
+        }
+        
+        .upload-btn i {
+            font-size: 0.9rem;
+        }
+        
+        /* حقول بيانات المعاينة */
+        .preview-data-form {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .preview-data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        /* إشعارات */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            padding: 15px 25px;
+            background: var(--cyber-purple);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 2000;
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .id-card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .dashboard-section {
+                padding: 20px;
+            }
+            
+            .fields-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .preview-data-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .hero-section {
+                padding: 130px 20px 30px;
+            }
+            
+            .hero-title {
+                font-size: 1.7rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .section-actions {
+                flex-wrap: wrap;
+            }
+            
+            .id-card {
+                transform: scale(0.9);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="services.html">الخدمات</a></li>
+            <li><a href="portfolio.html">أعمالنا</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+            <li><a href="seastar-system.html">نظام سيستار</a></li>
+            <li><a href="user-guide.html">دليل المستخدم</a></li>
+            <li><a href="dashboard.html">لوحة التحكم</a></li>
+            <li><a href="id-cards.html" class="active">بطاقات الهوية</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <section class="hero-section">
+        <div class="hero-content animate">
+            <h1 class="hero-title">إدارة بطاقات الهوية</h1>
+            <p class="hero-subtitle">تصميم وتخصيص بطاقات الهوية للموظفين والطلاب وقابلة للتحميل</p>
+        </div>
+    </section>
+
+    <section class="dashboard-section">
+        <div class="section-header animate">
+            <div>
+                <h2 class="section-title">تصميم بطاقات الهوية</h2>
+                <p class="section-subtitle">أنشئ وقم بتخصيص بطاقات الهوية للموظفين والطلاب بسهولة ثم حمّلها لجهازك</p>
+            </div>
+            <button class="btn primary-btn" id="add-card-btn">
+                <i class="fas fa-plus"></i> إضافة بطاقة هوية
+            </button>
+        </div>
+
+        <div class="id-card-container">
+            <!-- الجانب الأيسر: المعاينة والقائمة -->
+            <div class="left-column">
+                <!-- معاينة بطاقة الهوية -->
+                <div class="preview-section animate">
+                    <div class="preview-header">
+                        <h3 class="preview-title">معاينة بطاقة الهوية</h3>
+                        <div class="btn-group">
+                            <button class="btn active" id="front-btn">الواجهة الأمامية</button>
+                            <button class="btn" id="back-btn">الواجهة الخلفية</button>
+                            <button class="btn primary-btn" id="download-btn">
+                                <i class="fas fa-download"></i> تحميل البطاقة
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="id-card">
+                        <div class="id-card-front">
+                            <div class="id-logo">
+                                <i class="fas fa-school"></i>
+                            </div>
+                            <div class="id-qr">
+                                <i class="fas fa-qrcode"></i>
+                            </div>
+                            <div class="id-signature">
+                                <i class="fas fa-signature"></i>
+                            </div>
+                            
+                            <div class="id-photo">
+                                <i class="fas fa-user" style="font-size: 2.5rem; color: #ccc;"></i>
+                            </div>
+                            
+                            <div class="id-details">
+                                <div class="id-title">بطاقة طالب</div>
+                                
+                                <div class="id-field">
+                                    <div class="id-label">الاسم:</div>
+                                    <div class="id-value" id="preview-name">محمد أحمد</div>
+                                </div>
+                                
+                                <div class="id-field">
+                                    <div class="id-label">رقم القبول:</div>
+                                    <div class="id-value" id="preview-id">STU-2023-001</div>
+                                </div>
+                                
+                                <div class="id-field">
+                                    <div class="id-label">الفصل:</div>
+                                    <div class="id-value" id="preview-class">العاشر (أ)</div>
+                                </div>
+                                
+                                <div class="id-field">
+                                    <div class="id-label">تاريخ الميلاد:</div>
+                                    <div class="id-value" id="preview-dob">01/01/2008</div>
+                                </div>
+                                
+                                <div class="id-field">
+                                    <div class="id-label">فصيلة الدم:</div>
+                                    <div class="id-value" id="preview-blood">O+</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="id-card-back">
+                            <div class="id-title">بطاقة طالب</div>
+                            <div class="id-details">
+                                <div class="id-field">
+                                    <div class="id-label">رقم الهاتف:</div>
+                                    <div class="id-value" id="preview-phone">+966500000000</div>
+                                </div>
+                                
+                                <div class="id-field">
+                                    <div class="id-label">العنوان:</div>
+                                    <div class="id-value" id="preview-address">الرياض - حي المروج</div>
+                                </div>
+                                
+                                <div class="id-field">
+                                    <div class="id-label">الحالة:</div>
+                                    <div class="id-value" id="preview-status">نشط</div>
+                                </div>
+                                
+                                <div class="id-field">
+                                    <div class="id-label">تاريخ الانتهاء:</div>
+                                    <div class="id-value" id="preview-expiry">01/06/2024</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- حقول بيانات المعاينة -->
+                    <div class="preview-data-form">
+                        <h4>تعبئة بيانات البطاقة</h4>
+                        <div class="preview-data-grid">
+                            <div class="input-group">
+                                <label class="input-label">الاسم الكامل</label>
+                                <input type="text" class="form-input" id="input-name" placeholder="ادخل الاسم الكامل">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">رقم القبول/الهوية</label>
+                                <input type="text" class="form-input" id="input-id" placeholder="ادخل رقم الهوية">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">الفصل/القسم</label>
+                                <input type="text" class="form-input" id="input-class" placeholder="ادخل الفصل أو القسم">
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">تاريخ الميلاد</label>
+                                <input type="text" class="form-input" id="input-dob" placeholder="ادخل تاريخ الميلاد">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- قائمة بطاقات الهوية -->
+                <div class="cards-list-section animate">
+                    <div class="cards-header">
+                        <h3 class="cards-title">قوالب بطاقات الهوية</h3>
+                        <div class="search-box">
+                            <input type="text" class="form-input" placeholder="ابحث عن بطاقة...">
+                        </div>
+                    </div>
+                    
+                    <table class="cards-table">
+                        <thead>
+                            <tr>
+                                <th>اسم البطاقة</th>
+                                <th>النوع</th>
+                                <th>تاريخ الإنشاء</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>بطاقة طالب أساسية</td>
+                                <td>طالب</td>
+                                <td>01/08/2023</td>
+                                <td class="action-cell">
+                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>بطاقة موظف إداري</td>
+                                <td>موظف</td>
+                                <td>15/07/2023</td>
+                                <td class="action-cell">
+                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>بطاقة معلم</td>
+                                <td>موظف</td>
+                                <td>20/06/2023</td>
+                                <td class="action-cell">
+                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>بطاقة زائر</td>
+                                <td>زائر</td>
+                                <td>10/05/2023</td>
+                                <td class="action-cell">
+                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- الجانب الأيمن: نموذج إنشاء بطاقة الهوية -->
+            <div class="right-column">
+                <div class="id-form-section animate">
+                    <div class="form-header">
+                        <h3 class="form-title">إنشاء بطاقة هوية جديدة</h3>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label class="input-label required">نوع بطاقة الهوية</label>
+                            <select class="form-select" id="card-type">
+                                <option value="">اختر النوع</option>
+                                <option value="student">طالب</option>
+                                <option value="employee">موظف</option>
+                                <option value="visitor">زائر</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label required">اسم البطاقة</label>
+                            <input type="text" class="form-input" id="card-name" placeholder="اسم قالب البطاقة">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">عنوان البطاقة</label>
+                            <input type="text" class="form-input" id="card-title" placeholder="عنوان يظهر على البطاقة">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">صورة خلفية البطاقة</label>
+                            <button class="upload-btn">
+                                <i class="fas fa-upload"></i> تصفح للرفع
+                            </button>
+                        </div>
+                        
+                        <!-- حقول التخصيص -->
+                        <div class="customize-section">
+                            <div class="customize-header">
+                                <h4 class="customize-title">حقول العمود الأيمن</h4>
+                            </div>
+                            
+                            <div class="fields-grid">
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>رقم القبول</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>الاسم</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>الفصل</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>تاريخ الميلاد</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>اسم الأب</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>اسم الأم</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>العنوان</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>الهاتف</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>فصيلة الدم</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>النوع</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>المسمى الوظيفي</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>تاريخ الانضمام</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>رقم تعريف الموظف</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- الصورة الشخصية -->
+                        <div class="customize-section">
+                            <div class="customize-header">
+                                <h4 class="customize-title">الصورة الشخصية</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <button class="upload-btn">
+                                <i class="fas fa-upload"></i> تحميل صورة افتراضية
+                            </button>
+                        </div>
+                        
+                        <!-- التوقيع -->
+                        <div class="customize-section">
+                            <div class="customize-header">
+                                <h4 class="customize-title">التوقيع</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <button class="upload-btn">
+                                <i class="fas fa-upload"></i> تحميل التوقيع
+                            </button>
+                        </div>
+                        
+                        <!-- رمز الاستجابة السريعة -->
+                        <div class="customize-section">
+                            <div class="customize-header">
+                                <h4 class="customize-title">رمز الاستجابة السريعة (QR Code)</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <button class="upload-btn">
+                                <i class="fas fa-upload"></i> تحميل رمز QR
+                            </button>
+                        </div>
+                        
+                        <!-- الشعار -->
+                        <div class="customize-section">
+                            <div class="customize-header">
+                                <h4 class="customize-title">الشعار</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <button class="upload-btn">
+                                <i class="fas fa-upload"></i> تحميل الشعار
+                            </button>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">نص الواجهة الأمامية</label>
+                            <textarea class="form-textarea" id="front-text" placeholder="أي نص إضافي للواجهة الأمامية"></textarea>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">نص الواجهة الخلفية</label>
+                            <textarea class="form-textarea" id="back-text" placeholder="أي نص إضافي للواجهة الخلفية"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn" id="reset-btn">
+                            <i class="fas fa-times"></i> إلغاء
+                        </button>
+                        <button class="btn primary-btn" id="save-btn">
+                            <i class="fas fa-save"></i> حفظ بطاقة الهوية
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- إشعار التنزيل -->
+    <div class="notification" id="download-notification">
+        <i class="fas fa-check-circle"></i> تم تحميل بطاقة الهوية بنجاح!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // تأثيرات الظهور عند التمرير
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            // قائمة الهاتف المحمول
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+            
+            // تفاعل أزرار التعديل في القائمة
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const cardName = row.cells[0].textContent;
+                    const cardType = row.cells[1].textContent;
+                    
+                    // تعبئة النموذج بالمعلومات
+                    document.getElementById('card-name').value = cardName;
+                    document.getElementById('card-type').value = cardType === 'طالب' ? 'student' : 
+                                                               cardType === 'موظف' ? 'employee' : 'visitor';
+                    
+                    // تغيير نص الزر لحفظ التعديلات
+                    document.getElementById('save-btn').innerHTML = '<i class="fas fa-save"></i> تحديث البطاقة';
+                    
+                    // التمرير إلى النموذج
+                    document.querySelector('.id-form-section').scrollIntoView({behavior: 'smooth'});
+                });
+            });
+            
+            // تفاعل أزرار الحذف في القائمة
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (confirm('هل أنت متأكد من رغبتك في حذف قالب بطاقة الهوية هذا؟ سيتم حذفه بشكل دائم.')) {
+                        const row = this.closest('tr');
+                        row.style.opacity = '0.5';
+                        setTimeout(() => {
+                            row.remove();
+                        }, 500);
+                    }
+                });
+            });
+            
+            // زر الإلغاء
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                document.getElementById('card-type').value = '';
+                document.getElementById('card-name').value = '';
+                document.getElementById('card-title').value = '';
+                document.getElementById('front-text').value = '';
+                document.getElementById('back-text').value = '';
+                document.getElementById('save-btn').innerHTML = '<i class="fas fa-save"></i> حفظ بطاقة الهوية';
+            });
+            
+            // زر الحفظ
+            document.getElementById('save-btn').addEventListener('click', function() {
+                const cardType = document.getElementById('card-type').value;
+                const cardName = document.getElementById('card-name').value;
+                
+                if (!cardType) {
+                    alert('الرجاء اختيار نوع بطاقة الهوية');
+                    return;
+                }
+                
+                if (!cardName) {
+                    alert('الرجاء إدخال اسم البطاقة');
+                    return;
+                }
+                
+                // رسالة نجاح
+                alert('تم حفظ بطاقة الهوية بنجاح!');
+                
+                // إعادة تعيين النموذج
+                document.getElementById('reset-btn').click();
+                
+                // إضافة البطاقة الجديدة للقائمة
+                const table = document.querySelector('.cards-table tbody');
+                const newRow = document.createElement('tr');
+                
+                const typeText = cardType === 'student' ? 'طالب' : 
+                               cardType === 'employee' ? 'موظف' : 'زائر';
+                
+                const today = new Date();
+                const dateStr = `${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`;
+                
+                newRow.innerHTML = `
+                    <td>${cardName}</td>
+                    <td>${typeText}</td>
+                    <td>${dateStr}</td>
+                    <td class="action-cell">
+                        <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                
+                table.prepend(newRow);
+            });
+            
+            // تفاعل التبديل بين الواجهة الأمامية والخلفية
+            const frontBtn = document.getElementById('front-btn');
+            const backBtn = document.getElementById('back-btn');
+            const frontCard = document.querySelector('.id-card-front');
+            const backCard = document.querySelector('.id-card-back');
+            
+            frontBtn.addEventListener('click', function() {
+                frontBtn.classList.add('active');
+                backBtn.classList.remove('active');
+                frontCard.style.display = 'grid';
+                backCard.style.display = 'none';
+            });
+            
+            backBtn.addEventListener('click', function() {
+                backBtn.classList.add('active');
+                frontBtn.classList.remove('active');
+                backCard.style.display = 'block';
+                frontCard.style.display = 'none';
+            });
+            
+            // تفاعل التبديل للحقول
+            document.querySelectorAll('.toggle-switch input').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const fieldItem = this.closest('.field-item');
+                    if (this.checked) {
+                        fieldItem.style.backgroundColor = 'rgba(142, 68, 173, 0.1)';
+                    } else {
+                        fieldItem.style.backgroundColor = '';
+                    }
+                });
+            });
+            
+            // تحديث معاينة البطاقة عند تغيير البيانات
+            const inputFields = [
+                'input-name', 'input-id', 'input-class', 'input-dob'
+            ];
+            
+            inputFields.forEach(id => {
+                document.getElementById(id).addEventListener('input', function() {
+                    const previewId = id.replace('input-', 'preview-');
+                    const previewElement = document.getElementById(previewId);
+                    if (previewElement) {
+                        previewElement.textContent = this.value || previewElement.getAttribute('data-default');
+                    }
+                });
+            });
+            
+            // تعيين القيم الافتراضية
+            document.getElementById('preview-name').setAttribute('data-default', 'محمد أحمد');
+            document.getElementById('preview-id').setAttribute('data-default', 'STU-2023-001');
+            document.getElementById('preview-class').setAttribute('data-default', 'العاشر (أ)');
+            document.getElementById('preview-dob').setAttribute('data-default', '01/01/2008');
+            
+            // زر تحميل البطاقة
+            document.getElementById('download-btn').addEventListener('click', function() {
+                // تحديد البطاقة المراد تحميلها (الأمامية أو الخلفية)
+                const cardToDownload = frontBtn.classList.contains('active') ? 
+                    document.querySelector('.id-card-front') : 
+                    document.querySelector('.id-card-back');
+                
+                html2canvas(cardToDownload, {
+                    backgroundColor: null,
+                    scale: 3 // جودة عالية
+                }).then(canvas => {
+                    // إنشاء رابط للتحميل
+                    const link = document.createElement('a');
+                    link.download = 'بطاقة_الهوية.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    
+                    // عرض إشعار التنزيل
+                    const notification = document.getElementById('download-notification');
+                    notification.classList.add('show');
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 3000);
+                });
+            });
+            
+            // تحديث عنوان البطاقة عند التغيير
+            document.getElementById('card-title').addEventListener('input', function() {
+                const titleElement = document.querySelector('.id-title');
+                if (titleElement) {
+                    titleElement.textContent = this.value || 'بطاقة طالب';
+                }
+            });
+            
+            // تحديث اسم البطاقة عند التغيير
+            document.getElementById('card-name').addEventListener('input', function() {
+                const titleElement = document.querySelector('.id-title');
+                if (titleElement && !document.getElementById('card-title').value) {
+                    titleElement.textContent = this.value || 'بطاقة طالب';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
