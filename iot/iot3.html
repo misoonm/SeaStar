@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اليوم الثالث: تطبيقات متقدمة وأخلاقيات الذكاء الاصطناعي - أكاديمية SeaStar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --deep-space: #0a0e2a;
+            --galaxy-blue: #1a1f4d;
+            --neon-blue: #4e54c8;
+            --neon-purple: #8f94fb;
+            --ai-green: #00ff9d;
+            --ai-pink: #ff00cc;
+            --ai-orange: #ff7e5f;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --ai-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-space), var(--galaxy-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(79, 84, 200, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(143, 148, 251, 0.1) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 157, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 204, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .ai-element {
+            position: fixed;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .neon-pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--ai-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(0, 255, 157, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 255, 157, 0); }
+        }
+        
+        .ai-chip {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            transform: rotate(45deg);
+            z-index: -1;
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--ai-green), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--ai-green);
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--ai-green);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(79, 84, 200, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 84, 200, 0.5);
+        }
+        
+        /* القسم البطولي */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--ai-green), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .day-counter {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 30px;
+            border-radius: 50px;
+            margin-top: 20px;
+            border: 1px solid var(--neon-blue);
+        }
+        
+        .day-counter i {
+            color: var(--ai-green);
+            font-size: 1.2rem;
+        }
+        
+        /* الأقسام العامة */
+        section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--ai-green), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* محتوى اليوم */
+        .content-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        
+        .content-text {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .content-visual {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .visual-card {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+        }
+        
+        .topic-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--ai-green);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .topic-title i {
+            background: rgba(0, 255, 157, 0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .topic-content {
+            margin-bottom: 30px;
+        }
+        
+        .topic-content p {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+        
+        /* مؤشرات التقدم */
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            margin: 40px 0;
+            position: relative;
+        }
+        
+        .progress-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1;
+        }
+        
+        .progress-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step.active .progress-circle {
+            background: var(--neon-blue);
+            border-color: var(--ai-green);
+            box-shadow: 0 0 15px rgba(78, 84, 200, 0.7);
+        }
+        
+        .progress-step.completed .progress-circle {
+            background: var(--ai-green);
+            color: var(--deep-space);
+        }
+        
+        .progress-label {
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        /* صور توضيحية */
+        .illustration {
+            width: 100%;
+            border-radius: 15px;
+            margin: 20px 0;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .illustration:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border-color: var(--ai-green);
+        }
+        
+        .illustration-caption {
+            text-align: center;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        /* تقنيات الذكاء الاصطناعي */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .tech-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .tech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--neon-purple);
+        }
+        
+        .tech-icon {
+            font-size: 2.5rem;
+            color: var(--neon-purple);
+            margin-bottom: 20px;
+        }
+        
+        .tech-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        /* التحديات الأخلاقية */
+        .ethics-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .ethic-card {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .ethic-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--ai-orange);
+        }
+        
+        .ethic-icon {
+            font-size: 3rem;
+            color: var(--ai-orange);
+            margin-bottom: 20px;
+        }
+        
+        .ethic-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--ai-orange);
+        }
+        
+        /* مستقبل الذكاء الاصطناعي */
+        .future-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 50px;
+            margin: 80px 0;
+        }
+        
+        .future-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .future-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .future-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--ai-green);
+        }
+        
+        .future-icon {
+            font-size: 2.5rem;
+            color: var(--ai-green);
+            margin-bottom: 20px;
+        }
+        
+        .future-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        /* قسم الانتقال للختام */
+        .next-section {
+            text-align: center;
+            background: linear-gradient(135deg, var(--ai-pink), var(--neon-blue));
+            border-radius: 20px;
+            padding: 80px 40px;
+            margin: 50px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .next-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+        
+        .next-text {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+        
+        .next-btn {
+            padding: 18px 45px;
+            background: var(--deep-space);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .next-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            background: rgba(10, 14, 42, 0.9);
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 20px 30px;
+            margin-top: 100px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--ai-green);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--ai-green);
+            padding-right: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--ai-green);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.4rem;
+            }
+            
+            .hero p, .section-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding-top: 150px;
+                min-height: 50vh;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .content-container {
+                flex-direction: column;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* تأثيرات الذكاء الاصطناعي */
+        .ai-brain {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="rgba(0, 255, 157, 0.1)" d="M12,3A9,9 0 0,1 21,12A9,9 0 0,1 12,21A9,9 0 0,1 3,12A9,9 0 0,1 12,3M12,19C15.31,19 18,16.31 18,13C18,10.07 15.94,7.56 13.14,7.11L14.25,5.41L13.11,4.58L11.5,6.5L9.89,4.58L8.75,5.41L9.86,7.11C7.06,7.56 5,10.07 5,13C5,16.31 7.69,19 11,19H12M8,12H10V10H8V12M14,10H16V12H14V10Z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .ai-circuit {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="rgba(143, 148, 251, 0.1)" d="M8,3V5H11V10.27C10.38,10.63 10,11.29 10,12V13H14V12C14,11.29 13.62,10.63 13,10.27V5H16V3H8M10,15V16C10,17.1 10.9,18 12,18C13.1,18 14,17.1 14,16V15H10Z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.1;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفيات متحركة -->
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <!-- عناصر رسومية متحركة -->
+    <div class="ai-brain" style="top: 10%; left: 15%;"></div>
+    <div class="ai-circuit" style="bottom: 15%; right: 10%;"></div>
+    <div class="neon-pulse" style="top: 20%; left: 20%;"></div>
+    <div class="neon-pulse" style="bottom: 25%; right: 25%;"></div>
+    <div class="ai-chip" style="width: 100px; height: 100px; top: 30%; right: 15%;"></div>
+    
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="logo">أكاديمية SeaStar</div>
+        <div class="nav-links">
+            <a href="index.html">الرئيسية</a>
+            <a href="iot1.html">اليوم الأول</a>
+            <a href="iot2.html">اليوم الثاني</a>
+            <a href="#" class="active">اليوم الثالث</a>
+            <a href="#contact">اتصل بنا</a>
+        </div>
+        <button class="nav-btn">
+            <i class="fas fa-robot"></i> ابدأ التعلم
+        </button>
+    </nav>
+    
+    <!-- القسم البطولي -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>اليوم الثالث: تطبيقات متقدمة وأخلاقيات الذكاء الاصطناعي</h1>
+            <p>نختتم رحلتنا باستكشاف أحدث التطورات في الذكاء الاصطناعي التوليدي، معالجة اللغات الطبيعية، الرؤية الحاسوبية، ونناقش التحديات الأخلاقية التي تواجه هذه التقنية الثورية.</p>
+            
+            <div class="day-counter">
+                <i class="fas fa-calendar-alt"></i>
+                <span>اليوم الثالث من دورة الذكاء الاصطناعي - رحلة في عالم المستقبل</span>
+            </div>
+        </div>
+    </section>
+    
+    <!-- مؤشر التقدم -->
+    <section>
+        <div class="progress-container">
+            <div class="progress-step completed">
+                <div class="progress-circle"><i class="fas fa-check"></i></div>
+                <div class="progress-label">مقدمة إلى الذكاء الاصطناعي</div>
+            </div>
+            <div class="progress-step completed">
+                <div class="progress-circle"><i class="fas fa-check"></i></div>
+                <div class="progress-label">أسرار التعلم الآلي</div>
+            </div>
+            <div class="progress-step active">
+                <div class="progress-circle">3</div>
+                <div class="progress-label">تطبيقات متقدمة</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- الذكاء الاصطناعي التوليدي -->
+    <section id="generative-ai">
+        <div class="section-header">
+            <h2 class="section-title">الذكاء الاصطناعي التوليدي: ثورة الإبداع الرقمي</h2>
+            <p class="section-subtitle">من توليد النصوص إلى إنشاء الصور والفيديوهات، كيف يغير الذكاء الاصطناعي التوليدي مفهوم الإبداع؟</p>
+        </div>
+        
+        <div class="content-container">
+            <div class="content-text">
+                <div class="topic-title">
+                    <i class="fas fa-wand-magic-sparkles"></i>
+                    <h3>ما هو الذكاء الاصطناعي التوليدي؟</h3>
+                </div>
+                <div class="topic-content">
+                    <p>الذكاء الاصطناعي التوليدي هو نوع من الذكاء الاصطناعي القادر على إنشاء محتوى جديد وأصلي مثل النصوص، الصور، الموسيقى، والفيديوهات. بدلاً من مجرد تحليل البيانات، يمكنه إنتاج محتوى إبداعي يشبه المحتوى البشري.</p>
+                    
+                    <p>أشهر أمثلة الذكاء الاصطناعي التوليدي:</p>
+                    
+                    <ul class="day-points">
+                        <li><strong>ChatGPT:</strong> نموذج لغوي قادر على توليد نصوص محادثة بشرية</li>
+                        <li><strong>DALL-E & Midjourney:</strong> نماذج تولد صوراً من وصف نصي</li>
+                        <li><strong>Deepfake:</strong> تقنية توليد فيديوهات واقعية لأشخاص يقولون أو يفعلون أشياء لم يفعلوها</li>
+                        <li><strong>Jukebox:</strong> نموذج من OpenAI لتوليد الموسيقى</li>
+                    </ul>
+                </div>
+                
+                <div class="topic-title">
+                    <i class="fas fa-image"></i>
+                    <h3>كيف يعمل توليد الصور؟</h3>
+                </div>
+                <div class="topic-content">
+                    <p>نماذج مثل DALL-E وMidjourney تستخدم تقنية تسمى "الانتشار العكسي" (Diffusion Models). حيث تبدأ من ضوضاء عشوائية ثم تزيل الضوضاء تدريجياً لتكوين صورة تطابق الوصف النصي.</p>
+                    
+                    <p>الخطوات الأساسية:</p>
+                    
+                    <ol class="day-points">
+                        <li>تحويل الوصف النصي إلى تمثيل رياضي</li>
+                        <li>بدء عملية الانتشار من ضوضاء عشوائية</li>
+                        <li>إزالة الضوضاء تدريجياً بناءً على التمثيل النصي</li>
+                        <li>تكرار العملية حتى الوصول إلى الصورة النهائية</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="content-visual">
+                <div class="visual-card">
+                    <img src="https://images.unsplash.com/photo-1682695796497-31a44224d6d6?q=80&w=2070&auto=format&fit=crop" alt="الذكاء الاصطناعي التوليدي" class="illustration">
+                    <p class="illustration-caption">صور مولدة بالذكاء الاصطناعي باستخدام وصف نصي</p>
+                    
+                    <img src="https://images.unsplash.com/photo-1634128221889-82ed6efebfc3?q=80&w=2070&auto=format&fit=crop" alt="توليد الصور" class="illustration">
+                    <p class="illustration-caption">عملية تحول الضوضاء إلى صورة في نماذج الانتشار</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- معالجة اللغات الطبيعية -->
+    <section id="nlp" style="background: rgba(0,0,0,0.2); border-radius: 20px;">
+        <div class="section-header">
+            <h2 class="section-title">معالجة اللغات الطبيعية (NLP)</h2>
+            <p class="section-subtitle">كيف تفهم الآلة لغة البشر وتتفاعل معها؟</p>
+        </div>
+        
+        <div class="content-container">
+            <div class="content-visual">
+                <div class="visual-card">
+                    <img src="https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?q=80&w=1974&auto=format&fit=crop" alt="معالجة اللغات الطبيعية" class="illustration">
+                    <p class="illustration-caption">تمثيل الكلمات في فضاء متعدد الأبعاد</p>
+                    
+                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=2070&auto=format&fit=crop" alt="تحليل المشاعر" class="illustration">
+                    <p class="illustration-caption">تحليل المشاعر في النصوص باستخدام الذكاء الاصطناعي</p>
+                </div>
+            </div>
+            
+            <div class="content-text">
+                <div class="topic-title">
+                    <i class="fas fa-language"></i>
+                    <h3>فهم اللغة البشرية</h3>
+                </div>
+                <div class="topic-content">
+                    <p>معالجة اللغات الطبيعية (NLP) هي مجال فرعي من الذكاء الاصطناعي يركز على تفاعل الحواسيب مع اللغة البشرية. الهدف هو تمكين الآلات من فهم، تفسير، وتوليد لغة بشرية بشكل ذكي.</p>
+                    
+                    <p>تطبيقات NLP:</p>
+                    
+                    <ul class="day-points">
+                        <li>الترجمة الآلية الفورية</li>
+                        <li>المساعدات الذكية (Siri, Google Assistant)</li>
+                        <li>تحليل المشاعر في النصوص</li>
+                        <li>تلخيص المستندات تلقائياً</li>
+                        <li>الرد الآلي على استفسارات العملاء</li>
+                    </ul>
+                </div>
+                
+                <div class="topic-title">
+                    <i class="fas fa-network-wired"></i>
+                    <h3>نماذج اللغة الكبيرة (LLMs)</h3>
+                </div>
+                <div class="topic-content">
+                    <p>نماذج مثل GPT-4 وBERT تمثل ثورة في مجال NLP. هذه النماذج تم تدريبها على مليارات الكلمات وتستطيع فهم السياق، توليد نصوص متماسكة، والإجابة على أسئلة معقدة.</p>
+                    
+                    <p>كيف تعمل:</p>
+                    
+                    <ol class="day-points">
+                        <li>التدريب على كميات هائلة من النصوص</li>
+                        <li>تعلم تمثيلات متقدمة للكلمات والعلاقات بينها</li>
+                        <li>استخدام آليات الانتباه (Attention) لفهم السياق</li>
+                        <li>التوليد التكراري للنصوص كلمة بكلمة</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- الرؤية الحاسوبية -->
+    <section id="computer-vision">
+        <div class="section-header">
+            <h2 class="section-title">الرؤية الحاسوبية: عيون الذكاء الاصطناعي</h2>
+            <p class="section-subtitle">كيف ترى الآلة العالم من حولها وتفهمه؟</p>
+        </div>
+        
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <h3 class="tech-title">التعرف على الصور</h3>
+                <p>تمييز الأشياء والأشخاص والمشاهد في الصور. تستخدم في كاميرات المراقبة الذكية وتطبيقات الصور.</p>
+                <img src="https://images.unsplash.com/photo-1610465299993-e95f6caa7c8c?q=80&w=2070&auto=format&fit=crop" alt="التعرف على الصور" class="illustration">
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h3 class="tech-title">تحليل الفيديو</h3>
+                <p>تتبع الحركات وتحليل السلوك في الفيديوهات. تستخدم في أنظمة المرور الذكية والتحليل الرياضي.</p>
+                <img src="https://images.unsplash.com/photo-1559705421-4ae9bf6fabb5?q=80&w=2070&auto=format&fit=crop" alt="تحليل الفيديو" class="illustration">
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-car"></i>
+                </div>
+                <h3 class="tech-title">السيارات الذاتية القيادة</h3>
+                <p>استخدام الرؤية الحاسوبية لتمييز الطريق، المشاة، والإشارات المرورية للقيادة الذاتية.</p>
+                <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=2070&auto=format&fit=crop" alt="السيارات الذاتية القيادة" class="illustration">
+            </div>
+            
+            <div class="tech-card">
+                <div class="tech-icon">
+                    <i class="fas fa-medkit"></i>
+                </div>
+                <h3 class="tech-title">التشخيص الطبي</h3>
+                <p>تحليل الصور الطبية (أشعة X، رنين مغناطيسي) للكشف عن الأمراض بدقة عالية.</p>
+                <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop" alt="التشخيص الطبي" class="illustration">
+            </div>
+        </div>
+    </section>
+    
+    <!-- التحديات الأخلاقية -->
+    <section id="ai-ethics">
+        <div class="section-header">
+            <h2 class="section-title">التحديات الأخلاقية للذكاء الاصطناعي</h2>
+            <p class="section-subtitle">مع تطور الذكاء الاصطناعي، تظهر تحديات أخلاقية كبيرة يجب معالجتها</p>
+        </div>
+        
+        <div class="ethics-container">
+            <div class="ethic-card">
+                <div class="ethic-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <h3 class="ethic-title">التحيز في الخوارزميات</h3>
+                <p>الخوارزميات قد تكرس التحيزات الموجودة في بيانات التدريب، مما يؤدي إلى تمييز ضد فئات معينة.</p>
+                <img src="https://images.unsplash.com/photo-1589652717521-10c0d092dea9?q=80&w=2070&auto=format&fit=crop" alt="التحيز في الخوارزميات" class="illustration">
+            </div>
+            
+            <div class="ethic-card">
+                <div class="ethic-icon">
+                    <i class="fas fa-user-secret"></i>
+                </div>
+                <h3 class="ethic-title">الخصوصية والمراقبة</h3>
+                <p>تقنيات التعرف على الوجوه والتحليل السلوكي تهدد خصوصية الأفراد وتزيد من قدرات المراقبة.</p>
+                <img src="https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?q=80&w=2070&auto=format&fit=crop" alt="الخصوصية والمراقبة" class="illustration">
+            </div>
+            
+            <div class="ethic-card">
+                <div class="ethic-icon">
+                    <i class="fas fa-hard-hat"></i>
+                </div>
+                <h3 class="ethic-title">التأثير على الوظائف</h3>
+                <p>الذكاء الاصطناعي قد يحل محل العديد من الوظائف، مما يتطلب إعادة تأهيل العمالة وتطوير مهارات جديدة.</p>
+                <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=2070&auto=format&fit=crop" alt="التأثير على الوظائف" class="illustration">
+            </div>
+            
+            <div class="ethic-card">
+                <div class="ethic-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="ethic-title">المسؤولية القانونية</h3>
+                <p>من المسؤول عن أخطاء الذكاء الاصطناعي؟ تحديات في تحديد المسؤولية القانونية للأنظمة الذكية.</p>
+                <img src="https://images.unsplash.com/photo-1589391886645-d51941baf7fb?q=80&w=2070&auto=format&fit=crop" alt="المسؤولية القانونية" class="illustration">
+            </div>
+        </div>
+    </section>
+    
+    <!-- مستقبل الذكاء الاصطناعي -->
+    <section id="ai-future">
+        <div class="section-header">
+            <h2 class="section-title">مستقبلك في عالم الذكاء الاصطناعي</h2>
+            <p class="section-subtitle">كيف تستعد للعمل في مجال الذكاء الاصطناعي وتشكيل مستقبلك المهني؟</p>
+        </div>
+        
+        <div class="future-section">
+            <div class="future-grid">
+                <div class="future-card">
+                    <div class="future-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="future-title">المهارات المطلوبة</h3>
+                    <p>تعلم البرمجة (بايثون)، الرياضيات (إحصاء، جبر خطي)، التعلم الآلي، والتعلم العميق.</p>
+                </div>
+                
+                <div class="future-card">
+                    <div class="future-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3 class="future-title">المسارات الوظيفية</h3>
+                    <p>مهندس تعلم آلي، عالم بيانات، باحث في الذكاء الاصطناعي، مطور رؤية حاسوبية، متخصص NLP.</p>
+                </div>
+                
+                <div class="future-card">
+                    <div class="future-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="future-title">فرص ريادة الأعمال</h3>
+                    <p>استخدام الذكاء الاصطناعي لتطوير حلول مبتكرة في مجالات الصحة، التعليم، الزراعة، والخدمات.</p>
+                </div>
+                
+                <div class="future-card">
+                    <div class="future-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="future-title">التعلم المستمر</h3>
+                    <p>مواكبة التطورات السريعة في المجال من خلال دورات متخصصة، مؤتمرات، ومشاريع عملية.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- الانتقال للختام -->
+    <section class="next-section">
+        <h2 class="next-title">لقد أكملت رحلتك في عالم الذكاء الاصطناعي!</h2>
+        <p class="next-text">تهانينا! لقد اكتسبت فهمًا شاملاً لأساسيات الذكاء الاصطناعي وتطبيقاته المتقدمة. الآن حان الوقت لتطبيق ما تعلمته والمشاركة في تشكيل المستقبل الرقمي.</p>
+        
+        <a href="index.html" class="next-btn">
+            <i class="fas fa-trophy"></i> احصل على شهادة إتمام الدورة
+        </a>
+    </section>
+    
+    <!-- التذييل -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">أكاديمية SeaStar</h3>
+                <p>نقدم دورات متخصصة في التقنيات الحديثة لتأهيل جيل المستقبل لمتطلبات سوق العمل في العصر الرقمي.</p>
+                
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="iot1.html">اليوم الأول</a></li>
+                    <li><a href="iot2.html">اليوم الثاني</a></li>
+                    <li><a href="#">اليوم الثالث</a></li>
+                    <li><a href="#">المدربين</a></li>
+                    <li><a href="#">المدونة</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">اتصل بنا</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> info@seastar-academy.com</li>
+                    <li><i class="fas fa-phone"></i> +967 123 456 789</li>
+                    <li><i class="fas fa-map-marker-alt"></i> اليمن، صنعاء - المدينة التقنية</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 أكاديمية SeaStar. جميع الحقوق محفوظة.
+        </div>
+    </footer>
+    
+    <script>
+        // إضافة تأثيرات الظهور عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // تحريك العناصر الرسومية
+            function moveElements() {
+                document.querySelectorAll('.ai-element, .neon-pulse').forEach(el => {
+                    const speed = 0.05;
+                    const x = (Math.sin(Date.now() * speed * 0.001) * 5) + 'px';
+                    const y = (Math.cos(Date.now() * speed * 0.001) * 5) + 'px';
+                    el.style.transform = `translate(${x}, ${y})`;
+                });
+                
+                requestAnimationFrame(moveElements);
+            }
+            
+            moveElements();
+        });
+    </script>
+</body>
+</html>
