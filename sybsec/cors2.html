@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اليوم الثالث: التطبيق العملي والأدوات الأساسية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-green), var(--cyber-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--cyber-green);
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--cyber-green);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(90deg, var(--cyber-green), var(--cyber-blue));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 168, 255, 0.5);
+        }
+        
+        /* القسم البطولي */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-green), var(--cyber-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        /* الأقسام العامة */
+        section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-green), var(--cyber-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* ورش العمل */
+        .workshop-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 80px;
+        }
+        
+        .workshop-header {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(11, 232, 129, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            border-left: 5px solid var(--cyber-green);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .workshop-number {
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-bottom: 20px;
+            width: fit-content;
+        }
+        
+        .workshop-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--cyber-green);
+        }
+        
+        .workshop-steps {
+            flex: 2;
+            min-width: 300px;
+        }
+        
+        .step {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            border-color: var(--cyber-green);
+        }
+        
+        .step-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            color: var(--cyber-green);
+        }
+        
+        .step-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(11, 232, 129, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+        
+        .step-content {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .step-text {
+            flex: 1;
+            min-width: 300px;
+            font-size: 1.2rem;
+        }
+        
+        .step-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .step-image:hover {
+            transform: scale(1.03);
+        }
+        
+        .step-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .step-action {
+            background: rgba(11, 232, 129, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 3px solid var(--cyber-green);
+        }
+        
+        /* السيناريوهات */
+        .scenarios-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .scenario-card {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(156, 136, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .scenario-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .scenario-title {
+            font-size: 1.8rem;
+            color: var(--cyber-purple);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .scenario-content {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .solution {
+            background: rgba(156, 136, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 3px solid var(--cyber-purple);
+        }
+        
+        /* مستقبل الأمن السيبراني */
+        .career-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 50px;
+            margin-top: 50px;
+        }
+        
+        .career-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        .career-card {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .career-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--cyber-blue);
+        }
+        
+        .career-icon {
+            font-size: 3rem;
+            color: var(--cyber-blue);
+            margin-bottom: 20px;
+        }
+        
+        .career-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--cyber-blue);
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 20px 30px;
+            margin-top: 100px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--cyber-green);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.4rem;
+            }
+            
+            .hero p, .section-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding-top: 150px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .workshop-header {
+                padding: 30px 20px;
+            }
+            
+            .career-section {
+                padding: 30px 20px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفيات متحركة -->
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <!-- عناصر رسومية متحركة -->
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="logo">عبدالله المؤيد</div>
+        <div class="nav-links">
+            <a href="https://tinyurl.com/abdullahabbass">الرئيسية</a>
+            <a href="cors.html">اليوم الأول</a>
+            <a href="cors1.html">اليوم الثاني</a>
+            <a href="cors2.html" class="active">اليوم الثالث</a>
+            <a href="#contact">اتصل بنا</a>
+        </div>
+        <button class="nav-btn">
+            <i class="fas fa-lock"></i> ابدأ التعلم
+        </button>
+    </nav>
+    
+    <!-- القسم البطولي -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>اليوم الثالث: التطبيق العملي والأدوات الأساسية</h1>
+            <p>أهلاً بك في اليوم الثالث والأخير من دورتنا المكثفة في الأمن السيبراني! لقد قطعنا شوطًا رائعًا حتى الآن. اليوم هو يوم التطبيق العملي! سنضع كل ما تعلمناه موضع التنفيذ من خلال ورش عمل تفاعلية، وستكتسب مهارات حقيقية ستساعدك على حماية نفسك وبياناتك في حياتك اليومية.</p>
+        </div>
+    </section>
+    
+    <!-- ورش العمل العملية -->
+    <section>
+        <div class="section-header">
+            <h2 class="section-title">ورش عمل عملية: حماية حساباتك وبياناتك</h2>
+            <p class="section-subtitle">هذا هو الجزء الأكثر أهمية في الدورة. سأوجهك خطوة بخطوة لتطبيق إجراءات أمنية على حساباتك وأجهزتك</p>
+        </div>
+        
+        <!-- ورشة عمل 1 -->
+        <div class="workshop-container">
+            <div class="workshop-header">
+                <div class="workshop-number">ورشة العمل 1</div>
+                <h3 class="workshop-title">تأمين حساباتك الشخصية</h3>
+                <p>درعك الأول ضد المخترقين وحماية حساباتك الشخصية</p>
+            </div>
+            
+            <div class="workshop-steps">
+                <!-- الخطوة 1 -->
+                <div class="step animate">
+                    <div class="step-title">
+                        <div class="step-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>المصادقة متعددة العوامل (MFA / 2FA)</h3>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>ببساطة، هي إضافة خطوة ثانية للتحقق من هويتك بعد إدخال كلمة المرور. فكر فيها كقفلين لباب واحد. حتى لو عرف أحدهم كلمة مرورك، فلن يتمكن من الدخول بدون المفتاح الثاني.</p>
+                            
+                            <div class="step-action">
+                                <h4>كيف تفعّلها؟</h4>
+                                <ol>
+                                    <li>افتح حسابك على Google أو Facebook</li>
+                                    <li>اذهب إلى "إعدادات الأمان" أو "التحقق بخطوتين"</li>
+                                    <li>اتبع الخطوات لتشغيل الميزة</li>
+                                    <li>اختر طريقة التحقق (رسالة نصية، تطبيق مصادقة)</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1586769852836-bc069f19e1b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="المصادقة متعددة العوامل">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- الخطوة 2 -->
+                <div class="step animate">
+                    <div class="step-title">
+                        <div class="step-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <h3>إنشاء كلمات مرور قوية</h3>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>كلمات المرور الضعيفة هي أسهل طريقة للمخترقين للدخول. استخدم استراتيجيات فعالة لإنشاء كلمات مرور يصعب اختراقها.</p>
+                            
+                            <div class="step-action">
+                                <h4>استراتيجيات عملية:</h4>
+                                <ul>
+                                    <li>استخدم 12 حرفًا على الأقل</li>
+                                    <li>امزج بين الحروف الكبيرة والصغيرة والأرقام والرموز</li>
+                                    <li>استخدم جملة يسهل تذكرها: "أحب القهوة في الصباح الباكر2025!"</li>
+                                    <li>استخدم مدير كلمات المرور لتوليد كلمات قوية</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1596466596120-2a8e2c5d5d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="كلمات مرور قوية">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- الخطوة 3 -->
+                <div class="step animate">
+                    <div class="step-title">
+                        <div class="step-icon">
+                            <i class="fas fa-fish"></i>
+                        </div>
+                        <h3>التعرف على رسائل التصيد</h3>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>تعرّف على رسائل التصيد الاحتيالي قبل أن تقع في فخها. كن محققًا خاصًا وتعلّم كيف تحلل الرسائل المشبوهة.</p>
+                            
+                            <div class="step-action">
+                                <h4>علامات الاحتيال:</h4>
+                                <ul>
+                                    <li>عنوان مرسل غريب أو غير معروف</li>
+                                    <li>روابط لا تطابق النص الظاهر</li>
+                                    <li>أخطاء إملائية ونحوية</li>
+                                    <li>شعور بالإلحاح أو التهديد</li>
+                                    <li>طلبات معلومات شخصية أو مالية</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1589652717521-10c0d092dea9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="رسائل التصيد">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ورشة عمل 2 -->
+        <div class="workshop-container">
+            <div class="workshop-header">
+                <div class="workshop-number">ورشة العمل 2</div>
+                <h3 class="workshop-title">الثغرات الأمنية البسيطة</h3>
+                <p>ابدأ من منزلك! تعرف على الثغرات وكيفية سدها</p>
+            </div>
+            
+            <div class="workshop-steps">
+                <!-- الخطوة 1 -->
+                <div class="step animate">
+                    <div class="step-title">
+                        <div class="step-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <h3>تحديث البرامج والأنظمة</h3>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>التحديثات لا تضيف ميزات جديدة فقط، بل تسد الثغرات الأمنية المكتشفة. لا تؤجل تحديث أجهزتك وبرامجك.</p>
+                            
+                            <div class="step-action">
+                                <h4>كيف تقوم بالتحديث؟</h4>
+                                <ol>
+                                    <li>لنظام التشغيل: تفعيل التحديث التلقائي</li>
+                                    <li>للتطبيقات: تحديث من متجر التطبيقات</li>
+                                    <li>للسيرفرات: تحديث دوري للبرامج الخلفية</li>
+                                    <li>افحص أجهزتك أسبوعيًا للتأكد من التحديثات</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="تحديث البرامج">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ورشة عمل 3 -->
+        <div class="workshop-container">
+            <div class="workshop-header">
+                <div class="workshop-number">ورشة العمل 3</div>
+                <h3 class="workshop-title">أدوات الحماية الأساسية</h3>
+                <p>رفيقك في الأمن الرقمي لا غنى عنه</p>
+            </div>
+            
+            <div class="workshop-steps">
+                <!-- الخطوة 1 -->
+                <div class="step animate">
+                    <div class="step-title">
+                        <div class="step-icon">
+                            <i class="fas fa-shield-virus"></i>
+                        </div>
+                        <h3>برامج مكافحة الفيروسات</h3>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>برنامج مصمم للكشف عن البرامج الضارة وإزالتها أو منعها من العمل على جهازك.</p>
+                            
+                            <div class="step-action">
+                                <h4>كيف تستخدمها؟</h4>
+                                <ol>
+                                    <li>اختر برنامجًا موثوقًا (Avast، AVG، Kaspersky)</li>
+                                    <li>قم بتثبيته وتفعيل التحديث التلقائي</li>
+                                    <li>أجرِ فحوصات دورية لجهازك</li>
+                                    <li>تفعيل الحماية في الوقت الحقيقي</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1563014959-7aaa83350992?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="مكافحة الفيروسات">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- الخطوة 2 -->
+                <div class="step animate">
+                    <div class="step-title">
+                        <div class="step-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h3>جدار الحماية (Firewall)</h3>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>نظام يراقب حركة مرور البيانات بين شبكتك والإنترنت. يسمح فقط بالبيانات المصرح بها ويمنع أي شيء مشبوه.</p>
+                            
+                            <div class="step-action">
+                                <h4>كيف تفعّله؟</h4>
+                                <ul>
+                                    <li>ويندوز: تفعيل "جدار حماية ويندوز"</li>
+                                    <li>ماك: تفعيل جدار الحماية في تفضيلات النظام</li>
+                                    <li>الراوتر: تفعيل جدار الحماية المدمج</li>
+                                    <li>استخدام جدار حماية متقدم إذا لزم الأمر</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="جدار الحماية">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- الخطوة 3 -->
+                <div class="step animate">
+                    <div class="step-title">
+                        <div class="step-icon">
+                            <i class="fas fa-save"></i>
+                        </div>
+                        <h3>النسخ الاحتياطي للبيانات</h3>
+                    </div>
+                    
+                    <div class="step-content">
+                        <div class="step-text">
+                            <p>في حال تعرض جهازك لهجوم فدية، أو تعطل مفاجئ، أو فقدان، فإن النسخ الاحتياطي هو طوق النجاة لبياناتك الثمينة.</p>
+                            
+                            <div class="step-action">
+                                <h4>طرق النسخ الاحتياطي:</h4>
+                                <ol>
+                                    <li>استخدام قرص صلب خارجي</li>
+                                    <li>خدمات التخزين السحابي (Google Drive، OneDrive)</li>
+                                    <li>النسخ الاحتياطي التلقائي المدمج في نظام التشغيل</li>
+                                    <li>اختيار نظام 3-2-1: 3 نسخ، 2 وسائط مختلفة، 1 نسخة خارجية</li>
+                                </ol>
+                            </div>
+                        </div>
+                        
+                        <div class="step-image">
+                            <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="النسخ الاحتياطي">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- السيناريوهات العملية -->
+        <div class="section-header">
+            <h2 class="section-title">سيناريوهات عملية: كن مستعدًا!</h2>
+            <p class="section-subtitle">الآن بعد أن اكتسبت بعض المهارات، دعنا نطبقها على سيناريوهات حياتية</p>
+        </div>
+        
+        <div class="scenarios-container">
+            <!-- السيناريو 1 -->
+            <div class="scenario-card animate">
+                <h3 class="scenario-title">
+                    <i class="fas fa-envelope"></i> السيناريو 1
+                </h3>
+                <div class="scenario-content">
+                    <p>"ماذا تفعل إذا وصلتك رسالة بريد إلكتروني مشبوهة من جهة تعرفها؟"</p>
+                    <p>تتضمن الرسالة رابطًا وتطلب منك النقر عليه لتأكيد معلوماتك الشخصية.</p>
+                </div>
+                
+                <div class="solution">
+                    <h4>الحل العملي:</h4>
+                    <ol>
+                        <li>لا تنقر على أي رابط في الرسالة</li>
+                        <li>تحقق من عنوان المرسل الفعلي (قد يكون مشابهًا لكنه مزيف)</li>
+                        <li>اتصل بالمرسل عبر قناة أخرى لتأكيد صحة الرسالة</li>
+                        <li>إذا كانت احتيالية، قم بالإبلاغ عنها وحذفها</li>
+                        <li>افحص جهازك ببرنامج مكافحة الفيروسات</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- السيناريو 2 -->
+            <div class="scenario-card animate">
+                <h3 class="scenario-title">
+                    <i class="fas fa-wifi"></i> السيناريو 2
+                </h3>
+                <div class="scenario-content">
+                    <p>"كيف تحمي شبكتك المنزلية Wi-Fi؟"</p>
+                    <p>تريد التأكد من أن شبكتك المنزلية محمية من المتسللين والمخترقين.</p>
+                </div>
+                
+                <div class="solution">
+                    <h4>خطوات الحماية:</h4>
+                    <ol>
+                        <li>غير اسم شبكتك الافتراضي (SSID)</li>
+                        <li>استخدم كلمة مرور قوية للشبكة (WPA2/WPA3)</li>
+                        <li>غير كلمة مرور الراوتر الافتراضية</li>
+                        <li>فعّل جدار الحماية المدمج في الراوتر</li>
+                        <li>حدث برامج الراوتر بانتظام</li>
+                        <li>عطّل إدارة الراوتر عن بعد</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <!-- مستقبل الأمن السيبراني -->
+        <div class="section-header">
+            <h2 class="section-title">مستقبلك في الأمن السيبراني</h2>
+            <p class="section-subtitle">آفاق واسعة تنتظرك في مجال حيوي ومطلوب عالميًا</p>
+        </div>
+        
+        <div class="career-section animate">
+            <p>لقد وصلت إلى نهاية هذه الدورة المكثفة، وأنت الآن تمتلك أساسًا جيدًا في الأمن السيبراني. هذا المجال لا يتوقف عن التطور، والطلب على المتخصصين فيه في تزايد مستمر.</p>
+            
+            <div class="career-cards">
+                <div class="career-card">
+                    <div class="career-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="career-title">محلل أمن</h3>
+                    <p>يراقب الأنظمة ويكتشف التهديدات الأمنية قبل وقوعها</p>
+                </div>
+                
+                <div class="career-card">
+                    <div class="career-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="career-title">مهندس أمن</h3>
+                    <p>يصمم وينفذ الحلول الأمنية للأنظمة والشبكات</p>
+                </div>
+                
+                <div class="career-card">
+                    <div class="career-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3 class="career-title">مختبر اختراق</h3>
+                    <p>يقوم باختبار الأنظمة لاكتشاف الثغرات (الهاكر الأخلاقي)</p>
+                </div>
+                
+                <div class="career-card">
+                    <div class="career-icon">
+                        <i class="fas fa-fingerprint"></i>
+                    </div>
+                    <h3 class="career-title">محقق جنائي رقمي</h3>
+                    <p>يحقق في الجرائم السيبرانية ويجمع الأدلة الرقمية</p>
+                </div>
+            </div>
+            
+            <div class="step-action" style="margin-top: 40px;">
+                <h4>موارد للتعلم المستمر:</h4>
+                <ul>
+                    <li>مواقع الويب المتخصصة: Security Magazine, KrebsOnSecurity</li>
+                    <li>الشهادات المهنية: CompTIA Security+, CEH, CISSP</li>
+                    <li>دورات متقدمة على منصات التعلم الإلكتروني</li>
+                    <li>مجتمعات الأمن السيبراني عبر الإنترنت</li>
+                    <li>المؤتمرات وورش العمل المتخصصة</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- خاتمة الدورة -->
+        <div class="section-header" style="margin-top: 80px;">
+            <h2 class="section-title">تهانينا! لقد أكملت الدورة بنجاح</h2>
+            <p class="section-subtitle">أنت الآن تمتلك المعرفة والمهارات الأساسية لحماية نفسك وبياناتك في العالم الرقمي</p>
+        </div>
+        
+        <div style="text-align: center; max-width: 800px; margin: 0 auto; font-size: 1.3rem;">
+            <p>تذكر دائمًا: الأمن السيبراني هو رحلة، وليس وجهة. استمر في التعلم، كن يقظًا، وطبق ما تعلمته.</p>
+            <p style="margin-top: 30px; font-weight: 700; color: var(--cyber-green);">ما هي خطوتك التالية في عالم الأمن السيبراني؟</p>
+        </div>
+    </section>
+    
+    <!-- التذييل -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">CyberShield</h3>
+                <p>نقدم دورات متخصصة في الأمن السيبراني لتأهيل المتخصصين وتوعية الأفراد بمخاطر الفضاء الإلكتروني وكيفية الحماية منها.</p>
+                
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/roadalnah?t=IZ2Ha7FbVANYmlXrGXuZpg&s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
+                 </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="https://tinyurl.com/abdullahabbass">الرئيسية</a></li>
+                    <li><a href="cors.html">اليوم الأول</a></li>
+                    <li><a href="cors1.html">اليوم الثاني</a></li>
+                    <li><a href="cors2.html">اليوم الثالث</a></li>
+                    <li><a href="https://tinyurl.com/abdullahabbass">المدربين</a></li>
+                    <li><a href="https://tinyurl.com/abdullahabbass">المدونة</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">اتصل بنا</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> prcmased@gmail.com</li>
+                    <li><i class="fas fa-phone"></i> +967779168887</li>
+                    <li><i class="fas fa-map-marker-alt"></i> اليمن، صنعاء سعوان كلية رواد النهضة</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; . جميع الحقوق محفوظة. لموقع   SeaStar
+        </div>
+    </footer>
+    
+    <script>
+        // إضافة تأثيرات الظهور عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

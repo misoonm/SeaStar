@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اليوم الثاني: عالم الاختراق الأخلاقي والحماية الوقائية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            height: 100vh;
+            position: relative;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Slide Styling */
+        .slide {
+            display: none;
+            flex-direction: column;
+            height: 100%;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+        }
+        
+        .slide.active {
+            display: flex;
+        }
+        
+        .dark-bg {
+            background: linear-gradient(135deg, var(--deep-blue), #001a36);
+            color: white;
+        }
+        
+        .light-blue-bg {
+            background: linear-gradient(135deg, var(--light-blue), #0056b3);
+            color: white;
+        }
+        
+        .gray-bg {
+            background: linear-gradient(135deg, #eef2f7, #f8f9fa);
+            color: #333;
+        }
+        
+        /* Header Styling */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .slide-number {
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            line-height: 1.3;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .gray-bg .title {
+            background: linear-gradient(90deg, var(--cyber-purple), var(--light-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 30px;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .gray-bg .subtitle {
+            color: #555;
+        }
+        
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .text-content {
+            max-width: 80%;
+            margin: 0 auto;
+            font-size: 1.4rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+        
+        .gray-bg .text-content {
+            color: #444;
+        }
+        
+        .slide-image {
+            position: absolute;
+            z-index: 1;
+            border-radius: 10px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            object-fit: cover;
+        }
+        
+        .image-right {
+            right: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 35%;
+            max-height: 70%;
+        }
+        
+        .image-left {
+            left: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 35%;
+            max-height: 70%;
+        }
+        
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0, 32, 74, 0.9) 0%, rgba(0, 32, 74, 0.5) 100%);
+            z-index: 1;
+            border-radius: 10px;
+        }
+        
+        .slide-icon {
+            position: absolute;
+            font-size: 18rem;
+            opacity: 0.1;
+            z-index: 0;
+            color: var(--cyber-purple);
+        }
+        
+        .icon-right {
+            right: 5%;
+            top: 15%;
+        }
+        
+        .icon-left {
+            left: 5%;
+            top: 15%;
+        }
+        
+        /* Points Styling */
+        .points {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .point {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            position: relative;
+            z-index: 2;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+        
+        .point:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .point:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--cyber-purple);
+        }
+        
+        .point-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--cyber-purple);
+            text-align: center;
+        }
+        
+        .point-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--cyber-purple);
+            text-align: center;
+        }
+        
+        .point-content {
+            font-size: 1.25rem;
+            line-height: 1.7;
+            font-weight: 300;
+            text-align: center;
+        }
+        
+        /* Summary Box */
+        .summary-box {
+            background: linear-gradient(90deg, rgba(156, 136, 255, 0.15), rgba(0, 168, 255, 0.15));
+            border-left: 5px solid var(--cyber-purple);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 40px 0;
+            color: white;
+            font-size: 1.4rem;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gray-bg .summary-box {
+            background: linear-gradient(90deg, rgba(156, 136, 255, 0.1), rgba(0, 32, 74, 0.1));
+            color: var(--dark-blue);
+            border-left: 5px solid var(--cyber-purple);
+        }
+        
+        /* Navigation */
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-btn {
+            background: linear-gradient(90deg, var(--cyber-purple), var(--cyber-blue));
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(156, 136, 255, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(156, 136, 255, 0.5);
+        }
+        
+        .nav-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .nav-btn:disabled {
+            background: linear-gradient(90deg, #555, #777);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            opacity: 0.6;
+        }
+        
+        .slide-indicators {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #555;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .indicator.active {
+            background: var(--cyber-purple);
+            transform: scale(1.3);
+            box-shadow: 0 0 10px var(--cyber-purple);
+            border-color: white;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Cyber Elements */
+        .cyber-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-purple);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(0, 168, 255, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 168, 255, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(0, 168, 255, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 168, 255, 0); }
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .text-content {
+                max-width: 90%;
+            }
+            
+            .slide-image {
+                width: 40%;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .title {
+                font-size: 2.4rem;
+            }
+            
+            .subtitle {
+                font-size: 1.6rem;
+            }
+            
+            .text-content {
+                max-width: 100%;
+                font-size: 1.2rem;
+            }
+            
+            .slide-image {
+                position: relative;
+                width: 80%;
+                max-height: 300px;
+                margin: 30px auto;
+                top: 0;
+                left: 0;
+                transform: none;
+            }
+            
+            .image-overlay {
+                display: none;
+            }
+            
+            .point {
+                min-width: 100%;
+            }
+            
+            .slide-icon {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 30px 20px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .nav-btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            .point {
+                padding: 20px;
+            }
+            
+            .summary-box {
+                padding: 20px;
+                font-size: 1.2rem;
+            }
+        }
+        
+        .hacker-types {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .hacker-card {
+            flex: 1;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .hacker-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .hacker-card.black-hat {
+            border-top: 5px solid var(--cyber-red);
+        }
+        
+        .hacker-card.white-hat {
+            border-top: 5px solid var(--cyber-green);
+        }
+        
+        .hacker-header {
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+        }
+        
+        .hacker-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .hacker-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .hacker-content {
+            padding: 25px;
+            font-size: 1.2rem;
+            line-height: 1.7;
+        }
+        
+        .checklist {
+            padding-right: 20px;
+            margin: 20px 0;
+        }
+        
+        .checklist li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-right: 30px;
+        }
+        
+        .checklist li:before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            color: var(--cyber-green);
+            font-weight: bold;
+        }
+        
+        .protection-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .protection-item {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(11, 232, 129, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--cyber-green);
+        }
+        
+        .protection-icon {
+            font-size: 2rem;
+            color: var(--cyber-green);
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفيات متحركة -->
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <!-- عناصر رسومية متحركة -->
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <div class="container">
+        <!-- الشريحة 1: عنوان اليوم الثاني -->
+        <div class="slide dark-bg active" id="slide1">
+            <div class="slide-header">
+                <div class="slide-number">1/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">اليوم الثاني: عالم الاختراق الأخلاقي والحماية الوقائية</h1>
+                <h2 class="subtitle">حراس البوابة الرقمية</h2>
+                <img src="https://images.unsplash.com/photo-1563206767-5b18f218e8de?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="الاختراق الأخلاقي" class="slide-image floating image-right">
+                <div class="image-overlay"></div>
+                <div class="slide-icon icon-right">
+                    <i class="fas fa-user-secret"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريحة 2: مقدمة لليوم الثاني -->
+        <div class="slide light-blue-bg" id="slide2">
+            <div class="slide-header">
+                <div class="slide-number">2/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">أهلاً بك في اليوم الثاني!</h1>
+                <div class="text-content">
+                    <p>اليوم سنتعمق في عالم الاختراق الأخلاقي ونفهم كيف يفكر المخترقون لحماية أنفسنا بشكل أفضل.</p>
+                    <p>لن نتحول إلى مخترقين أشرار، بل سنكتسب أدوات الفهم والحماية الوقائية.</p>
+                </div>
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="مقدمة اليوم الثاني" class="slide-image floating image-left">
+                <div class="image-overlay"></div>
+                <div class="points">
+                    <div class="point">
+                        <div class="point-icon">
+                            <i class="fas fa-hat-cowboy"></i>
+                        </div>
+                        <h3 class="point-title">الهاكر الأخلاقي</h3>
+                        <p class="point-content">حراس البوابة الرقمية الذين يحموننا</p>
+                    </div>
+                    <div class="point">
+                        <div class="point-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3 class="point-title">عقلية المخترق</h3>
+                        <p class="point-content">كيف يفكرون لحماية أنفسنا بشكل أفضل</p>
+                    </div>
+                    <div class="point">
+                        <div class="point-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3 class="point-title">الحماية الوقائية</h3>
+                        <p class="point-content">سد الثغرات قبل استغلالها</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريحة 3: الاختراق الأخلاقي -->
+        <div class="slide gray-bg" id="slide3">
+            <div class="slide-header">
+                <div class="slide-number">3/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">1. الاختراق الأخلاقي: حراس البوابة الرقمية</h1>
+                <div class="text-content">
+                    <p>عندما نسمع كلمة "هاكر" (Hacker)، غالبًا ما يتبادر إلى أذهاننا صورة شخص شرير يحاول سرقة البيانات أو تدمير الأنظمة. لكن في الواقع، هناك نوعان رئيسيان من المخترقين:</p>
+                </div>
+                
+                <div class="hacker-types">
+                    <div class="hacker-card black-hat">
+                        <div class="hacker-header">
+                            <div class="hacker-icon">
+                                <i class="fas fa-skull"></i>
+                            </div>
+                            <h3 class="hacker-title">المخترق الخبيث</h3>
+                        </div>
+                        <div class="hacker-content">
+                            <p>هذا هو النوع الذي نفكر فيه عادةً. شخص يستخدم مهاراته لاختراق الأنظمة بغرض الإضرار، السرقة، التجسس، أو تحقيق مكاسب غير مشروعة. أفعالهم غير قانونية وغير أخلاقية.</p>
+                            <ul class="checklist">
+                                <li>أفعال غير قانونية</li>
+                                <li>دوافع خبيثة</li>
+                                <li>استغلال الثغرات</li>
+                                <li>لا يلتزم بأخلاقيات</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="hacker-card white-hat">
+                        <div class="hacker-header">
+                            <div class="hacker-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h3 class="hacker-title">المخترق الأخلاقي</h3>
+                        </div>
+                        <div class="hacker-content">
+                            <p>هذا هو بطل قصتنا اليوم! الهاكر الأخلاقي هو متخصص أمني يستخدم نفس المهارات والأدوات التي يستخدمها المخترقون الخبيثون، ولكن بإذن من مالك النظام ويهدف إلى اكتشاف نقاط الضعف وإصلاحها.</p>
+                            <ul class="checklist">
+                                <li>يعمل بإذن قانوني</li>
+                                <li>دوافع أخلاقية</li>
+                                <li>يكتشف الثغرات لإصلاحها</li>
+                                <li>يلتزم بأخلاقيات صارمة</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريحة 4: أهمية الأخلاقيات -->
+        <div class="slide gray-bg" id="slide4">
+            <div class="slide-header">
+                <div class="slide-number">4/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">أهمية الأخلاقيات في الاختراق الأخلاقي</h1>
+                <img src="https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="أخلاقيات الاختراق" class="slide-image floating image-right">
+                <div class="text-content">
+                    <p>في مجال الأمن السيبراني، الأخلاقيات هي حجر الزاوية. يجب على المخترق الأخلاقي الالتزام بقواعد صارمة:</p>
+                    
+                    <div class="points">
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-file-signature"></i>
+                            </div>
+                            <h3 class="point-title">عدم تجاوز الصلاحيات</h3>
+                            <p class="point-content">العمل فقط ضمن الحدود الممنوحة</p>
+                        </div>
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-lock"></i>
+                            </div>
+                            <h3 class="point-title">سرية المعلومات</h3>
+                            <p class="point-content">الحفاظ على سرية المعلومات المكتشفة</p>
+                        </div>
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-ban"></i>
+                            </div>
+                            <h3 class="point-title">عدم إلحاق الضرر</h3>
+                            <p class="point-content">تجنب أي ضرر بالأنظمة أو البيانات</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-box">
+                        هذا هو الفرق الجوهري بين الهاكر الأخلاقي والهاكر الخبيث: الأول يحمي، والثاني يدمر.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريحة 5: كيف يفكر المخترقون؟ (الاستطلاع) -->
+        <div class="slide gray-bg" id="slide5">
+            <div class="slide-header">
+                <div class="slide-number">5/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">2. كيف يفكر المخترقون؟ (الاستطلاع)</h1>
+                <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="الاستطلاع" class="slide-image floating image-left">
+                <div class="text-content">
+                    <h3 style="color: var(--cyber-purple); margin: 20px 0;">الاستطلاع (Reconnaissance)</h3>
+                    <p>هذه هي المرحلة الأولى، وهي أشبه بجمع المعلومات الاستخباراتية. قبل أن يحاول المخترق الهجوم، يقوم بجمع أكبر قدر ممكن من المعلومات عن هدفه.</p>
+                    
+                    <div class="points">
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <h3 class="point-title">معلومات علنية</h3>
+                            <p class="point-content">معلومات الشركة على الإنترنت، أسماء الموظفين، البريد الإلكتروني</p>
+                        </div>
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <h3 class="point-title">معلومات خفية</h3>
+                            <p class="point-content">نظام التشغيل المستخدم، أنواع الأجهزة، بروتوكولات الشبكة</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-box">
+                        لماذا يهمنا هذا؟ لأن معرفتنا بما يجمعه المهاجمون عنا يمكن أن يساعدنا على إخفاء المعلومات الحساسة أو تشديد الحماية عليها.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريحة 6: مسح الشبكات -->
+        <div class="slide gray-bg" id="slide6">
+            <div class="slide-header">
+                <div class="slide-number">6/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">مسح الشبكات (Network Scanning)</h1>
+                <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="مسح الشبكات" class="slide-image floating image-right">
+                <div class="text-content">
+                    <p>بعد جمع المعلومات، يبدأ المخترق في فحص شبكة الهدف. هذا يعني البحث عن الأجهزة المتصلة بالشبكة والخدمات المفتوحة عليها.</p>
+                    
+                    <div class="points">
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-laptop"></i>
+                            </div>
+                            <h3 class="point-title">الأجهزة المتصلة</h3>
+                            <p class="point-content">أجهزة الكمبيوتر، الخوادم، الطابعات، الأجهزة الذكية</p>
+                        </div>
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <h3 class="point-title">الخدمات المفتوحة</h3>
+                            <p class="point-content">خدمات الويب، البريد الإلكتروني، قواعد البيانات</p>
+                        </div>
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-door-open"></i>
+                            </div>
+                            <h3 class="point-title">نقاط الدخول</h3>
+                            <p class="point-content">البوابات المفتوحة، المنافذ غير المحمية</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-box">
+                        لماذا يهمنا هذا؟ لأننا يجب أن نكون على دراية بما هو مكشوف على شبكتنا، والتأكد من أننا لا نترك أي "أبواب" أو "نوافذ" مفتوحة غير ضرورية.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريحة 7: نقاط الضعف الشائعة (كلمات المرور) -->
+        <div class="slide gray-bg" id="slide7">
+            <div class="slide-header">
+                <div class="slide-number">7/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">3. نقاط الضعف الشائعة: كلمات المرور الضعيفة</h1>
+                <img src="https://images.unsplash.com/photo-1596466596120-2a8e2c5d5d5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="كلمات المرور" class="slide-image floating image-left">
+                <div class="text-content">
+                    <p>المخترقون يبحثون عن الأخطاء الشائعة التي يرتكبها الناس أو المشاكل المعروفة في البرمجيات.</p>
+                    
+                    <h3 style="color: var(--cyber-red); margin: 20px 0;">كلمات المرور الضعيفة أو الافتراضية</h3>
+                    <p>هل تستخدم كلمة مرور مثل "123456" أو "password"؟ هل غيرت كلمة المرور الافتراضية لجهاز توجيه (راوتر) الواي فاي الخاص بك؟ هذه نقاط ضعف خطيرة!</p>
+                    
+                    <div class="points">
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-user-secret"></i>
+                            </div>
+                            <h3 class="point-title">كلمات مرور سهلة التخمين</h3>
+                            <p class="point-content">"123456", "password", تاريخ الميلاد</p>
+                        </div>
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-redo"></i>
+                            </div>
+                            <h3 class="point-title">كلمات مرور متكررة</h3>
+                            <p class="point-content">استخدام نفس كلمة المرور في عدة حسابات</p>
+                        </div>
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-wifi"></i>
+                            </div>
+                            <h3 class="point-title">كلمات مرور افتراضية</h3>
+                            <p class="point-content">عدم تغيير كلمة مرور الراوتر الافتراضية</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريحة 8: نقاط الضعف الشائعة (التحديثات) -->
+        <div class="slide gray-bg" id="slide8">
+            <div class="slide-header">
+                <div class="slide-number">8/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">نقاط الضعف الشائعة: البرامج غير المحدثة</h1>
+                <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="تحديث البرامج" class="slide-image floating image-right">
+                <div class="text-content">
+                    <h3 style="color: var(--cyber-red); margin: 20px 0;">البرامج غير المحدثة</h3>
+                    <p>عندما يصدر تحديث لبرنامج أو نظام تشغيل، فغالبًا ما يحتوي هذا التحديث على إصلاحات لثغرات أمنية مكتشفة. إذا لم تقم بالتحديث، فإنك تترك هذه الثغرات مفتوحة للمهاجمين.</p>
+                    
+                    <div class="points">
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3 class="point-title">أنظمة التشغيل القديمة</h3>
+                            <p class="point-content">عدم تحديث نظام التشغيل بانتظام</p>
+                        </div>
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-window-restore"></i>
+                            </div>
+                            <h3 class="point-title">التطبيقات غير المحدثة</h3>
+                            <p class="point-content">المتصفحات، برامج الأوفيس، التطبيقات</p>
+                        </div>
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-plug"></i>
+                            </div>
+                            <h3 class="point-title">السيرفرات غير المحدثة</h3>
+                            <p class="point-content">خوادم الويب، قواعد البيانات، الأنظمة الخلفية</p>
+                        </div>
+                    </div>
+                    
+                    <div class="summary-box">
+                        التحديثات الأمنية تسد الثغرات التي يستغلها المخترقون، لذا يجب تحديث البرامج باستمرار.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريحة 9: نقاط الضعف الشائعة (التكوين الخاطئ) -->
+        <div class="slide gray-bg" id="slide9">
+            <div class="slide-header">
+                <div class="slide-number">9/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">نقاط الضعف الشائعة: التكوين الخاطئ</h1>
+                <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="التكوين الخاطئ" class="slide-image floating image-left">
+                <div class="text-content">
+                    <h3 style="color: var(--cyber-red); margin: 20px 0;">التكوين الخاطئ (Misconfigurations)</h3>
+                    <p>أحيانًا، تكون المشكلة ليست في البرنامج نفسه، بل في طريقة إعداده. فمثلاً، إذا كان خادم الويب (Web Server) ليس مُعداً بشكل صحيح، فقد يسمح للمهاجمين بالوصول إلى ملفات لا ينبغي لهم الوصول إليها.</p>
+                    
+                    <div class="points">
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <h3 class="point-title">إعدادات الأمان الافتراضية</h3>
+                            <p class="point-content">عدم تغيير الإعدادات الافتراضية للأنظمة</p>
+                        </div>
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-folder-open"></i>
+                            </div>
+                            <h3 class="point-title">أذونات غير صحيحة</h3>
+                            <p class="point-content">منح أذونات أكثر من اللازم للمستخدمين</p>
+                        </div>
+                        <div class="point">
+                            <div class="point-icon">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <h3 class="point-title">خدمات غير ضرورية</h3>
+                            <p class="point-content">ترك خدمات غير مستخدمة تعمل على الأجهزة</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريحة 10: الحماية الوقائية -->
+        <div class="slide gray-bg" id="slide10">
+            <div class="slide-header">
+                <div class="slide-number">10/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">4. الحماية الوقائية: سد الثغرات قبل استغلالها</h1>
+                <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="الحماية الوقائية" class="slide-image floating image-right">
+                <div class="text-content">
+                    <p>الآن وقد عرفنا كيف يفكر المهاجمون، يمكننا استخدام هذه المعرفة لتعزيز دفاعاتنا. الحماية الوقائية تعني اتخاذ الإجراءات اللازمة لتقليل فرص الهجوم.</p>
+                    
+                    <div class="protection-list">
+                        <div class="protection-item">
+                            <div class="protection-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <h3>كلمات المرور القوية والفريدة</h3>
+                            <p>استخدم كلمات مرور طويلة، معقدة، وتحتوي على مزيج من الحروف الكبيرة والصغيرة، الأرقام، والرموز.</p>
+                        </div>
+                        
+                        <div class="protection-item">
+                            <div class="protection-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h3>التحديثات المستمرة</h3>
+                            <p>عوّد نفسك على تحديث نظام التشغيل وتطبيقاتك وبرامجك بانتظام.</p>
+                        </div>
+                        
+                        <div class="protection-item">
+                            <div class="protection-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>المصادقة متعددة العوامل</h3>
+                            <p>إضافة طبقة حماية ثانية إلى جانب كلمة المرور، مثل رمز يُرسل إلى هاتفك.</p>
+                        </div>
+                        
+                        <div class="protection-item">
+                            <div class="protection-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <h3>التوعية بالأمان</h3>
+                            <p>الثقافة الأمنية هي أحد أقوى الأسلحة. كن حذرًا دائمًا عند فتح الرسائل أو النقر على الروابط.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريحة 11: ملخص اليوم الثاني -->
+        <div class="slide dark-bg" id="slide11">
+            <div class="slide-header">
+                <div class="slide-number">11/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">ملخص اليوم الثاني ونظرة على الغد</h1>
+                <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="ملخص اليوم الثاني" class="slide-image floating image-left">
+                <div class="image-overlay"></div>
+                <div class="text-content">
+                    <h3 style="margin: 25px 0 15px;">ملخص اليوم:</h3>
+                    <ul style="padding-right: 20px; margin-bottom: 30px;">
+                        <li style="margin-bottom: 15px;">تعرفنا على الفرق بين المخترق الأخلاقي والخبيث</li>
+                        <li style="margin-bottom: 15px;">فهمنا كيف يقوم المهاجمون بالاستطلاع ومسح الشبكات</li>
+                        <li style="margin-bottom: 15px;">اكتشفنا نقاط الضعف الشائعة وكيفية تجنبها</li>
+                        <li style="margin-bottom: 15px;">تعلمنا استراتيجيات الحماية الوقائية</li>
+                    </ul>
+                    
+                    <h3 style="color: var(--cyber-green); margin: 25px 0 15px;">واجبك لليوم:</h3>
+                    <p>فكر في جهاز توجيه (راوتر) الواي فاي في منزلك. هل غيرت كلمة المرور الافتراضية له؟ إذا لم تكن متأكداً، حاول البحث عن كيفية تغييرها اليوم.</p>
+                    
+                    <h3 style="margin: 25px 0 15px;">نظرة على الغد:</h3>
+                    <p>غدًا، في اليوم الثالث، سنضع كل ما تعلمناه في حيز التنفيذ! سنقوم بورش عمل عملية ومفيدة للغاية، وستكتسب مهارات حقيقية في تأمين حساباتك وبياناتك.</p>
+                    
+                    <h3 style="margin: 25px 0 15px;">سؤال للمناقشة:</h3>
+                    <p>هل لديك أي أسئلة حول مفاهيم اليوم؟ أنا هنا للإجابة على كل استفساراتك.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الشريحة 12: شريحة فاصلة لليوم الثالث -->
+        <div class="slide light-blue-bg" id="slide12">
+            <div class="slide-header">
+                <div class="slide-number">12/12</div>
+            </div>
+            <div class="content">
+                <h1 class="title">أهلاً بك في اليوم الثالث والأخير!</h1>
+                <h2 class="subtitle">التطبيق العملي والأدوات الأساسية</h2>
+                <img src="https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80" alt="اليوم الثالث" class="slide-image floating image-right">
+                <div class="image-overlay"></div>
+                <div class="text-content">
+                    <p>لقد قطعنا شوطًا رائعًا حتى الآن. في اليوم الأول، فهمنا أهمية الأمن السيبراني وتعرفنا على التهديدات الشائعة. وفي اليوم الثاني، دخلنا إلى عقل المخترق الأخلاقي وتعلمنا كيف نفكر مثلهم لتعزيز دفاعاتنا.</p>
+                    <p>اليوم هو يوم التطبيق العملي! سنضع كل ما تعلمناه موضع التنفيذ من خلال ورش عمل تفاعلية، وستكتسب مهارات حقيقية ستساعدك على حماية نفسك وبياناتك في حياتك اليومية.</p>
+                </div>
+                <div class="slide-icon icon-right">
+                    <i class="fas fa-laptop-code"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" disabled>
+                <i class="fas fa-arrow-right"></i> السابق
+            </button>
+            
+            <div class="slide-indicators" id="indicators">
+                <!-- Indicators will be added by JavaScript -->
+            </div>
+            
+            <button class="nav-btn" id="nextBtn">
+                التالي <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const indicatorsContainer = document.getElementById('indicators');
+            let currentSlide = 0;
+            
+            // Create indicators
+            slides.forEach((slide, index) => {
+                const indicator = document.createElement('div');
+                indicator.classList.add('indicator');
+                if (index === 0) indicator.classList.add('active');
+                indicator.dataset.slide = index;
+                indicatorsContainer.appendChild(indicator);
+            });
+            
+            const indicators = document.querySelectorAll('.indicator');
+            
+            // Function to show slide
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                slides[index].classList.add('active');
+                
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                indicators[index].classList.add('active');
+                
+                // Update button states
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+                
+                currentSlide = index;
+                
+                // Add floating animation to images
+                const images = document.querySelectorAll('.slide-image');
+                images.forEach(img => {
+                    img.classList.remove('floating');
+                    void img.offsetWidth; // Trigger reflow
+                    img.classList.add('floating');
+                });
+            }
+            
+            // Next slide
+            nextBtn.addEventListener('click', () => {
+                if (currentSlide < slides.length - 1) {
+                    showSlide(currentSlide + 1);
+                }
+            });
+            
+            // Previous slide
+            prevBtn.addEventListener('click', () => {
+                if (currentSlide > 0) {
+                    showSlide(currentSlide - 1);
+                }
+            });
+            
+            // Indicator click
+            indicators.forEach(indicator => {
+                indicator.addEventListener('click', () => {
+                    const slideIndex = parseInt(indicator.dataset.slide);
+                    showSlide(slideIndex);
+                });
+            });
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' && currentSlide < slides.length - 1) {
+                    showSlide(currentSlide + 1);
+                } else if (e.key === 'ArrowLeft' && currentSlide > 0) {
+                    showSlide(currentSlide - 1);
+                } else if (e.key === ' ' || e.key === 'Spacebar') {
+                    if (currentSlide < slides.length - 1) {
+                        showSlide(currentSlide + 1);
+                    }
+                }
+            });
+            
+            // Auto animation for images
+            const images = document.querySelectorAll('.slide-image');
+            images.forEach(img => {
+                img.classList.add('floating');
+            });
+        });
+    </script>
+</body>
+</html>
