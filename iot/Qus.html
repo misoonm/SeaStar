@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسئلة وأجوبة حول الذكاء الاصطناعي | أكاديمية SeaStar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --deep-space: #0a0e2a;
+            --galaxy-blue: #1a1f4d;
+            --neon-blue: #4e54c8;
+            --neon-purple: #8f94fb;
+            --ai-green: #00ff9d;
+            --ai-pink: #ff00cc;
+            --ai-orange: #ff7e5f;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --ai-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, var(--deep-space), var(--galaxy-blue));
+            color: white;
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(79, 84, 200, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(143, 148, 251, 0.1) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 157, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 204, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--ai-green), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--ai-green);
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--ai-green);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(79, 84, 200, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(79, 84, 200, 0.5);
+        }
+        
+        /* القسم البطولي */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 140px 20px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--ai-green), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 15px 20px;
+            border-radius: 50px 0 0 50px;
+            border: none;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+        
+        .search-box button {
+            padding: 15px 30px;
+            border-radius: 0 50px 50px 0;
+            border: none;
+            background: var(--ai-green);
+            color: var(--deep-space);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box button:hover {
+            background: var(--neon-blue);
+            color: white;
+        }
+        
+        /* الأقسام العامة */
+        section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--ai-green), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* قسم الأسئلة */
+        .faq-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .faq-item:hover {
+            border-color: var(--ai-green);
+            transform: translateY(-5px);
+        }
+        
+        .faq-question {
+            width: 100%;
+            text-align: right;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.3);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-question:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .faq-question::after {
+            content: '\f078';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-question.active::after {
+            transform: rotate(180deg);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-content {
+            padding: 30px;
+        }
+        
+        .answer-section {
+            margin-bottom: 30px;
+        }
+        
+        .answer-title {
+            font-size: 1.8rem;
+            color: var(--ai-green);
+            margin-bottom: 15px;
+            position: relative;
+            padding-right: 15px;
+        }
+        
+        .answer-title::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 5px;
+            height: 80%;
+            background: var(--ai-green);
+            transform: translateY(-50%);
+            border-radius: 5px;
+        }
+        
+        .answer-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+        
+        .example-box {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 3px solid var(--ai-yellow);
+        }
+        
+        .example-title {
+            color: var(--ai-yellow);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .tools-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .tool-card {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-blue);
+        }
+        
+        .tool-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--ai-green);
+        }
+        
+        .tool-description {
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .tool-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .tool-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(79, 84, 200, 0.5);
+        }
+        
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--ai-pink));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .image-placeholder i {
+            font-size: 4rem;
+            opacity: 0.5;
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 20px 30px;
+            margin-top: 100px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--ai-green);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--ai-green);
+            padding-right: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--ai-green);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.4rem;
+            }
+            
+            .hero p, .section-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding-top: 150px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .faq-question {
+                font-size: 1.3rem;
+                padding: 15px;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-box input,
+            .search-box button {
+                border-radius: 50px;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفيات متحركة -->
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="logo">أكاديمية SeaStar</div>
+        <div class="nav-links">
+            <a href="index.html">الرئيسية</a>
+            <a href="#faq" class="active">أسئلة وأجوبة</a>
+            <a href="#tools">الأدوات</a>
+            <a href="#contact">اتصل بنا</a>
+        </div>
+        <button class="nav-btn">
+            <i class="fas fa-robot"></i> ابدأ التعلم
+        </button>
+    </nav>
+    
+    <!-- القسم البطولي -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>إجابات على استفساراتك حول الذكاء الاصطناعي</h1>
+            <p>اكتشف إجابات مفصلة لأسئلتك مع شروحات عملية، أمثلة واقعية، وأدوات ذكاء اصطناعي مفيدة</p>
+            
+            <div class="search-box">
+                <input type="text" placeholder="ابحث عن سؤال معين...">
+                <button><i class="fas fa-search"></i> بحث</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- قسم الأسئلة -->
+    <section id="faq">
+        <div class="section-header">
+            <h2 class="section-title">الأسئلة الشائعة حول الذكاء الاصطناعي</h2>
+            <p class="section-subtitle">إجابات شاملة مع أمثلة عملية وأدوات ذكاء اصطناعي مفيدة</p>
+        </div>
+        
+        <div class="faq-container">
+            <!-- السؤال 1 -->
+            <div class="faq-item animate">
+                <button class="faq-question">1. نظرة عن التخصصات المتعلقة بالذكاء الاصطناعي</button>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        <div class="answer-section">
+                            <h3 class="answer-title">التخصصات الرئيسية في الذكاء الاصطناعي</h3>
+                            <p class="answer-text">يعد الذكاء الاصطناعي مجالاً واسعاً يشمل عدة تخصصات رئيسية:</p>
+                            
+                            <div class="image-placeholder">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            
+                            <ul class="answer-text">
+                                <li><strong>تعلم الآلة (Machine Learning):</strong> تطوير خوارزميات تمكن الآلات من التعلم من البيانات دون برمجة صريحة</li>
+                                <li><strong>معالجة اللغة الطبيعية (NLP):</strong> فهم وتوليد اللغة البشرية بشكل آلي</li>
+                                <li><strong>الرؤية الحاسوبية (Computer Vision):</strong> تمكين الآلات من "رؤية" وفهم الصور والفيديوهات</li>
+                                <li><strong>الروبوتات (Robotics):</strong> تصميم وتطوير الروبوتات الذكية</li>
+                                <li><strong>الشبكات العصبية والتعلم العميق (Deep Learning):</strong> نماذج متقدمة مستوحاة من الدماغ البشري</li>
+                            </ul>
+                            
+                            <div class="example-box">
+                                <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                                <p>شركة ناشئة تستخدم تعلم الآلة للتنبؤ بأسعار العقارات، وتوظف خريجي الذكاء الاصطناعي في تخصصات مختلفة مثل تحليل البيانات وتطوير النماذج التنبؤية.</p>
+                            </div>
+                            
+                            <h3 class="answer-title">أدوات مفيدة</h3>
+                            <div class="tools-container">
+                                <div class="tool-card">
+                                    <h4 class="tool-title">Coursera</h4>
+                                    <p class="tool-description">منصة تعليمية تقدم دورات في مختلف تخصصات الذكاء الاصطناعي</p>
+                                    <a href="https://www.coursera.org/" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                                <div class="tool-card">
+                                    <h4 class="tool-title">Kaggle</h4>
+                                    <p class="tool-description">منصة لتعلم وممارسة علوم البيانات وتعلم الآلة</p>
+                                    <a href="https://www.kaggle.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السؤال 2 -->
+            <div class="faq-item animate">
+                <button class="faq-question">2. أفضل الطرق لحل المسائل في المناهج الدراسية باستخدام الذكاء الاصطناعي</button>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        <div class="answer-section">
+                            <h3 class="answer-title">استخدام الذكاء الاصطناعي في الدراسة</h3>
+                            <p class="answer-text">يمكن للذكاء الاصطناعي مساعدتك في حل المسائل الدراسية بطرق متعددة:</p>
+                            
+                            <div class="image-placeholder">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            
+                            <ul class="answer-text">
+                                <li>استخدام مساعدات الذكاء الاصطناعي لشرح المفاهيم الصعبة</li>
+                                <li>الحصول على خطوات حل المسائل خطوة بخطوة</li>
+                                <li>توليد أمثلة وتطبيقات عملية للمفاهيم النظرية</li>
+                                <li>التحقق من صحة الحلول والتحقق من الأخطاء</li>
+                                <li>إنشاء أسئلة تدريبية شخصية حسب مستواك</li>
+                            </ul>
+                            
+                            <div class="example-box">
+                                <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                                <p>طالب فيزياء يستخدم مساعد ذكاء اصطناعي لحل مسائل الحركة، حيث يشرح له المساعد القوانين ويقدم أمثلة مشابهة، ثم يتحقق من حله ويشرح أخطاءه إن وجدت.</p>
+                            </div>
+                            
+                            <h3 class="answer-title">أدوات مفيدة</h3>
+                            <div class="tools-container">
+                                <div class="tool-card">
+                                    <h4 class="tool-title">Wolfram Alpha</h4>
+                                    <p class="tool-description">حل مسائل الرياضيات والفيزياء والكيمياء خطوة بخطوة</p>
+                                    <a href="https://www.wolframalpha.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                                <div class="tool-card">
+                                    <h4 class="tool-title">Photomath</h4>
+                                    <p class="tool-description">مسح مسائل الرياضيات وحلها مع شرح الخطوات</p>
+                                    <a href="https://photomath.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السؤال 3 -->
+            <div class="faq-item animate">
+                <button class="faq-question">3. كيف يساعدني الذكاء الاصطناعي في تخصص الجرافيكس؟</button>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        <div class="answer-section">
+                            <h3 class="answer-title">الذكاء الاصطناعي في التصميم الجرافيكي</h3>
+                            <p class="answer-text">يقدم الذكاء الاصطناعي أدوات ثورية في مجال الجرافيكس:</p>
+                            
+                            <div class="image-placeholder">
+                                <i class="fas fa-paint-brush"></i>
+                            </div>
+                            
+                            <ul class="answer-text">
+                                <li>إنشاء تصاميم أولية بسرعة باستخدام الأوامر النصية</li>
+                                <li>توليد صور فريدة بناءً على أوصاف نصية</li>
+                                <li>إزالة الخلفيات من الصور تلقائياً</li>
+                                <li>تلوين الصور وتحسين جودتها</li>
+                                <li>إنشاء أنماط وتصاميم متكررة بذكاء</li>
+                                <li>تحويل الرسومات اليدوية إلى تصاميم رقمية</li>
+                            </ul>
+                            
+                            <div class="example-box">
+                                <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                                <p>مصمم جرافيك يستخدم أداة توليد صور بالذكاء الاصطناعي لإنشاء مجموعة من التصاميم الأولية لشعار عميل في دقائق، ثم يقوم بتطوير التصميم المختير يدوياً لتحقيق النتيجة النهائية.</p>
+                            </div>
+                            
+                            <h3 class="answer-title">أدوات مفيدة</h3>
+                            <div class="tools-container">
+                                <div class="tool-card">
+                                    <h4 class="tool-title">Midjourney</h4>
+                                    <p class="tool-description">توليد صور فنية من الأوصاف النصية</p>
+                                    <a href="https://www.midjourney.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                                <div class="tool-card">
+                                    <h4 class="tool-title">Adobe Firefly</h4>
+                                    <p class="tool-description">أدوات ذكاء اصطناعي في برامج أدوبي للتصميم</p>
+                                    <a href="https://www.adobe.com/sensei/generative-ai/firefly.html" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السؤال 4 -->
+            <div class="faq-item animate">
+                <button class="faq-question">4. كيفية تصميم فيديوهات على نمط خاص باستخدام الذكاء الاصطناعي</button>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        <div class="answer-section">
+                            <h3 class="answer-title">تصميم الفيديوهات بالذكاء الاصطناعي</h3>
+                            <p class="answer-text">خطوات تصميم فيديوهات باستخدام الذكاء الاصطناعي:</p>
+                            
+                            <div class="image-placeholder">
+                                <i class="fas fa-video"></i>
+                            </div>
+                            
+                            <ol class="answer-text">
+                                <li>توليد فكرة الفيديو باستخدام مساعد ذكاء اصطناعي</li>
+                                <li>كتابة السيناريو باستخدام أدوات كتابة بالذكاء الاصطناعي</li>
+                                <li>إنشاء الصور والمشاهد المرئية باستخدام توليد الصور</li>
+                                <li>توليد صوت الراوي باستخدام تحويل النص إلى كلام</li>
+                                <li>مونتاج الفيديو باستخدام أدوات المونتاج الذكية</li>
+                                <li>إضافة المؤثرات البصرية والصوتية الذكية</li>
+                            </ol>
+                            
+                            <div class="example-box">
+                                <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                                <p>مؤثر بصري يستخدم الذكاء الاصطناعي لإنشاء فيديو تعليمي عن الفضاء، حيث قام بتوليد صور للكواكب والمجرات باستخدام وصف نصي، ثم توليد صوت الراوي، وأخيراً تجميع المشاهد مع المؤثرات.</p>
+                            </div>
+                            
+                            <h3 class="answer-title">أدوات مفيدة</h3>
+                            <div class="tools-container">
+                                <div class="tool-card">
+                                    <h4 class="tool-title">Synthesia</h4>
+                                    <p class="tool-description">إنشاء فيديوهات باستخدام مذيعين افتراضيين</p>
+                                    <a href="https://www.synthesia.io/" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                                <div class="tool-card">
+                                    <h4 class="tool-title">Runway ML</h4>
+                                    <p class="tool-description">تعديل الفيديو وإضافة مؤثرات بالذكاء الاصطناعي</p>
+                                    <a href="https://runwayml.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السؤال 5 -->
+            <div class="faq-item animate">
+                <button class="faq-question">5. كيف أصمم مواقع ويب بمساعدة الذكاء الاصطناعي؟</button>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        <div class="answer-section">
+                            <h3 class="answer-title">تصميم مواقع الويب بالذكاء الاصطناعي</h3>
+                            <p class="answer-text">طرق تصميم مواقع ويب باستخدام الذكاء الاصطناعي:</p>
+                            
+                            <div class="image-placeholder">
+                                <i class="fas fa-laptop-code"></i>
+                            </div>
+                            
+                            <ul class="answer-text">
+                                <li><strong>منصات بناء المواقع بالذكاء الاصطناعي:</strong> أدوات تتيح إنشاء مواقع كاملة بالأوامر النصية</li>
+                                <li><strong>مساعدو البرمجة:</strong> توليد أكواد جاهزة بناءً على أوصاف بسيطة</li>
+                                <li><strong>تصميم الواجهات:</strong> توليد تصاميم واجهات المستخدم بناءً على المتطلبات</li>
+                                <li><strong>تحسين تجربة المستخدم:</strong> تحليل سلوك الزوار واقتراح تحسينات</li>
+                                <li><strong>إنشاء المحتوى:</strong> توليد نصوص وصور للموقع تلقائياً</li>
+                            </ul>
+                            
+                            <div class="example-box">
+                                <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                                <p>مطور ويب يستخدم مساعد ذكاء اصطناعي لإنشاء صفحة هبوط لعميل، حيث وصف المتطلبات بالكلمات، فقام المساعد بتوليد كود HTML و CSS جاهز مع تصاميم متجاوبة، ثم قام المطور بتعديل التفاصيل الدقيقة.</p>
+                            </div>
+                            
+                            <h3 class="answer-title">أدوات مفيدة</h3>
+                            <div class="tools-container">
+                                <div class="tool-card">
+                                    <h4 class="tool-title">Wix ADI</h4>
+                                    <p class="tool-description">بناء مواقع ويب بالذكاء الاصطناعي</p>
+                                    <a href="https://www.wix.com/adi" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                                <div class="tool-card">
+                                    <h4 class="tool-title">GitHub Copilot</h4>
+                                    <p class="tool-description">مساعد برمجي لكتابة أكواد المواقع</p>
+                                    <a href="https://copilot.github.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- السؤال 6 -->
+            <div class="faq-item animate">
+                <button class="faq-question">6. تخصصي إدارة أعمال، كيف أستفيد مادياً من النت بمساعدة الذكاء الاصطناعي؟</button>
+                <div class="faq-answer">
+                    <div class="faq-content">
+                        <div class="answer-section">
+                            <h3 class="answer-title">الربح من الإنترنت باستخدام الذكاء الاصطناعي</h3>
+                            <p class="answer-text">طرق الربح من الإنترنت لخريجي إدارة الأعمال باستخدام الذكاء الاصطناعي:</p>
+                            
+                            <div class="image-placeholder">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            
+                            <ul class="answer-text">
+                                <li><strong>التسويق الرقمي الذكي:</strong> استخدام أدوات الذكاء الاصطناعي لتحليل السوق وتحديد الجمهور المستهدف وإنشاء حملات تسويقية فعالة</li>
+                                <li><strong>التجارة الإلكترونية:</strong> استخدام الذكاء الاصطناعي لتحليل سلوك العملاء وتوقع المبيعات وإدارة المخزون</li>
+                                <li><strong>الاستشارات الإدارية:</strong> تقديم استشارات لإدارة الأعمال مع استخدام أدوات الذكاء الاصطناعي لتحليل البيانات واتخاذ القرارات</li>
+                                <li><strong>إنشاء محتوى تعليمي:</strong> تطوير دورات في مجال إدارة الأعمال باستخدام الذكاء الاصطناعي لإنشاء محتوى تفاعلي</li>
+                                <li><strong>تحليل البيانات:</strong> تقديم خدمات تحليل بيانات الأعمال باستخدام أدوات الذكاء الاصطناعي</li>
+                            </ul>
+                            
+                            <div class="example-box">
+                                <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                                <p>خريج إدارة أعمال أنشأ خدمة تحليل بيانات للشركات الصغيرة باستخدام أدوات الذكاء الاصطناعي، حيث يقوم بتحليل بيانات العملاء والمبيعات ويقدم تقارير وتوصيات لتحسين الأداء، ويحقق دخلاً شهرياً ثابتاً من هذه الخدمة.</p>
+                            </div>
+                            
+                            <h3 class="answer-title">أدوات مفيدة</h3>
+                            <div class="tools-container">
+                                <div class="tool-card">
+                                    <h4 class="tool-title">Jasper</h4>
+                                    <p class="tool-description">إنشاء محتوى تسويقي بمساعدة الذكاء الاصطناعي</p>
+                                    <a href="https://www.jasper.ai/" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                                <div class="tool-card">
+                                    <h4 class="tool-title">Tableau</h4>
+                                    <p class="tool-description">تحليل بيانات الأعمال وتصورها</p>
+                                    <a href="https://www.tableau.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       <!-- السؤال 7 -->
+<div class="faq-item animate">
+    <button class="faq-question">7. أريد أن أستفيد من مجال الذكاء الاصطناعي وأن آخذ فكرة عن الذكاء الاصطناعي</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">مقدمة شاملة عن الذكاء الاصطناعي</h3>
+                <p class="answer-text">الذكاء الاصطناعي هو مجال من مجالات علوم الحاسوب يركز على إنشاء أنظمة قادرة على أداء مهام تتطلب ذكاءً بشرياً، مثل التعلم، حل المشكلات، اتخاذ القرارات، والتعرف على الأنماط.</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-brain"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>أنواع الذكاء الاصطناعي:</strong> الذكاء الاصطناعي الضيق (مخصص لمهام محددة)، الذكاء الاصطناعي العام (يشبه الذكاء البشري)، الذكاء الفائق (يفوق الذكاء البشري)</li>
+                    <li><strong>تقنيات أساسية:</strong> تعلم الآلة، الشبكات العصبية، معالجة اللغة الطبيعية، الرؤية الحاسوبية</li>
+                    <li><strong>تطبيقات عملية:</strong> المساعدات الذكية، السيارات ذاتية القيادة، التشخيص الطبي، الترجمة الآلية</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>مساعد جوجل يستخدم الذكاء الاصطناعي لفهم أسئلتك الصوتية والرد عليها بشكل ذكي، حيث يتعلم من مليارات التفاعلات لتحسين إجاباته باستمرار.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Google AI</h4>
+                        <p class="tool-description">موارد تعليمية وبحوث في مجال الذكاء الاصطناعي</p>
+                        <a href="https://ai.google/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Elements of AI</h4>
+                        <p class="tool-description">دورة مجانية للمبتدئين في الذكاء الاصطناعي</p>
+                        <a href="https://www.elementsofai.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 8 -->
+<div class="faq-item animate">
+    <button class="faq-question">8. أريد فهم آلية عمل تطبيقات السوشل ميديا وكيف بنيت ونظرة شاملة عن التطبيقات من البناء حتى النشر والاستخدام</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">كيف تعمل تطبيقات السوشل ميديا</h3>
+                <p class="answer-text">تطبيقات التواصل الاجتماعي تعتمد على تقنيات متقدمة وتنقسم عملية بنائها إلى عدة مراحل:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-users"></i>
+                </div>
+                
+                <ol class="answer-text">
+                    <li><strong>التصميم والتخطيط:</strong> تحديد الفكرة، دراسة الجمهور المستهدف، تصميم واجهة المستخدم</li>
+                    <li><strong>التطوير:</strong> برمجة الواجهات الأمامية والخلفية، قواعد البيانات، واجهات برمجة التطبيقات (APIs)</li>
+                    <li><strong>الذكاء الاصطناعي:</strong> خوارزميات التوصية، تحليل المشاعر، اكتشاف المحتوى غير المناسب</li>
+                    <li><strong>الاختبار:</strong> اختبار الأداء والأمان وتجربة المستخدم</li>
+                    <li><strong>النشر:</strong> طرح التطبيق على متاجر التطبيقات</li>
+                    <li><strong>الصيانة والتطوير:</strong> تحديثات مستمرة وتحسينات بناءً على ملاحظات المستخدمين</li>
+                </ol>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>فيسبوك يستخدم خوارزميات ذكاء اصطناعي لتحديد المحتوى الذي يعرضه في خلاصة المستخدم، بناءً على تفاعلاته السابقة واهتماماته، مما يزيد من وقت بقاء المستخدمين على المنصة.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Firebase</h4>
+                        <p class="tool-description">منصة لبناء تطبيقات الجوال وإدارتها</p>
+                        <a href="https://firebase.google.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">AWS Amplify</h4>
+                        <p class="tool-description">أدوات لبناء تطبيقات ويب وجوال قابلة للتوسع</p>
+                        <a href="https://aws.amazon.com/amplify/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 9 -->
+<div class="faq-item animate">
+    <button class="faq-question">9. أنا خريجة لغة إنجليزية، أريد أن أنمي لغتي وأمارسها بمساعدة الذكاء الاصطناعي</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">تعلم وتطوير اللغة الإنجليزية بالذكاء الاصطناعي</h3>
+                <p class="answer-text">يمكن للذكاء الاصطناعي مساعدتك في تطوير مهاراتك اللغوية بطرق مبتكرة وفعالة:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-language"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>ممارسة المحادثة:</strong> محادثات تفاعلية مع روبوتات ذكية تحاكي المحادثات الحقيقية</li>
+                    <li><strong>تصحيح الكتابة:</strong> أدوات لتدقيق القواعد والنحو والأسلوب</li>
+                    <li><strong>تحسين النطق:</strong> تقييم نطقك وتقديم ملاحظات فورية</li>
+                    <li><strong>توسيع المفردات:</strong> اقتراح كلمات جديدة ومرادفات بناءً على مستواك</li>
+                    <li><strong>الاستماع والفهم:</strong> تمارين استماع مع أسئلة فهم مخصصة</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>طالبة لغة إنجليزية تستخدم تطبيقاً للذكاء الاصطناعي لتحسين نطقها، حيث تتحدث والتطبيق يحلل نطقها ويحدد الأخطاء، ثم يقدم تمارين مخصصة لتحسين مناطق الضعف.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Duolingo</h4>
+                        <p class="tool-description">تطبيق لتعلم اللغات باستخدام الذكاء الاصطناعي</p>
+                        <a href="https://www.duolingo.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">ELSA Speak</h4>
+                        <p class="tool-description">تحسين النطق بالإنجليزية باستخدام الذكاء الاصطناعي</p>
+                        <a href="https://elsaspeak.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 10 -->
+<div class="faq-item animate">
+    <button class="faq-question">10. كيف أستخدم الذكاء الاصطناعي وأحقق أقصى استفادة منه</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">الاستفادة القصوى من الذكاء الاصطناعي</h3>
+                <p class="answer-text">لتحقيق أقصى استفادة من الذكاء الاصطناعي، اتبع هذه الاستراتيجيات:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>التعرف على الأدوات المناسبة:</strong> ابحث عن أدوات تلبي احتياجاتك الخاصة</li>
+                    <li><strong>التعلم المستمر:</strong> تابع التطورات الجديدة في مجال الذكاء الاصطناعي</li>
+                    <li><strong>التكامل مع عملك:</strong> استخدم الذكاء الاصطناعي لتحسين عملياتك الحالية</li>
+                    <li><strong>التجريب والممارسة:</strong> جرب أدوات مختلفة واعثر على الأفضل لك</li>
+                    <li><strong>الاستخدام الأخلاقي:</strong> تأكد من استخدام الذكاء الاصطناعي بطرق أخلاقية وقانونية</li>
+                    <li><strong>التخصيص:</strong> درب النماذج على بياناتك الخاصة لتحقيق نتائج أفضل</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>مدون يستخدم أدوات الذكاء الاصطناعي لتحليل جمهوره، توليد أفكار للمحتوى، كتابة المسودات الأولية، وتحسين SEO، مما وفر عليه 10 ساعات أسبوعياً وضاعف عدد زوار مدونته.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Notion AI</h4>
+                        <p class="tool-description">مساعد ذكي لإدارة المهام والكتابة</p>
+                        <a href="https://www.notion.so/product/ai" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Otter.ai</h4>
+                        <p class="tool-description">تحويل الصوت إلى نص بذكاء</p>
+                        <a href="https://otter.ai/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 11 -->
+<div class="faq-item animate">
+    <button class="faq-question">11. أريد أن أسجل في مجال برمجة الحاسوب، أريد أن آخذ نظرة عن هذا المجال وعلاقته بالذكاء الاصطناعي</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">مجال برمجة الحاسوب وعلاقته بالذكاء الاصطناعي</h3>
+                <p class="answer-text">برمجة الحاسوب هي عملية كتابة تعليمات لتوجيه الحاسوب لأداء مهام محددة، وهي الأساس الذي تقوم عليه تقنيات الذكاء الاصطناعي.</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-code"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>أساسيات البرمجة:</strong> تعلم لغات مثل Python، Java، C++، وفهم هياكل البيانات والخوارزميات</li>
+                    <li><strong>علاقته بالذكاء الاصطناعي:</strong> الذكاء الاصطناعي هو أحد التخصصات المتقدمة في علوم الحاسوب</li>
+                    <li><strong>المسارات المهنية:</strong> مطور ويب، مطور تطبيقات، عالم بيانات، مهندس تعلم آلي</li>
+                    <li><strong>المهارات المطلوبة:</strong> التفكير المنطقي، حل المشكلات، التعلم المستمر، العمل الجماعي</li>
+                    <li><strong>الفرص المستقبلية:</strong> الطلب على المبرمجين في ازدياد مستمر خاصة في مجالات الذكاء الاصطناعي</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>مطور برمجيات تخصص في لغة Python وعلوم البيانات، ثم انتقل للعمل في مجال الذكاء الاصطناعي حيث يقوم بتطوير نماذج تنبؤية لتحسين تجربة العملاء في شركة تجارة إلكترونية.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">freeCodeCamp</h4>
+                        <p class="tool-description">منصة مجانية لتعلم البرمجة</p>
+                        <a href="https://www.freecodecamp.org/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">LeetCode</h4>
+                        <p class="tool-description">تمارين برمجية لإتقان حل المشكلات</p>
+                        <a href="https://leetcode.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 12 -->
+<div class="faq-item animate">
+    <button class="faq-question">12. ما هي استخدامات الذكاء الاصطناعي في مجال الطب؟ وكيف يساعدني في تعلم هذا المجال وتحسين حياتي؟</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">الذكاء الاصطناعي في الطب</h3>
+                <p class="answer-text">يشهد مجال الطب ثورة بفضل الذكاء الاصطناعي، حيث يساهم في:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>التشخيص الدقيق:</strong> تحليل الصور الطبية (أشعة، رنين) لاكتشاف الأمراض</li>
+                    <li><strong>الطب الشخصي:</strong> تخصيص العلاج بناءً على الجينات والتاريخ المرضي</li>
+                    <li><strong>اكتشاف الأدوية:</strong> تسريع عملية اكتشاف وتطوير الأدوية الجديدة</li>
+                    <li><strong>الروبوتات الجراحية:</strong> مساعدة الجراحين في عمليات دقيقة ومعقدة</li>
+                    <li><strong>الرعاية التنبؤية:</strong> توقع الأمراض قبل ظهور الأعراض</li>
+                    <li><strong>المساعدات الافتراضية:</strong> متابعة المرضى وتذكيرهم بأدويتهم</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>نظام ذكاء اصطناعي في مستشفى يستخدم لتحليل صور الأشعة المقطعية للرئة، حيث يتمكن من اكتشاف علامات سرطان الرئة في مراحله المبكرة بدقة تصل إلى 95%، مما ينقذ حياة آلاف المرضى.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">IBM Watson Health</h4>
+                        <p class="tool-description">حلول ذكاء اصطناعي للرعاية الصحية</p>
+                        <a href="https://www.ibm.com/watson-health" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">DeepMind Health</h4>
+                        <p class="tool-description">أبحاث الذكاء الاصطناعي في مجال الصحة</p>
+                        <a href="https://deepmind.com/health" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 13 -->
+<div class="faq-item animate">
+    <button class="faq-question">13. هل يساعدني الذكاء الاصطناعي في اختراق برامج مثل واتساب، تيك توك، فيسبوك؟</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">الاستخدام الأخلاقي للذكاء الاصطناعي</h3>
+                <p class="answer-text">من المهم توضيح أن الذكاء الاصطناعي أداة قوية يجب استخدامها بمسؤولية وأخلاق:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>الاختراق غير قانوني:</strong> محاولة اختراق حسابات الآخرين جريمة يعاقب عليها القانون</li>
+                    <li><strong>حماية الخصوصية:</strong> تستخدم شركات التكنولوجيا الذكاء الاصطناعي لحماية مستخدميها</li>
+                    <li><strong>الاستخدام الإيجابي:</strong> يمكن استخدام الذكاء الاصطناعي لاختبار أمان الأنظمة بغرض تحسينها (بإذن)</li>
+                    <li><strong>الأمن السيبراني:</strong> يساهم الذكاء الاصطناعي في اكتشاف الثغرات الأمنية ومنع الهجمات</li>
+                    <li><strong>المسؤولية الأخلاقية:</strong> على المستخدمين احترام خصوصية الآخرين وعدم انتهاكها</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>شركات الأمن السيبراني تستخدم الذكاء الاصطناعي لاكتشاف محاولات الاختراق والهجمات الإلكترونية، حيث تحلل أنظمتها مليارات الإشارات يومياً لتحديد التهديدات ومنعها قبل حدوثها.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">HackerOne</h4>
+                        <p class="tool-description">منصة للإبلاغ عن الثغرات الأمنية بشكل قانوني</p>
+                        <a href="https://www.hackerone.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">CyberSec Labs</h4>
+                        <p class="tool-description">موارد تعليمية للأمن السيبراني</p>
+                        <a href="https://cyberseclabs.co.uk/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 14 -->
+<div class="faq-item animate">
+    <button class="faq-question">14. كيف أكسب 10000 ريال يمني خلال أسبوع بمساعدة الذكاء الاصطناعي؟</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">الربح السريع باستخدام الذكاء الاصطناعي</h3>
+                <p class="answer-text">يمكن تحقيق دخل إضافي باستخدام الذكاء الاصطناعي من خلال عدة طرق عملية:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>بيع خدمات كتابة المحتوى:</strong> استخدام أدوات مثل ChatGPT لإنشاء محتوى لمدونات، مواقع، أو وسائل التواصل</li>
+                    <li><strong>تصميم الجرافيكس:</strong> توليد تصاميم باستخدام Midjourney أو DALL-E وبيعها</li>
+                    <li><strong>التسويق بالعمولة:</strong> إنشاء محتوى تسويقي ذكي لترويج منتجات</li>
+                    <li><strong>بيع الصور والفن الرقمي:</strong> إنشاء صور فريدة وبيعها على منصات مثل Shutterstock</li>
+                    <li><strong>الخدمات الصغيرة:</strong> تقديم خدمات مثل تدقيق لغوي، إنشاء سيرة ذاتية، أو تحرير فيديو باستخدام أدوات الذكاء الاصطناعي</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>شاب يمني يستخدم أداة توليد الصور بالذكاء الاصطناعي لإنشاء 50 تصميم فني فريد، ثم يعرضها للبيع على منصة خمسات مقابل 200 ريال يمني لكل تصميم، محققاً 10000 ريال يمني في أقل من أسبوع.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Fiverr</h4>
+                        <p class="tool-description">بيع الخدمات الصغيرة عبر الإنترنت</p>
+                        <a href="https://www.fiverr.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Canva</h4>
+                        <p class="tool-description">تصميم الجرافيكس بمساعدة الذكاء الاصطناعي</p>
+                        <a href="https://www.canva.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 15 -->
+<div class="faq-item animate">
+    <button class="faq-question">15. كيف أخترق حسابات ببجي وحسابات جوجل؟</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">الحماية الأمنية والاستخدام الأخلاقي</h3>
+                <p class="answer-text">من المهم توضيح النقاط التالية بخصوص اختراق الحسابات:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-lock"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>الاختراق غير قانوني:</strong> محاولة اختراق حسابات الآخرين جريمة يعاقب عليها القانون</li>
+                    <li><strong>حماية حساباتك:</strong> استخدام كلمات مرور قوية، المصادقة الثنائية، وتحديث البرامج</li>
+                    <li><strong>الأمن السيبراني:</strong> مجال شرعي يركز على حماية الأنظمة والشبكات</li>
+                    <li><strong>التعلم المشروع:</strong> يمكن تعلم اختبار الاختراق الأخلاقي (بإذن) لتحسين الأمن</li>
+                    <li><strong>المسؤولية:</strong> احترام خصوصية الآخرين وممتلكاتهم الرقمية</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>شركات التكنولوجيا تستخدم الذكاء الاصطناعي لاكتشاف ومنع محاولات الاختراق، حيث تحلل أنماط الدخول غير المعتادة وتتخذ إجراءات فورية لحماية المستخدمين.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Google Security Checkup</h4>
+                        <p class="tool-description">فحص أمان حساب جوجل الخاص بك</p>
+                        <a href="https://myaccount.google.com/security-checkup" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Have I Been Pwned?</h4>
+                        <p class="tool-description">اكتشاف ما إذا كان بريدك الإلكتروني معرضاً للاختراق</p>
+                        <a href="https://haveibeenpwned.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 16 -->
+<div class="faq-item animate">
+    <button class="faq-question">16. كيف أحقق أقصى استفادة من استخدام برامج الذكاء الاصطناعي؟</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">تحقيق أقصى استفادة من الذكاء الاصطناعي</h3>
+                <p class="answer-text">لتحقيق أقصى استفادة من أدوات الذكاء الاصطناعي:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>التعرف على الأدوات:</strong> استكشاف أدوات مختلفة وتجربتها لمعرفة ما يناسب احتياجاتك</li>
+                    <li><strong>التكامل مع عملك:</strong> دمج الذكاء الاصطناعي في عملياتك اليومية</li>
+                    <li><strong>التخصيص:</strong> تدريب النماذج على بياناتك الخاصة لتحقيق نتائج أفضل</li>
+                    <li><strong>التعلم المستمر:</strong> متابعة التطورات الجديدة في مجال الذكاء الاصطناعي</li>
+                    <li><strong>الاستخدام المتوازن:</strong> استخدام الذكاء الاصطناعي كمساعد وليس بديلاً عن الإبداع البشري</li>
+                    <li><strong>التقييم المنتظم:</strong> مراجعة النتائج وتحسين طريقة الاستخدام</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>مدير تسويق يستخدم أدوات الذكاء الاصطناعي لتحليل أداء حملاته، توقع سلوك العملاء، وتوليد محتوى مخصص، مما زاد عائد الاستثمار بنسبة 40% ووفر 15 ساعة عمل أسبوعياً.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Zapier</h4>
+                        <p class="tool-description">أتمتة المهام بين التطبيقات المختلفة</p>
+                        <a href="https://zapier.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Airtable AI</h4>
+                        <p class="tool-description">تنظيم البيانات بذكاء</p>
+                        <a href="https://www.airtable.com/ai" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 17 -->
+<div class="faq-item animate">
+    <button class="faq-question">17. ماذا يعني تخصص الذكاء الاصطناعي؟</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">فهم تخصص الذكاء الاصطناعي</h3>
+                <p class="answer-text">تخصص الذكاء الاصطناعي هو مجال أكاديمي ومهني يركز على تطوير أنظمة ذكية تحاكي الذكاء البشري.</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-robot"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>المفاهيم الأساسية:</strong> خوارزميات تعلم الآلة، الشبكات العصبية، معالجة اللغة الطبيعية، الرؤية الحاسوبية</li>
+                    <li><strong>المهارات المطلوبة:</strong> برمجة Python، الرياضيات، الإحصاء، التفكير المنطقي، حل المشكلات</li>
+                    <li><strong>المجالات الفرعية:</strong> الروبوتات، الأنظمة الخبيرة، التعلم العميق، الذكاء الاصطناعي التوليدي</li>
+                    <li><strong>التطبيقات العملية:</strong> السيارات الذاتية القيادة، المساعدات الافتراضية، التشخيص الطبي، الترجمة الآلية</li>
+                    <li><strong>الفرص الوظيفية:</strong> مهندس تعلم آلي، عالم بيانات، باحث في الذكاء الاصطناعي، مطور روبوتات</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>خريج تخصص الذكاء الاصطناعي يعمل في شركة تقنية حيث يطور نظاماً للتعرف على الصور، يساعد المكفوفين على فهم محيطهم من خلال وصف المشاهد صوتياً.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Coursera AI Courses</h4>
+                        <p class="tool-description">دورات في الذكاء الاصطناعي من جامعات عالمية</p>
+                        <a href="https://www.coursera.org/courses?query=artificial%20intelligence" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Kaggle</h4>
+                        <p class="tool-description">منصة لممارسة علوم البيانات والذكاء الاصطناعي</p>
+                        <a href="https://www.kaggle.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 18 -->
+<div class="faq-item animate">
+    <button class="faq-question">18. أريد فهم الطريقة التي يستخدمها الذكاء الاصطناعي للإجابة على أسئلتي</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">كيف يعمل الذكاء الاصطناعي في الإجابة على الأسئلة</h3>
+                <p class="answer-text">عندما تطرح سؤالاً على نظام ذكاء اصطناعي، يمر بعدة مراحل:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                
+                <ol class="answer-text">
+                    <li><strong>فهم السؤال:</strong> تحليل السؤال لغوياً وفهم القصد منه</li>
+                    <li><strong>استرجاع المعلومات:</strong> البحث في قاعدة المعرفة الضخمة للنظام</li>
+                    <li><strong>توليد الإجابة:</strong> بناء إجابة متماسكة ومنطقية باستخدام النماذج اللغوية</li>
+                    <li><strong>التقييم والتحسين:</strong> تقييم جودة الإجابة وتعديلها إذا لزم الأمر</li>
+                    <li><strong>التعلم:</strong> استخدام التفاعل لتحسين الأداء في المستقبل</li>
+                </ol>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>عند سؤال ChatGPT عن "أفضل طريقة لتعلم البرمجة"، يقوم النظام بتحليل السؤال، استرجاع المعلومات من آلاف المصادر التعليمية، ثم توليد إجابة منظمة تشمل خطوات عملية ونصائح مفيدة.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">ChatGPT</h4>
+                        <p class="tool-description">نموذج لغوي للإجابة على الأسئلة</p>
+                        <a href="https://chat.openai.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Wolfram Alpha</h4>
+                        <p class="tool-description">محرك إجابات قائم على المعرفة</p>
+                        <a href="https://www.wolframalpha.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 19 -->
+<div class="faq-item animate">
+    <button class="faq-question">19. أريد فهم خوارزميات الذكاء الاصطناعي</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">خوارزميات الذكاء الاصطناعي الأساسية</h3>
+                <p class="answer-text">الخوارزميات هي مجموعة من الخطوات المنطقية لحل مشكلة ما، وفي الذكاء الاصطناعي هناك عدة أنواع رئيسية:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>خوارزميات التعلم المراقب:</strong> تدريب النموذج على بيانات معروفة النتائج (مثل تصنيف الصور)</li>
+                    <li><strong>خوارزميات التعلم غير المراقب:</strong> اكتشاف أنماط في بيانات غير مصنفة (مثل تجميع العملاء)</li>
+                    <li><strong>خوارزميات التعلم التعزيزي:</strong> تعلم من خلال التجربة والخطأ (مثل ألعاب الفيديو)</li>
+                    <li><strong>الشبكات العصبية:</strong> نماذج مستوحاة من الدماغ البشري (مثل التعرف على الصور)</li>
+                    <li><strong>خوارزميات التعلم العميق:</strong> شبكات عصبية متعددة الطبقات لتحليل بيانات معقدة</li>
+                    <li><strong>خوارزميات التجميع والتصنيف:</strong> تقسيم البيانات إلى مجموعات أو فئات</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>خوارزمية "شجرة القرار" تستخدم في البنوك لتقييم طلبات القروض، حيث تحلل عدة عوامل (الدخل، التاريخ الائتماني، العمر) لتحديد احتمالية سداد القرض.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">TensorFlow Playground</h4>
+                        <p class="tool-description">تجربة الشبكات العصبية بشكل تفاعلي</p>
+                        <a href="https://playground.tensorflow.org/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Scikit-learn</h4>
+                        <p class="tool-description">مكتبة برمجية لخوارزميات تعلم الآلة</p>
+                        <a href="https://scikit-learn.org/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 20 -->
+<div class="faq-item animate">
+    <button class="faq-question">20. كيف أنشئ تصاميم بمساعدة الذكاء الاصطناعي؟</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">تصميم الجرافيكس بمساعدة الذكاء الاصطناعي</h3>
+                <p class="answer-text">يمكن إنشاء تصاميم احترافية باستخدام أدوات الذكاء الاصطناعي بخطوات بسيطة:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                
+                <ol class="answer-text">
+                    <li><strong>وصف التصميم:</strong> كتابة وصف نصي للتصميم الذي تريده</li>
+                    <li><strong>اختيار الأداة:</strong> استخدام أداة توليد الصور مثل Midjourney أو DALL-E</li>
+                    <li><strong>توليد التصاميم:</strong> الحصول على عدة خيارات للتصميم</li>
+                    <li><strong>التعديل والتحسين:</strong> استخدام أدوات التصميم لتعديل التصميم النهائي</li>
+                    <li><strong>التصدير:</strong> حفظ التصميم بالصيغة المطلوبة</li>
+                </ol>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p"مصمم جرافيك يستخدم أداة توليد الصور بالذكاء الاصطناعي لإنشاء 10 تصاميم أولية لشعار شركة في دقائق معدودة، ثم يختار أفضل تصميم ويقوم بتعديله يدوياً لتحقيق النتيجة النهائية، مما وفر ساعات من العمل."
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Midjourney</h4>
+                        <p class="tool-description">توليد صور فنية من الأوصاف النصية</p>
+                        <a href="https://www.midjourney.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Canva</h4>
+                        <p class="tool-description">تصميم الجرافيكس بمساعدة الذكاء الاصطناعي</p>
+                        <a href="https://www.canva.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 21 -->
+<div class="faq-item animate">
+    <button class="faq-question">21. كيف أقوم بتحويل النص إلى صور أو فيديوهات بمساعدة الذكاء الاصطناعي؟</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">تحويل النص إلى محتوى مرئي</h3>
+                <p class="answer-text">يمكن تحويل النصوص إلى صور وفيديوهات باستخدام أدوات ذكاء اصطناعي متخصصة:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-film"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>للصور:</strong> استخدام أدوات مثل DALL-E، Midjourney، Stable Diffusion</li>
+                    <li><strong>للفيديوهات:</strong> استخدام أدوات مثل Synthesia، Pictory، Runway ML</li>
+                    <li><strong>خطوات العمل:</strong>
+                        <ol>
+                            <li>كتابة وصف نصي دقيق للصورة أو المشهد</li>
+                            <li>اختيار الأداة المناسبة</li>
+                            <li>توليد المحتوى المرئي</li>
+                            <li>التعديل والتحسين</li>
+                            <li>التصدير بالجودة المطلوبة</li>
+                        </ol>
+                    </li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>مدون يستخدم أداة تحويل النص إلى فيديو لإنشاء محتوى لقناته على اليوتيوب، حيث يكتب السيناريو وتقوم الأداة بتحويله إلى فيديو مع صور متحركة وصوت راوي، مما وفر عليه أيام من العمل.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Synthesia</h4>
+                        <p class="tool-description">تحويل النص إلى فيديو مع مذيعين افتراضيين</p>
+                        <a href="https://www.synthesia.io/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">DALL-E</h4>
+                        <p class="tool-description">توليد صور من الأوصاف النصية</p>
+                        <a href="https://openai.com/dall-e" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 22 -->
+<div class="faq-item animate">
+    <button class="faq-question">22. أريد تطبيقات تدعم جميع لغات البرمجة على جهاز Android مثل Python, PHP, C++</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">تطبيقات البرمجة على الهواتف</h3>
+                <p class="answer-text">هناك عدة تطبيقات ممتازة للبرمجة على أندرويد تدعم لغات متعددة:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>تطبيقات متعددة اللغات:</strong> تطبيقات تدعم كتابة وتنفيذ كود بعدة لغات برمجية</li>
+                    <li><strong>المميزات الأساسية:</strong> تمييز الصياغة، إكمال تلقائي للكود، تصحيح الأخطاء، تنفيذ مباشر</li>
+                    <li><strong>التكامل مع السحابة:</strong> بعض التطبيقات تتيح التنفيذ على خوادم سحابية</li>
+                    <li><strong>التعاون:</strong> مشاركة الكود والعمل مع فريق</li>
+                    <li><strong>التعلم:</strong> دروس وتحديات برمجية مدمجة</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>طالب برمجيات يستخدم تطبيق برمجة على هاتفه لكتابة وتجربة كود Python أثناء تنقله بالحافلة، ثم يحفظ مشروعه على السحابة ويكمل العمل عليه لاحقاً على حاسوبه الشخصي.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Pydroid 3</h4>
+                        <p class="tool-description">بيئة تطوير متكاملة لـ Python على الأندرويد</p>
+                        <a href="https://play.google.com/store/apps/details?id=ru.iiec.pydroid3" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Cxxdroid</h4>
+                        <p class="tool-description">مترجم C/C++ مع دعم مكتبات قياسية</p>
+                        <a href="https://play.google.com/store/apps/details?id=ru.iiec.cxxdroid" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 23 -->
+<div class="faq-item animate">
+    <button class="faq-question">23. توليد صور مقاربة للحقيقة بمساعدة الذكاء الاصطناعي</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">توليد صور واقعية بالذكاء الاصطناعي</h3>
+                <p class="answer-text">يمكن إنشاء صور فوتوغرافية واقعية باستخدام أدوات الذكاء الاصطناعي المتقدمة:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-camera"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>التقنيات المستخدمة:</strong> نماذج توليدية متقدمة مثل GANs (شبكات الخصومة التوليدية)</li>
+                    <li><strong>خطوات العمل:</strong>
+                        <ol>
+                            <li>كتابة وصف دقيق للصورة المطلوبة</li>
+                            <li>اختيار الأسلوب والجودة</li>
+                            <li>توليد عدة خيارات للصورة</li>
+                            <li>اختيار الصورة الأفضل وتعديلها إذا لزم الأمر</li>
+                        </ol>
+                    </li>
+                    <li><strong>التطبيقات:</strong> تصميم المنتجات، الإعلانات، الألعاب، الأفلام، الفن الرقمي</li>
+                    <li><strong>الأخلاقيات:</strong> أهمية استخدام هذه التقنيات بمسؤولية وتجنب إنشاء محتوى مضلل</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>شركة عقارات تستخدم أداة توليد صور بالذكاء الاصطناعي لإنشاء صور واقعية لتصاميم شقق لم يتم بناؤها بعد، مما يساعد العملاء على تصور المساحات واتخاذ قرارات الشراء بثقة أكبر.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Midjourney</h4>
+                        <p class="tool-description">توليد صور فنية وواقعية من الأوصاف</p>
+                        <a href="https://www.midjourney.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Stable Diffusion</h4>
+                        <p class="tool-description">نموذج مفتوح المصدر لتوليد الصور</p>
+                        <a href="https://stablediffusionweb.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 24 -->
+<div class="faq-item animate">
+    <button class="faq-question">24. روابط أدوات ومواقع وقنوات تعليمية في مجال الذكاء الاصطناعي وتكنولوجيا المعلومات</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">مصادر تعلم الذكاء الاصطناعي وتكنولوجيا المعلومات</h3>
+                <p class="answer-text">أفضل المصادر لتعلم الذكاء الاصطناعي وتكنولوجيا المعلومات:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>منصات تعليمية:</strong> Coursera، edX، Udacity، Udemy</li>
+                    <li><strong>قنوات يوتيوب:</strong> 3Blue1Brown، Sentdex، freeCodeCamp، The Coding Train</li>
+                    <li><strong>مواقع تدريب عملية:</strong> Kaggle، HackerRank، LeetCode، DataCamp</li>
+                    <li><strong>مدونات ومجتمعات:</strong> Towards Data Science، Medium، Stack Overflow، Reddit (r/MachineLearning)</li>
+                    <li><strong>أدوات مفتوحة المصدر:</strong> TensorFlow، PyTorch، scikit-learn، Keras</li>
+                    <li><strong>أخبار وتحديثات:</strong> MIT Technology Review، Wired، VentureBeat AI</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>طالب هندسة حواسيب بدأ رحلته في تعلم الذكاء الاصطناعي من خلال دورات مجانية على Coursera وKaggle، ثم انضم إلى مجتمع على Reddit لمشاركة مشاريعه والحصول على تعليقات، مما ساعده في الحصول على وظيفة في مجال علوم البيانات.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Coursera</h4>
+                        <p class="tool-description">دورات من جامعات عالمية في الذكاء الاصطناعي</p>
+                        <a href="https://www.coursera.org/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Kaggle</h4>
+                        <p class="tool-description">منصة لممارسة علوم البيانات والتنافس</p>
+                        <a href="https://www.kaggle.com/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 25 -->
+<div class="faq-item animate">
+    <button class="faq-question">25. تعديل دقة الصور إلى دقة أوضح حسب الاحتياج</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">تحسين دقة الصور بالذكاء الاصطناعي</h3>
+                <p class="answer-text">يمكن تحسين جودة الصور وزيادة دقتها باستخدام أدوات الذكاء الاصطناعي:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-image"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>التقنيات المستخدمة:</strong> الشبكات العصبية التلافيفية (CNNs)، التعلم العميق</li>
+                    <li><strong>خطوات العمل:</strong>
+                        <ol>
+                            <li>تحميل الصورة منخفضة الدقة</li>
+                            <li>اختيار مستوى التحسين المطلوب</li>
+                            <li>تطبيق خوارزميات الذكاء الاصطناعي لإضافة التفاصيل المفقودة</li>
+                            <li>مقارنة النتائج واختيار الأفضل</li>
+                            <li>حفظ الصورة بالجودة الجديدة</li>
+                        </ol>
+                    </li>
+                    <li><strong>الاستخدامات:</strong> تحسين الصور القديمة، تكبير الصور دون فقد الجودة، تحسين صور المنتجات، التصوير الطبي</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>مؤرخ يستخدم أداة تحسين الصور بالذكاء الاصطناعي لتحسين دقة صور أرشيفية قديمة لمدينته، مما سمح برؤية التفاصيل الدقيقة التي كانت غير مرئية سابقاً، وأتاح له نشر كتاب مصور عن تاريخ المدينة.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Topaz Gigapixel AI</h4>
+                        <p class="tool-description">تكبير الصور مع الحفاظ على الجودة</p>
+                        <a href="https://www.topazlabs.com/gigapixel-ai" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Remini</h4>
+                        <p class="tool-description">تحسين جودة الصور باستخدام الذكاء الاصطناعي</p>
+                        <a href="https://remini.ai/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- السؤال 26 -->
+<div class="faq-item animate">
+    <button class="faq-question">26. كيف أقدر أعدل حجم الصورة بحسب الحاجة على مختلف الأجهزة؟</button>
+    <div class="faq-answer">
+        <div class="faq-content">
+            <div class="answer-section">
+                <h3 class="answer-title">تعديل حجم الصور لتناسب الأجهزة المختلفة</h3>
+                <p class="answer-text">تغيير حجم الصور لتناسب شاشات الأجهزة المختلفة باستخدام أدوات الذكاء الاصطناعي:</p>
+                
+                <div class="image-placeholder">
+                    <i class="fas fa-mobile"></i>
+                </div>
+                
+                <ul class="answer-text">
+                    <li><strong>التحدي:</strong> الحفاظ على الجودة عند تغيير الحجم</li>
+                    <li><strong>حلول الذكاء الاصطناعي:</strong>
+                        <ul>
+                            <li>تغيير الحجم الذكي مع الحفاظ على التفاصيل المهمة</li>
+                            <li>التكيف التلقائي مع نسب العرض المختلفة</li>
+                            <li>إعادة التركيز على العناصر الرئيسية عند الاقتصاص</li>
+                            <li>توليد محتوى جديد لملء الفراغات عند تغيير النسب</li>
+                        </ul>
+                    </li>
+                    <li><strong>خطوات العمل:</strong>
+                        <ol>
+                            <li>تحميل الصورة الأصلية</li>
+                            <li>تحديد الأبعاد المطلوبة لكل جهاز</li>
+                            <li>تطبيق خوارزميات الذكاء الاصطناعي لتعديل الحجم</li>
+                            <li>مراجعة النتائج وإجراء التعديلات اليدوية إذا لزم الأمر</li>
+                            <li>حفظ الصور بالأبعاد المختلفة</li>
+                        </ol>
+                    </li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4 class="example-title"><i class="fas fa-lightbulb"></i> مثال واقعي</h4>
+                    <p>مصمم ويب يستخدم أداة ذكاء اصطناعي لتحويل صورة واحدة إلى عدة أحجام تناسب شاشات الجوال، اللوحي، والحاسوب المكتبي، مع الحفاظ على الجودة وتعديل التركيز في كل حجم ليناسب المساحة المتاحة.</p>
+                </div>
+                
+                <h3 class="answer-title">أدوات مفيدة</h3>
+                <div class="tools-container">
+                    <div class="tool-card">
+                        <h4 class="tool-title">Adobe Photoshop AI</h4>
+                        <p class="tool-description">أدوات ذكية لتعديل الصور وتغيير أحجامها</p>
+                        <a href="https://www.adobe.com/products/photoshop.html" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                    <div class="tool-card">
+                        <h4 class="tool-title">Let's Enhance</h4>
+                        <p class="tool-description">تغيير حجم الصور مع الحفاظ على الجودة</p>
+                        <a href="https://letsenhance.io/" target="_blank" class="tool-link">زيارة الموقع</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>     
+
+            <!-- يمكن إضافة بقية الأسئلة بنفس الطريقة -->
+            
+        </div>
+    </section>
+    
+    <!-- قسم الحث على التسجيل -->
+    <section class="cta-section" style="background: linear-gradient(135deg, var(--ai-pink), var(--neon-blue)); border-radius: 20px; padding: 80px 40px; text-align: center;">
+        <h2 class="section-title">هل لديك المزيد من الأسئلة؟</h2>
+        <p class="section-subtitle">انضم إلى مجتمعنا التعليمي واحصل على إجابات لجميع استفساراتك حول الذكاء الاصطناعي</p>
+        
+        <a href="#" class="nav-btn" style="margin-top: 30px;">
+            <i class="fas fa-robot"></i> انضم إلى مجتمعنا الآن
+        </a>
+    </section>
+    
+    <!-- التذييل -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">أكاديمية SeaStar</h3>
+                <p>نقدم دورات متخصصة في التقنيات الحديثة لتأهيل جيل المستقبل لمتطلبات سوق العمل في العصر الرقمي.</p>
+                
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">الرئيسية</a></li>
+                    <li><a href="#faq">أسئلة وأجوبة</a></li>
+                    <li><a href="#tools">الأدوات</a></li>
+                    <li><a href="#">الدورات التدريبية</a></li>
+                    <li><a href="#">المدونة</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">اتصل بنا</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> info@seastar-academy.com</li>
+                    <li><i class="fas fa-phone"></i> +967 123 456 789</li>
+                    <li><i class="fas fa-map-marker-alt"></i> اليمن، صنعاء - المدينة التقنية</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2025 أكاديمية SeaStar. جميع الحقوق محفوظة.
+        </div>
+    </footer>
+    
+    <script>
+        // إضافة تأثيرات الظهور عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // أكورديون الأسئلة
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const isActive = question.classList.contains('active');
+                    
+                    // إغلاق كل العناصر المفتوحة
+                    faqQuestions.forEach(q => {
+                        q.classList.remove('active');
+                        const answer = q.nextElementSibling;
+                        answer.style.maxHeight = null;
+                    });
+                    
+                    // فتح العنصر الحالي إذا لم يكن مفتوحاً
+                    if (!isActive) {
+                        question.classList.add('active');
+                        const answer = question.nextElementSibling;
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                    }
+                });
+            });
+            
+            // فتح أول سؤالين تلقائياً
+            setTimeout(() => {
+                faqQuestions[0].click();
+                setTimeout(() => faqQuestions[1].click(), 300);
+            }, 1000);
+            
+            // وظيفة البحث
+            const searchInput = document.querySelector('.search-box input');
+            const searchButton = document.querySelector('.search-box button');
+            
+            searchButton.addEventListener('click', searchFAQs);
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    searchFAQs();
+                }
+            });
+            
+            function searchFAQs() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                if (!searchTerm) return;
+                
+                // إغلاق جميع الأسئلة أولاً
+                faqQuestions.forEach(q => {
+                    q.classList.remove('active');
+                    const answer = q.nextElementSibling;
+                    answer.style.maxHeight = null;
+                });
+                
+                // البحث عن الأسئلة التي تحتوي على مصطلح البحث
+                let found = false;
+                faqQuestions.forEach(q => {
+                    const questionText = q.textContent.toLowerCase();
+                    if (questionText.includes(searchTerm)) {
+                        found = true;
+                        q.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        q.classList.add('active');
+                        const answer = q.nextElementSibling;
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                    }
+                });
+                
+                if (!found) {
+                    alert('لم يتم العثور على أسئلة تطابق بحثك');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
