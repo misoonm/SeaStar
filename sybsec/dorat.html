@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دورة الأمن السيبراني - الحماية الرقمية في عالم متصل</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--cyber-green);
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--cyber-green);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .nav-btn {
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 168, 255, 0.5);
+        }
+        
+        /* القسم البطولي */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 100px 20px 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .hero-btn {
+            padding: 16px 35px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+        
+        .secondary-btn {
+            background: transparent;
+            color: var(--cyber-green);
+            border: 2px solid var(--cyber-green);
+        }
+        
+        .secondary-btn:hover {
+            background: rgba(11, 232, 129, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        /* الأقسام العامة */
+        section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* قسم لماذا الدورة مهمة */
+        .why-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 50px;
+            margin-bottom: 100px;
+        }
+        
+        .why-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .why-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 350px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .why-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--cyber-green);
+        }
+        
+        .why-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--cyber-blue);
+        }
+        
+        .why-icon {
+            font-size: 3rem;
+            color: var(--cyber-green);
+            margin-bottom: 20px;
+        }
+        
+        .why-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--cyber-green);
+        }
+        
+        /* قسم الأيام */
+        .days-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .day-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 380px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .day-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--cyber-blue);
+        }
+        
+        .day-header {
+            padding: 30px;
+            text-align: center;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-purple));
+        }
+        
+        .day-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+        
+        .day-number {
+            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .day-content {
+            padding: 30px;
+        }
+        
+        .day-points {
+            margin: 20px 0;
+            padding-right: 20px;
+        }
+        
+        .day-points li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-right: 30px;
+        }
+        
+        .day-points li:before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            color: var(--cyber-green);
+            font-weight: bold;
+        }
+        
+        .day-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            border: 2px solid var(--cyber-green);
+            color: var(--cyber-green);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        .day-btn:hover {
+            background: var(--cyber-green);
+            color: var(--dark-blue);
+        }
+        
+        /* قسم الحث على التسجيل */
+        .cta-section {
+            text-align: center;
+            background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-blue));
+            border-radius: 20px;
+            padding: 80px 40px;
+            margin-top: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+        
+        .cta-text {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 20px 30px;
+            margin-top: 100px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--cyber-green);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title {
+                font-size: 2.4rem;
+            }
+            
+            .hero p, .section-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                padding-top: 150px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .why-section {
+                padding: 30px 20px;
+            }
+            
+            .day-card {
+                max-width: 100%;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- خلفيات متحركة -->
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <!-- عناصر رسومية متحركة -->
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="logo">عبدالله المؤيد</div>
+        <div class="nav-links">
+            <a href="https://tinyurl.com/abdullahabbass" class="active">الرئيسية</a>
+            <a href="cors.html">اليوم الأول</a>
+            <a href="day1.html">اليوم الثاني</a>
+            <a href="cors2.html">اليوم الثالث</a>
+            <a href="#contact">اتصل بنا</a>
+        </div>
+        <button class="nav-btn">
+            <i class="fas fa-lock"></i> ابدأ التعلم
+        </button>
+    </nav>
+    
+    <!-- القسم البطولي -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>دورة الأمن السيبراني الشاملة</h1>
+            <p>في هذه الدورة التدريبية التي تستغرق ثلاثة أيام، سنتعمق في عالم الأمن السيبراني المثير، بدءًا من الأساسيات وصولًا إلى التطبيقات العملية. هدفي هو أن تخرج من هذه الدورة ليس فقط بمعرفة نظرية، بل بمهارات عملية حقيقية تساعدك على حماية نفسك وبياناتك، وربما تفتح لك آفاقًا جديدة في هذا المجال الحيوي.</p>
+            
+            <div class="hero-btns">
+                <a href="#days" class="hero-btn primary-btn">
+                    <i class="fas fa-play-circle"></i> ابدأ الدورة
+                </a>
+                <a href="#why" class="hero-btn secondary-btn">
+                    <i class="fas fa-info-circle"></i> تعرف أكثر
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- لماذا هذه الدورة مهمة -->
+    <section id="why">
+        <div class="section-header">
+            <h2 class="section-title">لماذا هذه الدورة مهمة لك؟</h2>
+            <p class="section-subtitle">في عالمنا اليوم، كل شيء متصل بالإنترنت. من هواتفنا الذكية إلى حساباتنا البنكية، أصبحت حياتنا الرقمية جزءًا لا يتجزأ من واقعنا. ومع هذا التطور، تزداد التهديدات السيبرانية يومًا بعد يوم.</p>
+        </div>
+        
+        <div class="why-section">
+            <div class="why-cards">
+                <div class="why-card animate">
+                    <div class="why-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="why-title">حماية حياتك الرقمية</h3>
+                    <p>ستتعلم كيف تحمي معلوماتك الشخصية، حساباتك المصرفية، وصورك الخاصة من المتسللين والمخترقين.</p>
+                </div>
+                
+                <div class="why-card animate">
+                    <div class="why-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="why-title">فرص وظيفية واعدة</h3>
+                    <p>مجال الأمن السيبراني ينمو بسرعة هائلة مع طلب كبير على المتخصصين، حيث يوجد أكثر من 3.5 مليون وظيفة شاغرة عالميًا.</p>
+                </div>
+                
+                <div class="why-card animate">
+                    <div class="why-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="why-title">معرفة عملية حقيقية</h3>
+                    <p>ستكتسب مهارات عملية يمكنك تطبيقها فورًا لحماية نفسك وعائلتك وبياناتك في الحياة اليومية.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- محتوى الأيام -->
+    <section id="days">
+        <div class="section-header">
+            <h2 class="section-title">محتويات الدورة</h2>
+            <p class="section-subtitle">ثلاثة أيام مكثفة تنتقل بك من المفاهيم الأساسية إلى التطبيقات العملية المتقدمة في الأمن السيبراني</p>
+        </div>
+        
+        <div class="days-container">
+            <!-- اليوم الأول -->
+            <div class="day-card animate">
+                <div class="day-header">
+                    <div class="day-number">اليوم الأول</div>
+                    <h3 class="day-title">أساسيات الأمن السيبراني وعالم التهديدات</h3>
+                </div>
+                <div class="day-content">
+                    <p>سنبدأ رحلتنا اليوم بفهم الأساسيات الصلبة التي تُبنى عليها كل مفاهيم الأمن السيبراني.</p>
+                    
+                    <ul class="day-points">
+                        <li>فهم الأمن السيبراني: لماذا هو مهم؟</li>
+                        <li>التهديدات السيبرانية الشائعة: تعرف على عدوك!</li>
+                        <li>المصطلحات الأساسية: لغة الأمن السيبراني</li>
+                        <li>التصيد الاحتيالي والبرامج الضارة</li>
+                        <li>برامج الفدية والهندسة الاجتماعية</li>
+                    </ul>
+                    
+                    <a href="cors.html" class="day-btn">
+                        <i class="fas fa-arrow-left"></i> ابدأ اليوم الأول
+                    </a>
+                </div>
+            </div>
+            
+            <!-- اليوم الثاني -->
+            <div class="day-card animate">
+                <div class="day-header">
+                    <div class="day-number">اليوم الثاني</div>
+                    <h3 class="day-title">عالم الاختراق الأخلاقي والحماية الوقائية</h3>
+                </div>
+                <div class="day-content">
+                    <p>سندخل إلى عقل المخترقين (ولكن الجيدين منهم!) وسنتعلم كيف يفكرون، ثم كيف نستخدم هذا التفكير لحماية أنفسنا.</p>
+                    
+                    <ul class="day-points">
+                        <li>الاختراق الأخلاقي: حراس البوابة الرقمية</li>
+                        <li>كيف يفكر المخترقون؟ (من منظور دفاعي)</li>
+                        <li>الاستطلاع ومسح الشبكات</li>
+                        <li>نقاط الضعف الشائعة وكيفية تجنبها</li>
+                        <li>استراتيجيات الحماية الوقائية</li>
+                    </ul>
+                    
+                    <a href="cors1.html" class="day-btn">
+                        <i class="fas fa-arrow-left"></i> ابدأ اليوم الثاني
+                    </a>
+                </div>
+            </div>
+            
+            <!-- اليوم الثالث -->
+            <div class="day-card animate">
+                <div class="day-header">
+                    <div class="day-number">اليوم الثالث</div>
+                    <h3 class="day-title">تطبيقات عملية وخطوات لمستقبل آمن</h3>
+                </div>
+                <div class="day-content">
+                    <p>هذا هو اليوم الأهم! سنضع كل ما تعلمناه موضع التنفيذ من خلال ورش عمل عملية وتمارين تفاعلية.</p>
+                    
+                    <ul class="day-points">
+                        <li>ورش عمل عملية: حماية حساباتك وبياناتك</li>
+                        <li>تأمين حساباتك الشخصية بكلمات مرور قوية</li>
+                        <li>المصادقة متعددة العوامل (MFA/2FA)</li>
+                        <li>التعرف على رسائل التصيد والثغرات الأمنية</li>
+                        <li>مستقبلك في الأمن السيبراني: فرص لا حصر لها</li>
+                    </ul>
+                    
+                    <a href="cors2.html" class="day-btn">
+                        <i class="fas fa-arrow-left"></i> ابدأ اليوم الثالث
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- قسم الحث على التسجيل -->
+    <section class="cta-section animate">
+        <h2 class="cta-title">جاهز للبدء في رحلتك الأمنية؟</h2>
+        <p class="cta-text">انضم إلى آلاف المتعلمين الذين اكتسبوا مهارات حماية البيانات والأمن السيبراني من خلال دورتنا الشاملة. ابدأ رحلتك اليوم نحو مستقبل رقمي آمن!</p>
+        
+        <a href="#days" class="hero-btn primary-btn" style="font-size: 1.3rem; padding: 18px 45px;">
+            <i class="fas fa-lock"></i> ابدأ التعلم الآن
+        </a>
+    </section>
+    
+    <!-- التذييل -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عبدالله المؤيد</h3>
+                <p>نقدم دورات متخصصة في الأمن السيبراني لتأهيل المتخصصين وتوعية الأفراد بمخاطر الفضاء الإلكتروني وكيفية الحماية منها.</p>
+                
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/roadalnah?t=IZ2Ha7FbVANYmlXrGXuZpg&s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
+                 </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="https://tinyurl.com/abdullahabbass">الرئيسية</a></li>
+                    <li><a href="cors.html">اليوم الأول</a></li>
+                    <li><a href="cors1.html">اليوم الثاني</a></li>
+                    <li><a href="cors2.html">اليوم الثالث</a></li>
+                    <li><a href="https://tinyurl.com/abdullahabbass">المدربين</a></li>
+                    <li><a href="https://tinyurl.com/abdullahabbass">المدونة</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">اتصل بنا</h3>
+                <ul class="footer-links">
+                    <li><i class="fas fa-envelope"></i> prcmased@gmail.com</li>
+                    <li><i class="fas fa-phone"></i> +967779168887</li>
+                    <li><i class="fas fa-map-marker-alt"></i> اليمن، صنعاء سعوان كلية رواد النهضة</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy;  جميع الحقوق محفوظة. لموقع .Seastar
+        </div>
+    </footer>
+    
+    <script>
+        // إضافة تأثيرات الظهور عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            // التنقل السلس
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
