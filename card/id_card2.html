@@ -1,0 +1,2221 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام SeaStar - إنشاء بطاقات الهوية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #8e44ad;
+            --cyber-indigo: #6a11cb;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(142, 68, 173, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(106, 17, 203, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(142, 68, 173, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(142, 68, 173, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-purple);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-purple);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(142, 68, 173, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(142, 68, 173, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(142, 68, 173, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(142, 68, 173, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-indigo), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-purple);
+            background: rgba(142, 68, 173, 0.1);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* القسم البطولي */
+        .hero-section {
+            min-height: 30vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 150px 40px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--cyber-indigo), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+        }
+        
+        /* أقسام لوحة التحكم */
+        .dashboard-section {
+            padding: 30px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+            background: linear-gradient(90deg, var(--cyber-indigo), var(--cyber-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--cyber-purple);
+            border-radius: 3px;
+        }
+        
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background: var(--cyber-purple);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .primary-btn {
+            background: linear-gradient(90deg, var(--cyber-indigo), var(--cyber-purple));
+            color: white;
+            box-shadow: 0 5px 15px rgba(142, 68, 173, 0.3);
+        }
+        
+        .primary-btn:hover {
+            box-shadow: 0 10px 25px rgba(142, 68, 173, 0.5);
+        }
+        
+        /* تخطيط إدارة بطاقات الهوية */
+        .id-card-container {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 30px;
+        }
+        
+        /* معاينة بطاقة الهوية */
+        .preview-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .preview-title {
+            font-size: 1.4rem;
+            color: var(--cyber-purple);
+        }
+        
+        .id-card {
+            width: 100%;
+            max-width: 380px;
+            height: 220px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin: 0 auto;
+            display: flex;
+            background-size: cover; /* لتناسب صورة الخلفية */
+            background-position: center; /* لمركزة صورة الخلفية */
+        }
+        
+        .id-card-front {
+            width: 100%;
+            height: 100%;
+            padding: 15px;
+            color: #333;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 15px;
+            position: relative;
+        }
+        
+        .id-card-back {
+            width: 100%;
+            height: 100%;
+            padding: 15px;
+            color: #333;
+            position: relative;
+            display: none;
+        }
+        
+        .id-photo {
+            width: 100%;
+            height: 120px;
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .id-photo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover; /* لضمان تغطية الصورة للمساحة */
+        }
+        
+        .id-logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .id-logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .id-qr {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 50px;
+            height: 50px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .id-qr img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .id-signature {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            width: 80px;
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .id-signature img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .id-title-text { /* تم تغيير اسم الكلاس */
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-align: center;
+            background: var(--cyber-indigo);
+            color: white;
+            padding: 3px;
+            border-radius: 3px;
+        }
+        
+        .id-details {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .id-field {
+            display: flex;
+            font-size: 0.8rem;
+        }
+        
+        .id-label {
+            font-weight: 600;
+            min-width: 100px;
+        }
+        
+        .id-value {
+            flex-grow: 1;
+        }
+        
+        /* نموذج إنشاء بطاقة الهوية */
+        .id-form-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-title {
+            font-size: 1.4rem;
+            color: var(--cyber-purple);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .input-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .input-label.required:after {
+            content: ' *';
+            color: var(--cyber-red);
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            width: 100%;
+        }
+        
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--cyber-purple);
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        /* قائمة بطاقات الهوية */
+        .cards-list-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .cards-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .cards-title {
+            font-size: 1.4rem;
+            color: var(--cyber-purple);
+        }
+        
+        .cards-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .cards-table th, .cards-table td {
+            padding: 12px 15px;
+            text-align: right;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .cards-table th {
+            color: var(--cyber-purple);
+            font-weight: 700;
+        }
+        
+        .cards-table tbody tr {
+            transition: all 0.3s ease;
+        }
+        
+        .cards-table tbody tr:hover {
+            background: rgba(142, 68, 173, 0.1);
+        }
+        
+        .action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 0.9rem;
+        }
+        
+        .action-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .edit-btn {
+            background: rgba(255, 221, 89, 0.1);
+        }
+        
+        .edit-btn:hover {
+            background: rgba(255, 221, 89, 0.3);
+        }
+        
+        .delete-btn {
+            background: rgba(255, 63, 52, 0.1);
+        }
+        
+        .delete-btn:hover {
+            background: rgba(255, 63, 52, 0.3);
+        }
+        
+        .action-cell {
+            display: flex;
+            gap: 8px;
+        }
+        
+        /* حقول التخصيص */
+        .customize-section {
+            background: rgba(106, 17, 203, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(142, 68, 173, 0.3);
+        }
+        
+        .customize-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .customize-title {
+            font-size: 1.2rem;
+            color: var(--cyber-purple);
+        }
+        
+        .fields-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        
+        .field-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 8px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--cyber-purple);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .upload-btn {
+            padding: 8px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .upload-btn:hover {
+            background: var(--cyber-purple);
+        }
+        
+        .upload-btn i {
+            font-size: 0.9rem;
+        }
+        
+        /* حقول بيانات المعاينة */
+        .preview-data-form {
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        
+        .preview-data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        /* إشعارات */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            padding: 15px 25px;
+            background: var(--cyber-purple);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 2000;
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        /* إضافة CSS لإخفاء حقول الإدخال افتراضيًا */
+        .input-group.toggleable {
+            display: none;
+        }
+        
+        /* تخصيص الخطوط والألوان */
+        .text-customization {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .text-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .text-group label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .text-controls {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .font-select, .color-input {
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+            width: 100%;
+        }
+        
+        .color-input {
+            width: 60px;
+            padding: 5px;
+            height: 36px;
+        }
+        
+        /* تحكم في حجم وموضع الصور */
+        .position-controls {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .size-control, .position-control {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .size-control input, .position-control input {
+            padding: 5px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        /* خيارات التحميل */
+        .download-options {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 8px;
+            padding: 10px;
+            display: none;
+            z-index: 1000;
+            min-width: 200px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .download-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.2s ease;
+        }
+        
+        .download-option:hover {
+            background: rgba(142, 68, 173, 0.3);
+        }
+        
+        .download-btn-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        
+        /* محرر النصوص المنسق */
+        .rich-text-editor {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .editor-toolbar {
+            display: flex;
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .editor-toolbar button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 5px 8px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .editor-toolbar button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .rich-editor {
+            min-height: 100px;
+            padding: 15px;
+            color: white;
+            outline: none;
+        }
+        
+        /* قوالب البطاقات */
+        .templates-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .template-item {
+            width: 100px;
+            height: 60px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .template-item:hover, .template-item.active {
+            border-color: var(--cyber-purple);
+            transform: scale(1.05);
+        }
+        
+        .template-item.student {
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+        }
+        
+        .template-item.employee {
+            background: linear-gradient(135deg, #2196F3, #03A9F4);
+        }
+        
+        .template-item.visitor {
+            background: linear-gradient(135deg, #FF9800, #FFC107);
+        }
+        
+        .template-item.premium {
+            background: linear-gradient(135deg, #9C27B0, #673AB7);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .id-card-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .dashboard-section {
+                padding: 20px;
+            }
+            
+            .fields-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+            
+            .preview-data-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .hero-section {
+                padding: 130px 20px 30px;
+            }
+            
+            .hero-title {
+                font-size: 1.7rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .section-actions {
+                flex-wrap: wrap;
+            }
+            
+            .id-card {
+                transform: scale(0.9);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="services.html">الخدمات</a></li>
+            <li><a href="portfolio.html">أعمالنا</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+            <li><a href="seastar-system.html">نظام سيستار</a></li>
+            <li><a href="user-guide.html">دليل المستخدم</a></li>
+            <li><a href="dashboard.html">لوحة التحكم</a></li>
+            <li><a href="id-cards.html" class="active">بطاقات الهوية</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <section class="hero-section">
+        <div class="hero-content animate">
+            <h1 class="hero-title">إدارة بطاقات الهوية</h1>
+            <p class="hero-subtitle">تصميم وتخصيص بطاقات الهوية للموظفين والطلاب وقابلة للتحميل</p>
+        </div>
+    </section>
+
+    <section class="dashboard-section">
+        <div class="section-header animate">
+            <div>
+                <h2 class="section-title">تصميم بطاقات الهوية</h2>
+                <p class="section-subtitle">أنشئ وقم بتخصيص بطاقات الهوية للموظفين والطلاب بسهولة ثم حمّلها لجهازك</p>
+            </div>
+            <button class="btn primary-btn" id="add-card-btn">
+                <i class="fas fa-plus"></i> إضافة بطاقة هوية
+            </button>
+        </div>
+
+        <div class="id-card-container">
+            <div class="left-column">
+                <div class="preview-section animate">
+                    <div class="preview-header">
+                        <h3 class="preview-title">معاينة بطاقة الهوية</h3>
+                        <div class="btn-group">
+                            <button class="btn active" id="front-btn">الواجهة الأمامية</button>
+                            <button class="btn" id="back-btn">الواجهة الخلفية</button>
+                            <div class="download-btn-wrapper">
+                                <button class="btn primary-btn" id="download-btn">
+                                    <i class="fas fa-download"></i> تحميل البطاقة
+                                </button>
+                                <div class="download-options" id="download-options">
+                                    <div class="download-option" data-format="png" data-side="front">PNG (الواجهة الأمامية)</div>
+                                    <div class="download-option" data-format="png" data-side="back">PNG (الواجهة الخلفية)</div>
+                                    <div class="download-option" data-format="jpeg" data-side="front">JPEG (الواجهة الأمامية)</div>
+                                    <div class="download-option" data-format="jpeg" data-side="back">JPEG (الواجهة الخلفية)</div>
+                                    <div class="download-option" data-format="pdf" data-side="both">PDF (الوجهين معًا)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="id-card">
+                        <div class="id-card-front">
+                            <div class="id-logo">
+                                <img id="preview-logo" src="" alt="شعار" style="display: none;">
+                                <i class="fas fa-school default-icon" style="font-size: 1.5rem; color: #ccc;"></i>
+                            </div>
+                            <div class="id-qr">
+                                <img id="preview-qr" src="" alt="QR Code" style="display: none;">
+                                <i class="fas fa-qrcode default-icon" style="font-size: 1.8rem; color: #ccc;"></i>
+                            </div>
+                            <div class="id-signature">
+                                <img id="preview-signature" src="" alt="توقيع" style="display: none;">
+                                <i class="fas fa-signature default-icon" style="font-size: 1.2rem; color: #ccc;"></i>
+                            </div>
+                            
+                            <div class="id-photo">
+                                <img id="preview-photo" src="" alt="صورة شخصية" style="display: none;">
+                                <i class="fas fa-user default-icon" style="font-size: 2.5rem; color: #ccc;"></i>
+                            </div>
+                            
+                            <div class="id-details">
+                                <div class="id-title-text" id="front-card-title">بطاقة طالب</div>
+                                
+                                <div class="id-field" data-field-name="name">
+                                    <div class="id-label">الاسم:</div>
+                                    <div class="id-value" id="preview-name">محمد أحمد</div>
+                                </div>
+                                
+                                <div class="id-field" data-field-name="id">
+                                    <div class="id-label">رقم القبول:</div>
+                                    <div class="id-value" id="preview-id">STU-2023-001</div>
+                                </div>
+                                
+                                <div class="id-field" data-field-name="class">
+                                    <div class="id-label">الفصل:</div>
+                                    <div class="id-value" id="preview-class">العاشر (أ)</div>
+                                </div>
+                                
+                                <div class="id-field" data-field-name="dob">
+                                    <div class="id-label">تاريخ الميلاد:</div>
+                                    <div class="id-value" id="preview-dob">01/01/2008</div>
+                                </div>
+                                
+                                <div class="id-field" data-field-name="blood">
+                                    <div class="id-label">فصيلة الدم:</div>
+                                    <div class="id-value" id="preview-blood">O+</div>
+                                </div>
+                                <div class="id-field" data-field-name="father-name" style="display: none;">
+                                    <div class="id-label">اسم الأب:</div>
+                                    <div class="id-value" id="preview-father-name"></div>
+                                </div>
+                                <div class="id-field" data-field-name="mother-name" style="display: none;">
+                                    <div class="id-label">اسم الأم:</div>
+                                    <div class="id-value" id="preview-mother-name"></div>
+                                </div>
+                                <div class="id-field" data-field-name="gender" style="display: none;">
+                                    <div class="id-label">النوع:</div>
+                                    <div class="id-value" id="preview-gender"></div>
+                                </div>
+                                <div class="id-field" data-field-name="job-title" style="display: none;">
+                                    <div class="id-label">المسمى الوظيفي:</div>
+                                    <div class="id-value" id="preview-job-title"></div>
+                                </div>
+                                <div class="id-field" data-field-name="join-date" style="display: none;">
+                                    <div class="id-label">تاريخ الانضمام:</div>
+                                    <div class="id-value" id="preview-join-date"></div>
+                                </div>
+                                <div class="id-field" data-field-name="employee-id" style="display: none;">
+                                    <div class="id-label">رقم تعريف الموظف:</div>
+                                    <div class="id-value" id="preview-employee-id"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="id-card-back">
+                            <div class="id-title-text" id="back-card-title">بطاقة طالب</div>
+                            <div class="id-details">
+                                <div class="id-field" data-field-name="phone">
+                                    <div class="id-label">رقم الهاتف:</div>
+                                    <div class="id-value" id="preview-phone">+966500000000</div>
+                                </div>
+                                
+                                <div class="id-field" data-field-name="address">
+                                    <div class="id-label">العنوان:</div>
+                                    <div class="id-value" id="preview-address">الرياض - حي المروج</div>
+                                </div>
+                                
+                                <div class="id-field" data-field-name="status">
+                                    <div class="id-label">الحالة:</div>
+                                    <div class="id-value" id="preview-status">نشط</div>
+                                </div>
+                                
+                                <div class="id-field" data-field-name="expiry">
+                                    <div class="id-label">تاريخ الانتهاء:</div>
+                                    <div class="id-value" id="preview-expiry">01/06/2024</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="preview-data-form">
+                        <h4>تعبئة بيانات البطاقة</h4>
+                        <div class="preview-data-grid">
+                            <div class="input-group" data-input-for="name">
+                                <label class="input-label">الاسم الكامل</label>
+                                <input type="text" class="form-input" id="input-name" placeholder="ادخل الاسم الكامل">
+                            </div>
+                            
+                            <div class="input-group" data-input-for="id">
+                                <label class="input-label">رقم القبول/الهوية</label>
+                                <input type="text" class="form-input" id="input-id" placeholder="ادخل رقم الهوية">
+                            </div>
+                            
+                            <div class="input-group" data-input-for="class">
+                                <label class="input-label">الفصل/القسم</label>
+                                <input type="text" class="form-input" id="input-class" placeholder="ادخل الفصل أو القسم">
+                            </div>
+                            
+                            <div class="input-group" data-input-for="dob" style="display: none;">
+                                <label class="input-label">تاريخ الميلاد</label>
+                                <input type="date" class="form-input" id="input-dob" placeholder="ادخل تاريخ الميلاد">
+                            </div>
+                            <div class="input-group" data-input-for="phone" style="display: none;">
+                                <label class="input-label">رقم الهاتف</label>
+                                <input type="tel" class="form-input" id="input-phone" placeholder="ادخل رقم الهاتف">
+                            </div>
+                            <div class="input-group" data-input-for="address" style="display: none;">
+                                <label class="input-label">العنوان</label>
+                                <input type="text" class="form-input" id="input-address" placeholder="ادخل العنوان">
+                            </div>
+                            <div class="input-group" data-input-for="status" style="display: none;">
+                                <label class="input-label">الحالة</label>
+                                <input type="text" class="form-input" id="input-status" placeholder="مثال: نشط، متوقف">
+                            </div>
+                            <div class="input-group" data-input-for="expiry" style="display: none;">
+                                <label class="input-label">تاريخ الانتهاء</label>
+                                <input type="date" class="form-input" id="input-expiry" placeholder="مثال: 01/06/2024">
+                            </div>
+                            <div class="input-group" data-input-for="blood" style="display: none;">
+                                <label class="input-label">فصيلة الدم</label>
+                                <select class="form-select" id="input-blood">
+                                    <option value="">اختر فصيلة الدم</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            <div class="input-group" data-input-for="father-name" style="display: none;">
+                                <label class="input-label">اسم الأب</label>
+                                <input type="text" class="form-input" id="input-father-name" placeholder="ادخل اسم الأب">
+                            </div>
+                            <div class="input-group" data-input-for="mother-name" style="display: none;">
+                                <label class="input-label">اسم الأم</label>
+                                <input type="text" class="form-input" id="input-mother-name" placeholder="ادخل اسم الأم">
+                            </div>
+                            <div class="input-group" data-input-for="gender" style="display: none;">
+                                <label class="input-label">النوع</label>
+                                <select class="form-select" id="input-gender">
+                                    <option value="">اختر النوع</option>
+                                    <option value="ذكر">ذكر</option>
+                                    <option value="أنثى">أنثى</option>
+                                </select>
+                            </div>
+                            <div class="input-group" data-input-for="job-title" style="display: none;">
+                                <label class="input-label">المسمى الوظيفي</label>
+                                <input type="text" class="form-input" id="input-job-title" placeholder="ادخل المسمى الوظيفي">
+                            </div>
+                            <div class="input-group" data-input-for="join-date" style="display: none;">
+                                <label class="input-label">تاريخ الانضمام</label>
+                                <input type="date" class="form-input" id="input-join-date" placeholder="ادخل تاريخ الانضمام">
+                            </div>
+                            <div class="input-group" data-input-for="employee-id" style="display: none;">
+                                <label class="input-label">رقم تعريف الموظف</label>
+                                <input type="text" class="form-input" id="input-employee-id" placeholder="ادخل رقم تعريف الموظف">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cards-list-section animate">
+                    <div class="cards-header">
+                        <h3 class="cards-title">قوالب بطاقات الهوية</h3>
+                        <div class="search-box">
+                            <input type="text" class="form-input" placeholder="ابحث عن بطاقة...">
+                        </div>
+                    </div>
+                    
+                    <table class="cards-table">
+                        <thead>
+                            <tr>
+                                <th>اسم البطاقة</th>
+                                <th>النوع</th>
+                                <th>تاريخ الإنشاء</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>بطاقة طالب أساسية</td>
+                                <td>طالب</td>
+                                <td>01/08/2023</td>
+                                <td class="action-cell">
+                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>بطاقة موظف إداري</td>
+                                <td>موظف</td>
+                                <td>15/07/2023</td>
+                                <td class="action-cell">
+                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>بطاقة معلم</td>
+                                <td>موظف</td>
+                                <td>20/06/2023</td>
+                                <td class="action-cell">
+                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>بطاقة زائر</td>
+                                <td>زائر</td>
+                                <td>10/05/2023</td>
+                                <td class="action-cell">
+                                    <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                    <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="right-column">
+                <div class="id-form-section animate">
+                    <div class="form-header">
+                        <h3 class="form-title">إنشاء بطاقة هوية جديدة</h3>
+                    </div>
+                    
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label class="input-label required">نوع بطاقة الهوية</label>
+                            <select class="form-select" id="card-type">
+                                <option value="">اختر النوع</option>
+                                <option value="student">طالب</option>
+                                <option value="employee">موظف</option>
+                                <option value="visitor">زائر</option>
+                            </select>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label required">اسم البطاقة</label>
+                            <input type="text" class="form-input" id="card-name" placeholder="اسم قالب البطاقة">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">عنوان البطاقة</label>
+                            <input type="text" class="form-input" id="card-title" placeholder="عنوان يظهر على البطاقة">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">اختر قالبًا جاهزًا</label>
+                            <div class="templates-container">
+                                <div class="template-item student active" data-template="student"></div>
+                                <div class="template-item employee" data-template="employee"></div>
+                                <div class="template-item visitor" data-template="visitor"></div>
+                                <div class="template-item premium" data-template="premium"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">صورة خلفية البطاقة</label>
+                            <button class="upload-btn" id="upload-background-btn">
+                                <i class="fas fa-upload"></i> تصفح للرفع
+                            </button>
+                            <input type="file" id="background-upload" accept="image/*" style="display: none;">
+                            <div style="margin-top: 10px;">
+                                <label>أو اختر لون خلفية:</label>
+                                <input type="color" id="background-color" value="#ffffff">
+                            </div>
+                        </div>
+                        
+                        <div class="customize-section">
+                            <div class="customize-header">
+                                <h4 class="customize-title">حقول بيانات البطاقة</h4>
+                            </div>
+                            
+                            <div class="fields-grid">
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-id" data-field="id" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>رقم القبول</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-name" data-field="name" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>الاسم</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-class" data-field="class" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>الفصل</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-dob" data-field="dob">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>تاريخ الميلاد</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-father-name" data-field="father-name">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>اسم الأب</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-mother-name" data-field="mother-name">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>اسم الأم</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-address" data-field="address">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>العنوان</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-phone" data-field="phone">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>الهاتف</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-blood" data-field="blood">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>فصيلة الدم</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-gender" data-field="gender">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>النوع</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-job-title" data-field="job-title">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>المسمى الوظيفي</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-join-date" data-field="join-date">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>تاريخ الانضمام</span>
+                                </div>
+                                
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-employee-id" data-field="employee-id">
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>رقم تعريف الموظف</span>
+                                </div>
+
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-status" data-field="status" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>الحالة</span>
+                                </div>
+
+                                <div class="field-item">
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="toggle-expiry" data-field="expiry" checked>
+                                        <span class="slider"></span>
+                                    </label>
+                                    <span>تاريخ الانتهاء</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="customize-section">
+                            <div class="customize-header">
+                                <h4 class="customize-title">تخصيص النص</h4>
+                            </div>
+                            <div class="text-customization">
+                                <div class="text-group">
+                                    <label>عنوان البطاقة</label>
+                                    <div class="text-controls">
+                                        <select class="font-select" id="title-font">
+                                            <option value="'Cairo', sans-serif">Cairo</option>
+                                            <option value="Arial, sans-serif">Arial</option>
+                                            <option value="'Tajawal', sans-serif">Tajawal</option>
+                                            <option value="'Amiri', serif">Amiri</option>
+                                        </select>
+                                        <input type="color" class="color-input" id="title-color" value="#00204A">
+                                    </div>
+                                </div>
+                                <div class="text-group">
+                                    <label>تسميات الحقول</label>
+                                    <div class="text-controls">
+                                        <select class="font-select" id="label-font">
+                                            <option value="'Cairo', sans-serif">Cairo</option>
+                                            <option value="Arial, sans-serif">Arial</option>
+                                            <option value="'Tajawal', sans-serif">Tajawal</option>
+                                            <option value="'Amiri', serif">Amiri</option>
+                                        </select>
+                                        <input type="color" class="color-input" id="label-color" value="#333333">
+                                    </div>
+                                </div>
+                                <div class="text-group">
+                                    <label>قيم الحقول</label>
+                                    <div class="text-controls">
+                                        <select class="font-select" id="value-font">
+                                            <option value="'Cairo', sans-serif">Cairo</option>
+                                            <option value="Arial, sans-serif">Arial</option>
+                                            <option value="'Tajawal', sans-serif">Tajawal</option>
+                                            <option value="'Amiri', serif">Amiri</option>
+                                        </select>
+                                        <input type="color" class="color-input" id="value-color" value="#333333">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="customize-section">
+                            <div class="customize-header">
+                                <h4 class="customize-title">الصورة الشخصية</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-photo" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <button class="upload-btn" id="upload-photo-btn">
+                                <i class="fas fa-upload"></i> تحميل صورة افتراضية
+                            </button>
+                            <input type="file" id="photo-upload" accept="image/*" style="display: none;">
+                            
+                            <div class="position-controls">
+                                <div class="size-control">
+                                    <label>العرض (بكسل)</label>
+                                    <input type="number" id="photo-width" value="100" min="50" max="150">
+                                </div>
+                                <div class="size-control">
+                                    <label>الارتفاع (بكسل)</label>
+                                    <input type="number" id="photo-height" value="120" min="50" max="150">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="customize-section">
+                            <div class="customize-header">
+                                <h4 class="customize-title">التوقيع</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-signature">
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <button class="upload-btn" id="upload-signature-btn">
+                                <i class="fas fa-upload"></i> تحميل التوقيع
+                            </button>
+                            <input type="file" id="signature-upload" accept="image/*" style="display: none;">
+                        </div>
+                        
+                        <div class="customize-section">
+                            <div class="customize-header">
+                                <h4 class="customize-title">رمز الاستجابة السريعة (QR Code)</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-qr" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <button class="upload-btn" id="upload-qr-btn">
+                                <i class="fas fa-upload"></i> تحميل رمز QR
+                            </button>
+                            <input type="file" id="qr-upload" accept="image/*" style="display: none;">
+                        </div>
+                        
+                        <div class="customize-section">
+                            <div class="customize-header">
+                                <h4 class="customize-title">الشعار</h4>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="toggle-logo" checked>
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            
+                            <button class="upload-btn" id="upload-logo-btn">
+                                <i class="fas fa-upload"></i> تحميل الشعار
+                            </button>
+                            <input type="file" id="logo-upload" accept="image/*" style="display: none;">
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">نص الواجهة الأمامية</label>
+                            <div class="rich-text-editor">
+                                <div class="editor-toolbar">
+                                    <button type="button" data-command="bold"><i class="fas fa-bold"></i></button>
+                                    <button type="button" data-command="italic"><i class="fas fa-italic"></i></button>
+                                    <button type="button" data-command="underline"><i class="fas fa-underline"></i></button>
+                                </div>
+                                <div class="rich-editor" id="front-text" contenteditable="true"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="input-group">
+                            <label class="input-label">نص الواجهة الخلفية</label>
+                            <div class="rich-text-editor">
+                                <div class="editor-toolbar">
+                                    <button type="button" data-command="bold"><i class="fas fa-bold"></i></button>
+                                    <button type="button" data-command="italic"><i class="fas fa-italic"></i></button>
+                                    <button type="button" data-command="underline"><i class="fas fa-underline"></i></button>
+                                </div>
+                                <div class="rich-editor" id="back-text" contenteditable="true"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn" id="reset-btn">
+                            <i class="fas fa-times"></i> إلغاء
+                        </button>
+                        <button class="btn primary-btn" id="save-btn">
+                            <i class="fas fa-save"></i> حفظ بطاقة الهوية
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="notification" id="download-notification">
+        <i class="fas fa-check-circle"></i> تم تحميل بطاقة الهوية بنجاح!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // تأثيرات الظهور عند التمرير
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            // قائمة الهاتف المحمول
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+            
+            // تفاعل أزرار التعديل في القائمة
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const cardName = row.cells[0].textContent;
+                    const cardType = row.cells[1].textContent;
+                    
+                    // تعبئة النموذج بالمعلومات
+                    document.getElementById('card-name').value = cardName;
+                    document.getElementById('card-type').value = cardType === 'طالب' ? 'student' : 
+                                                               cardType === 'موظف' ? 'employee' : 'visitor';
+                    
+                    // تغيير نص الزر لحفظ التعديلات
+                    document.getElementById('save-btn').innerHTML = '<i class="fas fa-save"></i> تحديث البطاقة';
+                    
+                    // التمرير إلى النموذج
+                    document.querySelector('.id-form-section').scrollIntoView({behavior: 'smooth'});
+                });
+            });
+            
+            // تفاعل أزرار الحذف في القائمة
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (confirm('هل أنت متأكد من رغبتك في حذف قالب بطاقة الهوية هذا؟ سيتم حذفه بشكل دائم.')) {
+                        const row = this.closest('tr');
+                        row.style.opacity = '0.5';
+                        setTimeout(() => {
+                            row.remove();
+                        }, 500);
+                    }
+                });
+            });
+            
+            // زر الإلغاء
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                document.getElementById('card-type').value = '';
+                document.getElementById('card-name').value = '';
+                document.getElementById('card-title').value = '';
+                document.getElementById('front-text').innerHTML = '';
+                document.getElementById('back-text').innerHTML = '';
+                document.getElementById('save-btn').innerHTML = '<i class="fas fa-save"></i> حفظ بطاقة الهوية';
+
+                // إعادة تعيين حقول بيانات المعاينة إلى القيم الافتراضية
+                document.getElementById('input-name').value = '';
+                document.getElementById('input-id').value = '';
+                document.getElementById('input-class').value = '';
+                document.getElementById('input-dob').value = '';
+                document.getElementById('input-phone').value = '';
+                document.getElementById('input-address').value = '';
+                document.getElementById('input-status').value = '';
+                document.getElementById('input-expiry').value = '';
+                document.getElementById('input-blood').value = '';
+                document.getElementById('input-father-name').value = '';
+                document.getElementById('input-mother-name').value = '';
+                document.getElementById('input-gender').value = '';
+                document.getElementById('input-job-title').value = '';
+                document.getElementById('input-join-date').value = '';
+                document.getElementById('input-employee-id').value = '';
+
+                // إخفاء جميع حقول الإدخال الإضافية
+                document.querySelectorAll('.input-group.toggleable').forEach(group => {
+                    group.style.display = 'none';
+                });
+
+                // إعادة تعيين صور المعاينة إلى الأيقونات الافتراضية
+                document.getElementById('preview-photo').style.display = 'none';
+                document.querySelector('.id-photo .default-icon').style.display = 'block';
+                document.getElementById('preview-logo').style.display = 'none';
+                document.querySelector('.id-logo .default-icon').style.display = 'block';
+                document.getElementById('preview-qr').style.display = 'none';
+                document.querySelector('.id-qr .default-icon').style.display = 'block';
+                document.getElementById('preview-signature').style.display = 'none';
+                document.querySelector('.id-signature .default-icon').style.display = 'block';
+                document.querySelector('.id-card').style.backgroundImage = 'none'; // إزالة خلفية البطاقة
+
+                // إعادة تعيين حالة التبديل للحقول (اختياري، بناءً على الرغبة)
+                document.querySelectorAll('.toggle-switch input').forEach(checkbox => {
+                    const fieldName = checkbox.dataset.field;
+                    // هنا يمكن تحديد الحقول التي يجب أن تكون مفعلة افتراضيًا
+                    if (['id', 'name', 'class', 'status', 'expiry'].includes(fieldName)) {
+                        checkbox.checked = true;
+                    } else {
+                        checkbox.checked = false;
+                    }
+                    // قم بتشغيل حدث التغيير لتحديث الواجهة بناءً على هذه القيم الافتراضية
+                    checkbox.dispatchEvent(new Event('change'));
+                });
+                
+                // إعادة تعيين عناوين البطاقة
+                document.getElementById('front-card-title').textContent = 'بطاقة طالب';
+                document.getElementById('back-card-title').textContent = 'بطاقة طالب';
+            });
+            
+            // زر الحفظ
+            document.getElementById('save-btn').addEventListener('click', function() {
+                const cardType = document.getElementById('card-type').value;
+                const cardName = document.getElementById('card-name').value;
+                
+                if (!cardType) {
+                    alert('الرجاء اختيار نوع بطاقة الهوية');
+                    return;
+                }
+                
+                if (!cardName) {
+                    alert('الرجاء إدخال اسم البطاقة');
+                    return;
+                }
+                
+                // رسالة نجاح
+                alert('تم حفظ بطاقة الهوية بنجاح!');
+                
+                // إعادة تعيين النموذج
+                document.getElementById('reset-btn').click();
+                
+                // إضافة البطاقة الجديدة للقائمة
+                const table = document.querySelector('.cards-table tbody');
+                const newRow = document.createElement('tr');
+                
+                const typeText = cardType === 'student' ? 'طالب' : 
+                               cardType === 'employee' ? 'موظف' : 'زائر';
+                
+                const today = new Date();
+                const dateStr = `${today.getDate()}/${today.getMonth()+1}/${today.getFullYear()}`;
+                
+                newRow.innerHTML = `
+                    <td>${cardName}</td>
+                    <td>${typeText}</td>
+                    <td>${dateStr}</td>
+                    <td class="action-cell">
+                        <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                        <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                    </td>
+                `;
+                
+                table.prepend(newRow); // إضافة الصف الجديد في البداية
+            });
+            
+            // تفاعل التبديل بين الواجهة الأمامية والخلفية
+            const frontBtn = document.getElementById('front-btn');
+            const backBtn = document.getElementById('back-btn');
+            const frontCard = document.querySelector('.id-card-front');
+            const backCard = document.querySelector('.id-card-back');
+            
+            frontBtn.addEventListener('click', function() {
+                frontBtn.classList.add('active');
+                backBtn.classList.remove('active');
+                frontCard.style.display = 'grid';
+                backCard.style.display = 'none';
+            });
+            
+            backBtn.addEventListener('click', function() {
+                backBtn.classList.add('active');
+                frontBtn.classList.remove('active');
+                backCard.style.display = 'block';
+                frontCard.style.display = 'none';
+            });
+            
+            // تفاعل التبديل للحقول
+            document.querySelectorAll('.toggle-switch input').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const fieldName = this.dataset.field; // استخدام data-field
+                    
+                    // تحديث حقول المعاينة في البطاقة
+                    const previewField = document.querySelector(`.id-field[data-field-name="${fieldName}"]`);
+                    if (previewField) {
+                        previewField.style.display = this.checked ? 'flex' : 'none';
+                    }
+
+                    // تحديث حقول الإدخال في نموذج تعبئة البيانات
+                    const inputGroup = document.querySelector(`.input-group[data-input-for="${fieldName}"]`);
+                    if (inputGroup) {
+                        inputGroup.style.display = this.checked ? 'flex' : 'none';
+                    }
+
+                    // منطق خاص للأيقونات والصور (الصور الشخصية، الشعار، QR، التوقيع)
+                    const previewImgId = `preview-${fieldName}`;
+                    const previewImg = document.getElementById(previewImgId);
+                    
+                    if (previewImg && (fieldName === 'photo' || fieldName === 'logo' || fieldName === 'qr' || fieldName === 'signature')) {
+                        const defaultIcon = previewImg.nextElementSibling; // الأيقونة الافتراضية
+                        if (this.checked) {
+                            if (previewImg.src && previewImg.src !== window.location.href) { // إذا كانت هناك صورة مرفوعة
+                                previewImg.style.display = 'block';
+                                if (defaultIcon) defaultIcon.style.display = 'none';
+                            } else { // إذا لم تكن هناك صورة مرفوعة، أظهر الأيقونة الافتراضية
+                                if (defaultIcon) defaultIcon.style.display = 'block';
+                            }
+                        } else {
+                            previewImg.style.display = 'none';
+                            if (defaultIcon) defaultIcon.style.display = 'none'; // أخفِ الأيقونة إذا تم إخفاء الحقل
+                        }
+                    }
+                });
+            });
+
+            // تحديث معاينة البطاقة عند تغيير البيانات
+            const inputFields = document.querySelectorAll('.preview-data-form .form-input, .preview-data-form .form-select');
+            
+            inputFields.forEach(input => {
+                input.addEventListener('input', function() {
+                    const previewId = this.id.replace('input-', 'preview-');
+                    const previewElement = document.getElementById(previewId);
+                    if (previewElement) {
+                        previewElement.textContent = this.value || previewElement.getAttribute('data-default') || '';
+                    }
+                });
+            });
+            
+            // تعيين القيم الافتراضية للحقول (إذا لم يتم إدخال بيانات)
+            document.getElementById('preview-name').setAttribute('data-default', 'محمد أحمد');
+            document.getElementById('preview-id').setAttribute('data-default', 'STU-2023-001');
+            document.getElementById('preview-class').setAttribute('data-default', 'العاشر (أ)');
+            document.getElementById('preview-dob').setAttribute('data-default', '01/01/2008');
+            document.getElementById('preview-phone').setAttribute('data-default', '+966500000000');
+            document.getElementById('preview-address').setAttribute('data-default', 'الرياض - حي المروج');
+            document.getElementById('preview-status').setAttribute('data-default', 'نشط');
+            document.getElementById('preview-expiry').setAttribute('data-default', '01/06/2024');
+            document.getElementById('preview-blood').setAttribute('data-default', 'O+');
+            document.getElementById('preview-father-name').setAttribute('data-default', 'اسم الأب');
+            document.getElementById('preview-mother-name').setAttribute('data-default', 'اسم الأم');
+            document.getElementById('preview-gender').setAttribute('data-default', 'ذكر');
+            document.getElementById('preview-job-title').setAttribute('data-default', 'مطور برمجيات');
+            document.getElementById('preview-join-date').setAttribute('data-default', '01/01/2023');
+            document.getElementById('preview-employee-id').setAttribute('data-default', 'EMP-12345');
+
+
+            // وظيفة عامة لتحميل وعرض الصور
+            function handleImageUpload(inputElementId, previewImgElementId, defaultIconSelector = null) {
+                const input = document.getElementById(inputElementId);
+                const previewImg = document.getElementById(previewImgElementId);
+                const defaultIcon = defaultIconSelector ? document.querySelector(defaultIconSelector) : null;
+
+                input.addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            previewImg.src = e.target.result;
+                            previewImg.style.display = 'block';
+                            if (defaultIcon) {
+                                defaultIcon.style.display = 'none';
+                            }
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        previewImg.src = '';
+                        previewImg.style.display = 'none';
+                        if (defaultIcon) {
+                            defaultIcon.style.display = 'block';
+                        }
+                    }
+                });
+            }
+
+            // تفعيل أزرار الرفع
+            document.getElementById('upload-photo-btn').addEventListener('click', () => {
+                document.getElementById('photo-upload').click();
+            });
+            handleImageUpload('photo-upload', 'preview-photo', '.id-photo .default-icon');
+
+            document.getElementById('upload-logo-btn').addEventListener('click', () => {
+                document.getElementById('logo-upload').click();
+            });
+            handleImageUpload('logo-upload', 'preview-logo', '.id-logo .default-icon');
+
+            document.getElementById('upload-qr-btn').addEventListener('click', () => {
+                document.getElementById('qr-upload').click();
+            });
+            handleImageUpload('qr-upload', 'preview-qr', '.id-qr .default-icon');
+
+            document.getElementById('upload-signature-btn').addEventListener('click', () => {
+                document.getElementById('signature-upload').click();
+            });
+            handleImageUpload('signature-upload', 'preview-signature', '.id-signature .default-icon');
+            
+            // تفعيل رفع صورة خلفية البطاقة
+            document.getElementById('upload-background-btn').addEventListener('click', () => {
+                document.getElementById('background-upload').click();
+            });
+            document.getElementById('background-upload').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.querySelector('.id-card').style.backgroundImage = `url('${e.target.result}')`;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    document.querySelector('.id-card').style.backgroundImage = 'none';
+                }
+            });
+            
+            // تغيير لون خلفية البطاقة
+            document.getElementById('background-color').addEventListener('input', function() {
+                document.querySelector('.id-card').style.backgroundImage = 'none';
+                document.querySelector('.id-card').style.backgroundColor = this.value;
+            });
+            
+            // تغيير حجم الصورة الشخصية
+            document.getElementById('photo-width').addEventListener('input', function() {
+                document.querySelector('.id-photo').style.width = this.value + '%';
+            });
+            
+            document.getElementById('photo-height').addEventListener('input', function() {
+                document.querySelector('.id-photo').style.height = this.value + 'px';
+            });
+            
+            // تغيير الخطوط والألوان
+            document.getElementById('title-font').addEventListener('change', function() {
+                document.querySelector('.id-title-text').style.fontFamily = this.value;
+            });
+            
+            document.getElementById('title-color').addEventListener('input', function() {
+                document.querySelector('.id-title-text').style.color = this.value;
+            });
+            
+            document.getElementById('label-font').addEventListener('change', function() {
+                document.querySelectorAll('.id-label').forEach(label => {
+                    label.style.fontFamily = this.value;
+                });
+            });
+            
+            document.getElementById('label-color').addEventListener('input', function() {
+                document.querySelectorAll('.id-label').forEach(label => {
+                    label.style.color = this.value;
+                });
+            });
+            
+            document.getElementById('value-font').addEventListener('change', function() {
+                document.querySelectorAll('.id-value').forEach(value => {
+                    value.style.fontFamily = this.value;
+                });
+            });
+            
+            document.getElementById('value-color').addEventListener('input', function() {
+                document.querySelectorAll('.id-value').forEach(value => {
+                    value.style.color = this.value;
+                });
+            });
+            
+            // اختيار القالب الجاهز
+            document.querySelectorAll('.template-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    // إزالة النشط من جميع القوالب
+                    document.querySelectorAll('.template-item').forEach(i => {
+                        i.classList.remove('active');
+                    });
+                    
+                    // إضافة النشط للقالب المحدد
+                    this.classList.add('active');
+                    
+                    // تطبيق التصميم حسب القالب
+                    const template = this.dataset.template;
+                    const card = document.querySelector('.id-card');
+                    
+                    // إزالة أي أنماط سابقة
+                    card.style.backgroundImage = 'none';
+                    card.style.backgroundColor = '#fff';
+                    
+                    switch(template) {
+                        case 'student':
+                            card.style.backgroundColor = '#f0f9ff';
+                            break;
+                        case 'employee':
+                            card.style.backgroundColor = '#f0f8ff';
+                            break;
+                        case 'visitor':
+                            card.style.backgroundColor = '#fffaf0';
+                            break;
+                        case 'premium':
+                            card.style.backgroundImage = 'linear-gradient(135deg, #9C27B0, #673AB7)';
+                            break;
+                    }
+                });
+            });
+            
+            // محرر النصوص المنسق
+            document.querySelectorAll('.editor-toolbar button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const command = this.dataset.command;
+                    document.execCommand(command, false, null);
+                });
+            });
+            
+            // خيارات التحميل
+            document.getElementById('download-btn').addEventListener('click', function() {
+                const options = document.getElementById('download-options');
+                options.style.display = options.style.display === 'block' ? 'none' : 'block';
+            });
+            
+            // إغلاق قائمة التحميل عند النقر خارجها
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.download-btn-wrapper')) {
+                    document.getElementById('download-options').style.display = 'none';
+                }
+            });
+            
+            // معالجة خيارات التحميل
+            document.querySelectorAll('.download-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    const format = this.dataset.format;
+                    const side = this.dataset.side;
+                    
+                    // إخفاء قائمة التحميل
+                    document.getElementById('download-options').style.display = 'none';
+                    
+                    // معالجة التنزيل حسب الصيغة والوجه
+                    if (format === 'pdf' && side === 'both') {
+                        downloadBothSidesAsPDF();
+                    } else {
+                        downloadCard(format, side);
+                    }
+                });
+            });
+            
+            // دالة لتنزيل البطاقة بصيغة محددة
+            function downloadCard(format, side) {
+                // تحديد البطاقة المراد تحميلها (الأمامية أو الخلفية)
+                const cardToDownload = side === 'front' ? 
+                    document.querySelector('.id-card-front') : 
+                    document.querySelector('.id-card-back');
+                
+                html2canvas(cardToDownload, {
+                    backgroundColor: null,
+                    scale: 3, // جودة عالية
+                    useCORS: true // قد تحتاجها إذا كانت الصور من مصادر خارجية
+                }).then(canvas => {
+                    // إنشاء رابط للتحميل
+                    const link = document.createElement('a');
+                    link.download = `بطاقة_الهوية_${side}.${format}`;
+                    link.href = canvas.toDataURL(`image/${format}`);
+                    link.click();
+                    
+                    // عرض إشعار التنزيل
+                    showNotification('تم تحميل بطاقة الهوية بنجاح!');
+                }).catch(error => {
+                    console.error('oops, something went wrong!', error);
+                    alert('حدث خطأ أثناء تحميل البطاقة. يرجى المحاولة مرة أخرى.');
+                });
+            }
+            
+            // دالة لتنزيل وجهي البطاقة معاً كملف PDF
+            function downloadBothSidesAsPDF() {
+                // إنشاء وعد لالتقاط الواجهة الأمامية
+                const frontPromise = html2canvas(document.querySelector('.id-card-front'), {
+                    backgroundColor: null,
+                    scale: 2
+                });
+                
+                // إنشاء وعد لالتقاط الواجهة الخلفية
+                const backPromise = html2canvas(document.querySelector('.id-card-back'), {
+                    backgroundColor: null,
+                    scale: 2
+                });
+                
+                // الانتظار حتى يتم التقاط كلا الواجهتين
+                Promise.all([frontPromise, backPromise]).then(([frontCanvas, backCanvas]) => {
+                    // إنشاء مستند PDF جديد
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF('p', 'mm', [85.6, 54]); // حجم بطاقة الهوية القياسي
+                    
+                    // إضافة الصفحة الأولى (الواجهة الأمامية)
+                    const frontImg = frontCanvas.toDataURL('image/png');
+                    pdf.addImage(frontImg, 'PNG', 0, 0, 85.6, 54);
+                    
+                    // إضافة صفحة جديدة للواجهة الخلفية
+                    pdf.addPage();
+                    const backImg = backCanvas.toDataURL('image/png');
+                    pdf.addImage(backImg, 'PNG', 0, 0, 85.6, 54);
+                    
+                    // حفظ ملف PDF
+                    pdf.save('بطاقة_الهوية_الوجهين.pdf');
+                    
+                    // عرض إشعار التنزيل
+                    showNotification('تم تحميل بطاقة الهوية (الوجهين) بنجاح!');
+                }).catch(error => {
+                    console.error('Error generating PDF:', error);
+                    alert('حدث خطأ أثناء إنشاء ملف PDF. يرجى المحاولة مرة أخرى.');
+                });
+            }
+            
+            // دالة لعرض الإشعارات
+            function showNotification(message) {
+                const notification = document.getElementById('download-notification');
+                notification.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+                notification.classList.add('show');
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+            
+            // تحديث عنوان البطاقة عند التغيير
+            document.getElementById('card-title').addEventListener('input', function() {
+                const title = this.value || document.getElementById('card-name').value || 'بطاقة طالب';
+                document.getElementById('front-card-title').textContent = title;
+                document.getElementById('back-card-title').textContent = title;
+            });
+            
+            // تحديث اسم البطاقة عند التغيير (إذا لم يكن هناك عنوان محدد)
+            document.getElementById('card-name').addEventListener('input', function() {
+                const cardTitleInput = document.getElementById('card-title');
+                if (!cardTitleInput.value) { // إذا كان حقل العنوان فارغاً
+                    const title = this.value || 'بطاقة طالب';
+                    document.getElementById('front-card-title').textContent = title;
+                    document.getElementById('back-card-title').textContent = title;
+                }
+            });
+
+            // التأكد من إظهار الأيقونات الافتراضية عند تحميل الصفحة إذا لم تكن هناك صور مرفوعة
+            const previewPhoto = document.getElementById('preview-photo');
+            const defaultPhotoIcon = document.querySelector('.id-photo .default-icon');
+            if (previewPhoto.src === '' || previewPhoto.src === window.location.href) {
+                previewPhoto.style.display = 'none';
+                defaultPhotoIcon.style.display = 'block';
+            }
+
+            const previewLogo = document.getElementById('preview-logo');
+            const defaultLogoIcon = document.querySelector('.id-logo .default-icon');
+            if (previewLogo.src === '' || previewLogo.src === window.location.href) {
+                previewLogo.style.display = 'none';
+                defaultLogoIcon.style.display = 'block';
+            }
+
+            const previewQr = document.getElementById('preview-qr');
+            const defaultQrIcon = document.querySelector('.id-qr .default-icon');
+            if (previewQr.src === '' || previewQr.src === window.location.href) {
+                previewQr.style.display = 'none';
+                defaultQrIcon.style.display = 'block';
+            }
+
+            const previewSignature = document.getElementById('preview-signature');
+            const defaultSignatureIcon = document.querySelector('.id-signature .default-icon');
+            if (previewSignature.src === '' || previewSignature.src === window.location.href) {
+                previewSignature.style.display = 'none';
+                defaultSignatureIcon.style.display = 'block';
+            }
+
+            // عند تحميل الصفحة، تأكد من إظهار الحقول التي تم تفعيلها افتراضيًا
+            document.querySelectorAll('.toggle-switch input:checked').forEach(checkbox => {
+                checkbox.dispatchEvent(new Event('change'));
+            });
+
+            // قم بتشغيل حدث 'input' للحقول الموجودة عند التحميل لتحديث المعاينة
+            inputFields.forEach(input => {
+                input.dispatchEvent(new Event('input'));
+            });
+
+            // قم بتشغيل حدث 'input' لحقلي العنوان واسم البطاقة عند التحميل
+            document.getElementById('card-title').dispatchEvent(new Event('input'));
+            document.getElementById('card-name').dispatchEvent(new Event('input'));
+        });
+    </script>
+</body>
+</html>
