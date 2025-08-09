@@ -1,1 +1,1445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeaStar | نظرة شاملة على أقسام النظام</title>
+    <meta name="description" content="نظرة شاملة ومفصلة على جميع أقسام نظام SeaStar لإدارة المؤسسات التعليمية: لوحة التحكم، الإدارة، الطلاب، الامتحانات، الموارد البشرية، الحسابات، الأدوات المساعدة، التقارير، والإعدادات.">
+    <meta name="keywords" content="أقسام نظام SeaStar, لوحة تحكم, إدارة, طلاب, امتحانات, موارد بشرية, حسابات, تقارير, إعدادات النظام, حلول مدرسية, حلول جامعية">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* أشرطة الأخبار المتحركة */
+        .news-ticker-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            height: 40px;
+            margin-top: 80px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ticker-label {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--dark-blue));
+            color: white;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-width: 130px;
+        }
+        
+        .ticker-label i {
+            margin-left: 10px;
+            color: var(--cyber-green);
+        }
+        
+        .ticker-content {
+            position: absolute;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding-right: 20px;
+            animation: tickerAnimation 30s linear infinite;
+        }
+        
+        .ticker-content a {
+            color: white;
+            text-decoration: none;
+            margin: 0 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-content a:hover {
+            color: var(--cyber-green);
+            transform: translateY(-2px);
+        }
+        
+        .ticker-content a i {
+            margin-left: 10px;
+            color: var(--cyber-blue);
+        }
+        
+        @keyframes tickerAnimation {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* شريط جديدنا المتحرك */
+        .new-feature-bar {
+            background: linear-gradient(90deg, rgba(0, 168, 255, 0.2), rgba(11, 232, 129, 0.2));
+            overflow: hidden;
+            height: 50px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.3);
+            position: relative;
+        }
+        
+        .new-feature-content {
+            position: absolute;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            animation: featureAnimation 20s linear infinite;
+            padding: 0 20px;
+        }
+        
+        .new-feature-content a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .new-feature-content a:hover {
+            color: var(--cyber-green);
+            text-shadow: 0 0 10px rgba(11, 232, 129, 0.7);
+        }
+        
+        .new-feature-content a i {
+            color: var(--cyber-blue);
+            font-size: 1.5rem;
+            animation: pulseIcon 2s infinite;
+        }
+        
+        @keyframes featureAnimation {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        @keyframes pulseIcon {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* القسم البطولي */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 40px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .hero-content {
+            flex: 1;
+            padding: 0 30px;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .hero-content p {
+            font-size: 1.4rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+        
+        .secondary-btn {
+            background: transparent;
+            color: var(--cyber-green);
+            border: 2px solid var(--cyber-green);
+        }
+        
+        .secondary-btn:hover {
+            background: rgba(11, 232, 129, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s ease;
+        }
+        
+        .hero-image img:hover {
+            transform: scale(1.03) rotate(1deg);
+        }
+        
+        /* قسم الخدمات */
+        .section {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* قسم أقسام النظام */
+        .system-overview {
+            padding: 100px 40px;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .main-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+        
+        .main-section:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--cyber-green);
+        }
+
+        .main-section-title {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cyber-green);
+            margin-bottom: 25px;
+        }
+
+        .main-section-title i {
+            font-size: 2.5rem;
+            color: var(--cyber-blue);
+        }
+
+        .sub-section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: white;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sub-section-title:hover {
+            background: rgba(11, 232, 129, 0.1);
+            color: var(--cyber-green);
+        }
+        
+        .sub-section-title i {
+            transition: transform 0.3s ease;
+        }
+        
+        .sub-section-title.open i {
+            transform: rotate(180deg);
+        }
+
+        .sub-section-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+
+        .sub-section-list.open {
+            max-height: 1000px; /* يمكن تعديل القيمة لتناسب المحتوى */
+        }
+
+        .sub-section-list li a {
+            display: block;
+            padding: 10px 15px;
+            padding-right: 30px;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            border-right: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sub-section-list li a:before {
+            content: '-';
+            position: absolute;
+            right: 15px;
+            color: var(--cyber-blue);
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        .sub-section-list li a:hover {
+            color: var(--cyber-blue);
+            padding-right: 40px;
+            border-right-color: var(--cyber-blue);
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .section {
+                padding: 80px 20px;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .main-section-title {
+                font-size: 1.5rem;
+            }
+            .main-section-title i {
+                font-size: 2rem;
+            }
+            .sub-section-title {
+                font-size: 1.1rem;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="portfolio.html">الاسعار</a></li>
+            <li><a href="about.html">الدعم </a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <div class="news-ticker-container">
+        <div class="ticker-label">
+            <i class="fas fa-newspaper"></i> آخر الأخبار
+        </div>
+        <div class="ticker-content">
+            <a href="https://wa.me/+967777220455?text=أريد%20نسخة%20تجريبية%20لنظام%20swastar%20لمؤسستي التعليمية?"><i class="fas fa-arrow-left"></i>لادارة المؤسسات التعليمية  SeaStar تواصل معنا للحصول على نسخة تجريبية مجانية من نظام</a>
+            <a href="qrsea.html"><i class="fas fa-arrow-left"></i> SeaStar تطلق خدمة إنشاء الباركود الجديدة</a>
+            <a href="iot.html"><i class="fas fa-arrow-left"></i> إطلاق دورة تدريبية جديدة في الذكاء الاصطناعي  </a>
+            <a href="news.html#3"><i class="fas fa-arrow-left"></i> خصم 20% على خدمات التصميم الجرافيكي خلال الشهر الحالي</a>
+            <a href="news.html#4"><i class="fas fa-arrow-left"></i> تعاون جديد مع شركة التقنية المتطورة لتقديم حلول متكاملة</a>
+            <a href="news.html#5"><i class="fas fa-arrow-left"></i> ورشة عمل مجانية حول التسويق الرقمي يوم الخميس القادم</a>
+        </div>
+    </div>
+    
+    <div class="new-feature-bar">
+        <div class="new-feature-content">
+            <a href="qrsea.html">
+                <i class="fas fa-qrcode"></i>
+                الآن وعن طريق SeaStar بات بإمكانك إنشاء باركود بسهولة لكل البيانات التي تريدها
+            </a>
+        </div>
+    </div>
+    
+    <section class="section system-overview">
+        <div class="section-header">
+            <h2 class="section-title">نظرة شاملة على أقسام نظام SeaStar</h2>
+            <p class="section-subtitle">
+                اكتشف الهيكل الكامل لنظامنا الذكي المصمم لإدارة مؤسستك التعليمية بكل كفاءة وفعالية.
+            </p>
+        </div>
+        
+        <div class="overview-grid">
+            <div class="main-section animate">
+                <h3 class="main-section-title">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>1. لوحة التحكم (DASHBOARD)</span>
+                </h3>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>لوحة التحكم الرئيسية</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">لوحة التحكم (Dashboard)</a></li>
+                        <li><a href="#">مدير الشريط الجانبي (Sidebar Manager)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-section animate">
+                <h3 class="main-section-title">
+                    <i class="fas fa-cogs"></i>
+                    <span>2. الإدارة (ADMINISTRATION)</span>
+                </h3>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>قسم الإدارة</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">قسم الإدارة (Administration Section)</a></li>
+                        <li><a href="#">إستعلام القبول (Admission Query)</a></li>
+                        <li><a href="#">سجل الزوار (Visitor Book)</a></li>
+                        <li><a href="#">شكوى (Complaint)</a></li>
+                        <li><a href="#">بريد وارد (Inbox)</a></li>
+                        <li><a href="#">بريد صادر (Outbox)</a></li>
+                        <li><a href="#">سجل المكالمات (Call Log)</a></li>
+                        <li><a href="#">إعداد الإدارة (Admin Setup)</a></li>
+                        <li><a href="#">بطاقة هوية (ID Card)</a></li>
+                        <li><a href="#">شهادة الطالب (Student Certificate)</a></li>
+                        <li><a href="#">إنشاء شهادة (Generate Certificate)</a></li>
+                        <li><a href="#">إنشاء بطاقة هوية (Generate ID Card)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>أكاديميات</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">مادة اختيارية (Optional Subjects)</a></li>
+                        <li><a href="#">القسم (Section)</a></li>
+                        <li><a href="#">الفصل (Class)</a></li>
+                        <li><a href="#">المواد (Subjects)</a></li>
+                        <li><a href="#">تعيين معلم الفصل (Assign Class Teacher)</a></li>
+                        <li><a href="#">تعيين مادة (Assign Subject)</a></li>
+                        <li><a href="#">القاعة (Room)</a></li>
+                        <li><a href="#">جدول مخصص (Class Routine)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>مادة دراسية</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">رفع المحتوى (Upload Content)</a></li>
+                        <li><a href="#">واجب (Assignment)</a></li>
+                        <li><a href="#">منهج دراسي (Syllabus)</a></li>
+                        <li><a href="#">تحميلات أخرى (Other Downloads)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>خطة الدرس</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">الدرس (Lesson)</a></li>
+                        <li><a href="#">الموضوع (Topic)</a></li>
+                        <li><a href="#">نظرة عامة على الموضوع (Topic Overview)</a></li>
+                        <li><a href="#">خطة الدرس (Lesson Plan)</a></li>
+                        <li><a href="#">نظرة عامة على خطة الدرس (Lesson Plan Overview)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>طباعة مجمعة</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">بطاقة هوية (ID Card)</a></li>
+                        <li><a href="#">شهادة الطالب (Student Certificate)</a></li>
+                        <li><a href="#">طباعة الرواتب مجمعة (Payroll Bulk Print)</a></li>
+                        <li><a href="#">طباعة فواتير الرسوم مجمعة (Fees Invoice Bulk Print)</a></li>
+                        <li><a href="#">إعدادات طباعة فواتير الرسوم مجمعة (Fees Invoice Bulk Print Settings)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>مركز التحميل</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">نوع المحتوى (Content Type)</a></li>
+                        <li><a href="#">قائمة المحتوى (Content List)</a></li>
+                        <li><a href="#">قائمة المحتويات المتحركة (Slider Content List)</a></li>
+                        <li><a href="#">قائمة الفيديو (Video List)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-section animate">
+                <h3 class="main-section-title">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>3. الطلاب (STUDENT)</span>
+                </h3>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>معلومات الطالب</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">معلومات الطالب (Student Information)</a></li>
+                        <li><a href="#">فئة الطالب (Student Category)</a></li>
+                        <li><a href="#">إضافة طالب (Add Student)</a></li>
+                        <li><a href="#">قائمة الطلاب (Student List)</a></li>
+                        <li><a href="#">طالب متعدد الفصول (Student.Multi_class_student)</a></li>
+                        <li><a href="#">حذف سجل الطالب (Student.Delete_student_record)</a></li>
+                        <li><a href="#">طلاب غير مخصصين (Student.Unassigned_student)</a></li>
+                        <li><a href="#">حضور الطلاب (Student Attendance)</a></li>
+                        <li><a href="#">مجموعة طلاب (Student Group)</a></li>
+                        <li><a href="#">ترقية الطلاب (Promote Student)</a></li>
+                        <li><a href="#">طلاب ذوي الإعاقة (Disabled Student)</a></li>
+                        <li><a href="#">الحضور حسب المادة (Attendance by Subject)</a></li>
+                        <li><a href="#">تصدير الطلاب (Export Students)</a></li>
+                        <li><a href="#">وقت إرسال الرسائل النصية للطلاب (Student.Sms_sending_time)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>سجلات السلوك</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">سجلات السلوك (Behavior Records)</a></li>
+                        <li><a href="#">الحوادث (Incidents)</a></li>
+                        <li><a href="#">تعيين حادث (Assign Incident)</a></li>
+                        <li><a href="#">تقرير حوادث الطلاب (Student Incident Report)</a></li>
+                        <li><a href="#">تقرير السلوك (Behavior Report)</a></li>
+                        <li><a href="#">تقرير الفصل والقسم (Class and Section Report)</a></li>
+                        <li><a href="#">تقرير حسب الحادث (Report by Incident)</a></li>
+                        <li><a href="#">الإعدادات (Settings)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>رسوم</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">رسوم (Fees)</a></li>
+                        <li><a href="#">مجموعة الرسوم (Fees Group)</a></li>
+                        <li><a href="#">نوع الرسوم (Fees Type)</a></li>
+                        <li><a href="#">فاتورة الرسوم (Fees Invoice)</a></li>
+                        <li><a href="#">دفع بنكي (Bank Payment)</a></li>
+                        <li><a href="#">إعدادات فاتورة الرسوم (Fees Invoice Settings)</a></li>
+                        <li><a href="#">ترحيل الرسوم (Fees Collect)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>الواجب المنزلي</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">الواجب المنزلي (Homework)</a></li>
+                        <li><a href="#">إضافة واجب منزلي (Add Homework)</a></li>
+                        <li><a href="#">قائمة الواجبات (Homework List)</a></li>
+                        <li><a href="#">تقرير الواجب المنزلي (Homework.Homework_report)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>المكتبة</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">المكتبة (Library)</a></li>
+                        <li><a href="#">إضافة كتاب (Add Book)</a></li>
+                        <li><a href="#">قائمة الكتب (Book List)</a></li>
+                        <li><a href="#">تصنيفات الكتب (Book Categories)</a></li>
+                        <li><a href="#">إضافة عضو (Add Member)</a></li>
+                        <li><a href="#">إصدار / إرجاع كتاب (Issue / Return Book)</a></li>
+                        <li><a href="#">جميع الكتب المعارة (All Issued Books)</a></li>
+                        <li><a href="#">مؤلف (Author)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>النقل</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">النقل (Transport)</a></li>
+                        <li><a href="#">الطرق (Routes)</a></li>
+                        <li><a href="#">المركبة (Vehicle)</a></li>
+                        <li><a href="#">تعيين مركبة (Assign Vehicle)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>سكن طلابي</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">سكن طلابي (Dormitory)</a></li>
+                        <li><a href="#">غرف السكن (Dormitory Rooms)</a></li>
+                        <li><a href="#">نوع الغرفة (Room Type)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-section animate">
+                <h3 class="main-section-title">
+                    <i class="fas fa-scroll"></i>
+                    <span>4. الامتحانات (EXAM)</span>
+                </h3>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>امتحان</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">امتحان (Exam)</a></li>
+                        <li><a href="#">نوع الامتحان (Exam Type)</a></li>
+                        <li><a href="#">إعداد الامتحان (Exam Setup)</a></li>
+                        <li><a href="#">جدول الامتحانات (Exam Schedule)</a></li>
+                        <li><a href="#">حضور الامتحان (Exam Attendance)</a></li>
+                        <li><a href="#">سجل الدرجات (Mark Sheet)</a></li>
+                        <li><a href="#">تقدير الدرجات (Grade Setup)</a></li>
+                        <li><a href="#">إرسال الدرجات عبر SMS (Send Mark by SMS)</a></li>
+                        <li><a href="#">تقرير سجل الدرجات (Exam.Marksheet_report)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>خطة الامتحان</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">خطة الامتحان (Exam Plan)</a></li>
+                        <li><a href="#">بطاقة القبول/الدخول (Admit Card)</a></li>
+                        <li><a href="#">خطة المقاعد (Seat Plan)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>امتحان إلكتروني</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">امتحان إلكتروني (Online Exam)</a></li>
+                        <li><a href="#">مجموعة الأسئلة (Question Group)</a></li>
+                        <li><a href="#">بنك الأسئلة (Question Bank)</a></li>
+                        <li><a href="#">امتحان إلكتروني (Online Exam)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-section animate">
+                <h3 class="main-section-title">
+                    <i class="fas fa-users"></i>
+                    <span>5. الموارد البشرية (HR)</span>
+                </h3>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>الموارد البشرية</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">الموارد البشرية (Human Resources)</a></li>
+                        <li><a href="#">المسمى الوظيفي (Designation)</a></li>
+                        <li><a href="#">القسم (Department)</a></li>
+                        <li><a href="#">إضافة موظف (Add Staff)</a></li>
+                        <li><a href="#">دليل الموظفين (Staff Directory)</a></li>
+                        <li><a href="#">حضور الموظفين (Staff Attendance)</a></li>
+                        <li><a href="#">كشوف المرتبات (Payroll)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>تقييم المعلم</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">تقييم المعلم (Teacher Evaluation)</a></li>
+                        <li><a href="#">تقرير معتمد (Approved Report)</a></li>
+                        <li><a href="#">تقرير معلق (Pending Report)</a></li>
+                        <li><a href="#">تقرير حسب المعلم (Report by Teacher)</a></li>
+                        <li><a href="#">الإعدادات (Settings)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>إجازة</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">إجازة (Leave)</a></li>
+                        <li><a href="#">تقديم طلب إجازة (Apply Leave)</a></li>
+                        <li><a href="#">اعتماد طلب إجازة (Approve Leave)</a></li>
+                        <li><a href="#">طلب إجازة قيد الانتظار (Pending Leave Request)</a></li>
+                        <li><a href="#">تحديد الإجازات (Assign Leave)</a></li>
+                        <li><a href="#">نوع الإجازة (Leave Type)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>الأدوار والصلاحيات</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">الأدوار والصلاحيات (Role & Permission)</a></li>
+                        <li><a href="#">صلاحية الدخول (Login Permission)</a></li>
+                        <li><a href="#">الدور (Role)</a></li>
+                        <li><a href="#">الصلاحية (Permission)</a></li>
+                        <li><a href="#">صلاحية دخول الرسوم المستحقة (Due Fees Login Permission)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-section animate">
+                <h3 class="main-section-title">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>6. الحسابات (ACCOUNTS)</span>
+                </h3>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>المحفظة</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">إيداع معلق (Pending Deposit)</a></li>
+                        <li><a href="#">الموافقة على الإيداع (Approve Deposit)</a></li>
+                        <li><a href="#">رفض الإيداع (Reject Deposit)</a></li>
+                        <li><a href="#">معاملات المحفظة (Wallet Transaction)</a></li>
+                        <li><a href="#">طلب استرداد (Refund Request)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>الحسابات</span>
+                        <i class="fas fa-money-check-alt"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">الحسابات (Accounts)</a></li>
+                        <li><a href="#">الأرباح والخسائر (Profit & Loss)</a></li>
+                        <li><a href="#">إيرادات (Income)</a></li>
+                        <li><a href="#">مصروفات (Expenses)</a></li>
+                        <li><a href="#">دليل الحسابات (Chart of Accounts)</a></li>
+                        <li><a href="#">حساب بنكي (Bank Account)</a></li>
+                        <li><a href="#">تحويل أموال (Fund Transfer)</a></li>
+                        <li><a href="#">معاملة (Transaction)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>المخزون</span>
+                        <i class="fas fa-warehouse"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">المخزون (Inventory)</a></li>
+                        <li><a href="#">تصنيف الأصناف (Item Category)</a></li>
+                        <li><a href="#">قائمة الأصناف (Item List)</a></li>
+                        <li><a href="#">مستودع الأصناف (Item Store)</a></li>
+                        <li><a href="#">المورد (Supplier)</a></li>
+                        <li><a href="#">استلام أصناف (Receive Item)</a></li>
+                        <li><a href="#">قائمة الاستلام (Receive List)</a></li>
+                        <li><a href="#">بيع أصناف (Sell Item)</a></li>
+                        <li><a href="#">صرف أصناف (Issue Item)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-section animate">
+                <h3 class="main-section-title">
+                    <i class="fas fa-tools"></i>
+                    <span>7. الأدوات المساعدة (UTILITIES)</span>
+                </h3>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>المحادثة</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">المحادثة (Chat)</a></li>
+                        <li><a href="#">صندوق الدردشة (Chat Box)</a></li>
+                        <li><a href="#">الدعوات (Invitation)</a></li>
+                        <li><a href="#">المستخدمون المحظورون (Blocked User)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>الاتصالات</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">الاتصالات (Communication)</a></li>
+                        <li><a href="#">لوحة الإعلانات (Notice Board)</a></li>
+                        <li><a href="#">إرسال بريد إلكتروني / رسائل نصية (Communicate.Send_email_V_sms)</a></li>
+                        <li><a href="#">سجل البريد الإلكتروني / الرسائل النصية (Email / SMS Log)</a></li>
+                        <li><a href="#">فعالية (Event)</a></li>
+                        <li><a href="#">التقويم (Communicate.Calendar)</a></li>
+                        <li><a href="#">قالب البريد الإلكتروني (Email Template)</a></li>
+                        <li><a href="#">قالب الرسائل النصية (SMS Template)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>النمط</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">النمط (Themes/Style)</a></li>
+                        <li><a href="#">إعدادات الخلفية (Background Settings)</a></li>
+                        <li><a href="#">سمة الألوان (Color Theme)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-section animate">
+                <h3 class="main-section-title">
+                    <i class="fas fa-file-alt"></i>
+                    <span>8. التقارير (REPORT)</span>
+                </h3>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>تقرير الطالب</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">تقرير الطالب (Student Report)</a></li>
+                        <li><a href="#">تقرير حضور الطلاب (Student Attendance Report)</a></li>
+                        <li><a href="#">تقرير حضور المادة (Subject Attendance Report)</a></li>
+                        <li><a href="#">تقرير التقييم (Assessment Report)</a></li>
+                        <li><a href="#">تقرير أولياء الأمور (Parent Report)</a></li>
+                        <li><a href="#">السجل الأكاديمي للطلاب (Student Academic Record)</a></li>
+                        <li><a href="#">تقرير دخول الطلاب (Student Login Report)</a></li>
+                        <li><a href="#">تقرير الفصل (Class Report)</a></li>
+                        <li><a href="#">جدول المخصص (Class Routine Report)</a></li>
+                        <li><a href="#">سجل المستخدمين (User Log)</a></li>
+                        <li><a href="#">تقرير الطالب (Student Report)</a></li>
+                        <li><a href="#">السجل السابق (Previous Record)</a></li>
+                        <li><a href="#">تقرير نقل الطلاب (Student Transport Report)</a></li>
+                        <li><a href="#">تقرير سكن الطلاب (Student Dormitory Report)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>تقرير الاختبار</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">تقرير الاختبار (Exam Report)</a></li>
+                        <li><a href="#">جدول الامتحانات (Exam Schedule)</a></li>
+                        <li><a href="#">تقرير كلمة التميز (Marksheet Report)</a></li>
+                        <li><a href="#">تقرير الامتحان الإلكتروني (Online Exam Report)</a></li>
+                        <li><a href="#">تقرير كشف الدرجات (Marksheet Report)</a></li>
+                        <li><a href="#">تقرير بطاقة التقدم (Progress Card Report)</a></li>
+                        <li><a href="#">النتيجة السابقة (Previous Result)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>تقرير الموظفين</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">تقرير الموظفين (Staff Report)</a></li>
+                        <li><a href="#">تقرير حضور الموظفين (Staff Attendance Report)</a></li>
+                        <li><a href="#">تقرير كشوف المرتبات (Payroll Report)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>تقرير الرسوم</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">تقرير الرسوم (Fees Report)</a></li>
+                        <li><a href="#">تقرير الرسوم المستحقة (Fees Due Report)</a></li>
+                        <li><a href="#">تقرير الغرامات (Fine Report)</a></li>
+                        <li><a href="#">تقرير المدفوعات (Payment Report)</a></li>
+                        <li><a href="#">تقرير الرصيد (Balance Report)</a></li>
+                        <li><a href="#">تقرير الإعفاءات (Waiver Report)</a></li>
+                        <li><a href="#">تقرير المحفظة (Wallet Report)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>تقرير الحسابات</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">تقرير الحسابات (Accounts Report)</a></li>
+                        <li><a href="#">تقرير الإيرادات (Income Report)</a></li>
+                        <li><a href="#">تقرير المصروفات (Expense Report)</a></li>
+                        <li><a href="#">تقرير الأرباح والخسائر (Profit & Loss Report)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="main-section animate">
+                <h3 class="main-section-title">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>9. قسم الإعدادات (SETTINGS SECTION)</span>
+                </h3>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>إعدادات الرسوم</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">إعدادات الرسوم (Fees Settings)</a></li>
+                        <li><a href="#">إعدادات الرسوم (Fees Settings)</a></li>
+                        <li><a href="#">نوع الرسوم (Fees Type)</a></li>
+                        <li><a href="#">مجموعة الرسوم (Fees Group)</a></li>
+                        <li><a href="#">تخصيص الرسوم (Assign Fees)</a></li>
+                        <li><a href="#">تخفيض الرسوم (Fees Discount)</a></li>
+                        <li><a href="#">إعفاء الرسوم (Fees Waiver)</a></li>
+                        <li><a href="#">إعدادات فاتورة الرسوم (Fees Invoice Settings)</a></li>
+                        <li><a href="#">إعدادات الفواتير المجمعة (Bulk Invoice Settings)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>إعدادات الاختبار</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">إعدادات الاختبار (Exam Settings)</a></li>
+                        <li><a href="#">إعدادات الاختبار (Exam Settings)</a></li>
+                        <li><a href="#">نوع الاختبار (Exam Type)</a></li>
+                        <li><a href="#">إعداد الدرجات (Grade Setup)</a></li>
+                        <li><a href="#">إعداد التنسيق (Format Settings)</a></li>
+                        <li><a href="#">إعداد قواعد الامتحان (Exam Rules Setup)</a></li>
+                        <li><a href="#">المركز (Center)</a></li>
+                        <li><a href="#">جميع مواقع الامتحانات (Exam.All_exam_position)</a></li>
+                        <li><a href="#">إعدادات توقيع الامتحان (Exam.Exam_signature_settings)</a></li>
+                        <li><a href="#">إعدادات بطاقة القبول (Admit Card Setting)</a></li>
+                        <li><a href="#">إعدادات خطة المقاعد (Seat Plan Setting)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>حقل مخصص</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">حقل مخصص (Custom Fields)</a></li>
+                        <li><a href="#">حقل مخصص (Custom Fields)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>الإعدادات العامة</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">الإعدادات العامة (General Settings)</a></li>
+                        <li><a href="#">إعدادات الطالب (Student.Student_settings)</a></li>
+                        <li><a href="#">إعدادات المصادقة الثنائية (Auth.Two_factor_setting)</a></li>
+                        <li><a href="#">إعدادات خطة الدرس (Lesson Plan Setting)</a></li>
+                        <li><a href="#">إعدادات الموظفين (Staff Settings)</a></li>
+                        <li><a href="#">إعدادات الدردشة (Chat Settings)</a></li>
+                        <li><a href="#">الإعدادات العامة (General Settings)</a></li>
+                        <li><a href="#">مادة اختيارية (Optional Subject)</a></li>
+                        <li><a href="#">السنة الأكاديمية (Academic Year)</a></li>
+                        <li><a href="#">عطلة (Holiday)</a></li>
+                        <li><a href="#">مدير الوحدات (Module Manager)</a></li>
+                        <li><a href="#">إعدادات إشعارات النظام (System_settings.Notification_setting)</a></li>
+                        <li><a href="#">Tawk To Chat (System_settings.Tawk To Chat)</a></li>
+                        <li><a href="#">دردشة الماسنجر (System_settings.Messenger Chat)</a></li>
+                        <li><a href="#">إدارة العملة (Currency Management)</a></li>
+                        <li><a href="#">إعدادات البريد الإلكتروني (Email Settings)</a></li>
+                        <li><a href="#">إعدادات الدفع (Payment Settings)</a></li>
+                        <li><a href="#">الإعداد الأساسي (Basic Setup)</a></li>
+                        <li><a href="#">إعدادات الرسائل القصيرة (SMS Settings)</a></li>
+                        <li><a href="#">عطلة نهاية الأسبوع (Weekend)</a></li>
+                        <li><a href="#">إعدادات اللغة (Language Settings)</a></li>
+                        <li><a href="#">إعدادات المنطقة الزمنية (Timezone Settings)</a></li>
+                        <li><a href="#">العملة (Currency)</a></li>
+                        <li><a href="#">إعدادات الموقع (Website Settings)</a></li>
+                        <li><a href="#">الأذونات (Permissions)</a></li>
+                        <li><a href="#">مسح احتياطي (Backup)</a></li>
+                        <li><a href="#">إعداد لوحة التحكم (Dashboard Setup)</a></li>
+                        <li><a href="#">حول والتحديثات (About & Updates)</a></li>
+                        <li><a href="#">صلاحية API (API Permission)</a></li>
+                        <li><a href="#">اللغة (Language)</a></li>
+                        <li><a href="#">إعدادات شاشة التحميل المسبق (System_settings.Preloader Settings)</a></li>
+                        <li><a href="#">أدوات مساعدة (Utilities)</a></li>
+                    </ul>
+                </div>
+                <div class="sub-section">
+                    <div class="sub-section-title">
+                        <span>نظام إدارة المحتوى للواجهة الأمامية</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <ul class="sub-section-list">
+                        <li><a href="#">نظام إدارة المحتوى للواجهة الأمامية (Frontend Content Management System)</a></li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="seastar.html"><i class="fas fa-arrow-left"></i> نظرة شاملة عن اقسام النظام</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> أعمالنا</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> من نحن</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-arrow-left"></i> سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate sections on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+
+            // Hamburger menu functionality
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+            
+            // Dropdown functionality for sub-sections
+            const dropdowns = document.querySelectorAll('.sub-section-title');
+            dropdowns.forEach(dropdown => {
+                dropdown.addEventListener('click', () => {
+                    const subList = dropdown.nextElementSibling;
+                    const isOpen = subList.classList.contains('open');
+
+                    // Close all other open dropdowns
+                    document.querySelectorAll('.sub-section-list.open').forEach(item => {
+                        if (item !== subList) {
+                            item.classList.remove('open');
+                            item.previousElementSibling.classList.remove('open');
+                        }
+                    });
+
+                    // Toggle the clicked dropdown
+                    dropdown.classList.toggle('open');
+                    subList.classList.toggle('open');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
 
