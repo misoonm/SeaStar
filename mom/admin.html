@@ -1,1 +1,745 @@
-
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإدارة - نظام SeaStar لإدارة المؤسسات التعليمية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* محتوى الصفحة */
+        .admin-container {
+            max-width: 1400px;
+            margin: 120px auto 50px;
+            padding: 20px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .page-title {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .page-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .admin-intro {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .admin-intro:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+        }
+        
+        .admin-intro p {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
+            max-width: 900px;
+            margin: 0 auto 30px;
+        }
+        
+        .admin-intro .highlight {
+            color: var(--cyber-green);
+            font-weight: 700;
+            font-size: 1.6rem;
+            display: block;
+            margin: 30px 0;
+            text-shadow: 0 0 10px rgba(11, 232, 129, 0.3);
+        }
+        
+        /* قسم الميزات */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--cyber-green);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .feature-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--cyber-blue);
+        }
+        
+        .feature-image {
+            height: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .feature-card:hover .feature-image img {
+            transform: scale(1.1);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--cyber-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-card h3 i {
+            color: var(--cyber-blue);
+        }
+        
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+        
+        .feature-card .badge {
+            display: inline-block;
+            background: rgba(11, 232, 129, 0.1);
+            color: var(--cyber-green);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* أزرار */
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            max-width: 250px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .admin-container {
+                margin-top: 100px;
+                padding: 10px;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .admin-intro {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .feature-card {
+                min-height: auto;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="portfolio.html">الاسعار</a></li>
+            <li><a href="about.html">الدعم </a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <div class="admin-container">
+        <div class="page-header animate">
+            <h1 class="page-title">الإدارة (Administration)</h1>
+            <p class="page-subtitle">
+                قسم الإدارة في SeaStar هو قلب العمليات السلسة في مؤسستك. من تنظيم المواعيد، إلى متابعة المهام اليومية، 
+                يضمن هذا القسم أن تكون كل التفاصيل في متناول يدك، مما يوفر لك الوقت والجهد للتركيز على استراتيجيات النمو الأهم.
+            </p>
+        </div>
+        
+        <div class="admin-intro animate">
+            <p>
+                قل وداعًا للفوضى الإدارية! نظام الإدارة المتكامل في SeaStar يمنحك تحكمًا كاملاً في جميع عمليات مؤسستك التعليمية، 
+                من استقبال الطلاب الجدد إلى إدارة المراسلات الداخلية، كل ذلك في مكان واحد.
+            </p>
+            <span class="highlight">إدارة ذكية - تنظيم متكامل - كفاءة غير مسبوقة</span>
+        </div>
+        
+        <div class="features-grid">
+            <!-- استعلام القبول -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1584697964358-3e14ca57658b?q=80&w=2070&auto=format&fit=crop" alt="استعلام القبول">
+                </div>
+                <h3><i class="fas fa-search"></i> استعلام القبول (Admission Query)</h3>
+                <p>
+                    حوّل كل استفسار إلى فرصة! تتبع استفسارات القبول وتنظيمها لم يكن أسهل من أي وقت مضى. 
+                    مع هذه الميزة في SeaStar، ستتمكن من إدارة جميع الاستفسارات بكفاءة، متابعة كل طالب مهتم، 
+                    وضمان عدم تفويت أي فرصة للالتحاق بمؤسستك.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- سجل الزوار -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2070&auto=format&fit=crop" alt="سجل الزوار">
+                </div>
+                <h3><i class="fas fa-book"></i> سجل الزوار (Visitor Book)</h3>
+                <p>
+                    احترافية من اللحظة الأولى! سجل الزوار الرقمي في SeaStar يمنحك صورة واضحة عن كل من يزور مؤسستك. 
+                    من تسجيل البيانات، الغرض من الزيارة، وحتى متابعة خروجهم، كل ذلك يتم بأسلوب منظم وسهل. 
+                    اكتسب رؤى قيمة عن الزيارات اليومية وعزز أمن منشأتك.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- الشكاوى -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1588200908342-23b585c03e26?q=80&w=2070&auto=format&fit=crop" alt="الشكاوى">
+                </div>
+                <h3><i class="fas fa-comments"></i> الشكاوى (Complaint)</h3>
+                <p>
+                    استمع، تفاعل، وتطور! إدارة الشكاوى بفاعلية هي مؤشر على جودة مؤسستك. 
+                    هذا القسم في SeaStar يتيح لك تلقي الشكاوى، تصنيفها، وتتبعها حتى الحل النهائي بشفافية كاملة. 
+                    لا تدع أي ملاحظة تمر مرور الكرام؛ حوّل التحديات إلى فرص لتحسين الخدمات.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- البريد الوارد/الصادر -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1519241047957-be2d803dbfc2?q=80&w=2070&auto=format&fit=crop" alt="البريد الوارد والصادر">
+                </div>
+                <h3><i class="fas fa-inbox"></i> البريد الوارد/الصادر (Inbox/Outbox)</h3>
+                <p>
+                    تواصل داخلي بلا حدود! نظام المراسلة الداخلي في SeaStar يتيح لك ولجميع الموظفين التواصل بسهولة وأمان ضمن بيئة النظام. 
+                    أرسل واستقبل الرسائل المهمة، الملاحظات، والتعليمات دون الحاجة للانتقال لتطبيقات خارجية. 
+                    بناء جسور تواصل قوية مع SeaStar يرفع من إنتاجية فريقك وتماسكه.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- سجل المكالمات -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?q=80&w=2070&auto=format&fit=crop" alt="سجل المكالمات">
+                </div>
+                <h3><i class="fas fa-phone-alt"></i> سجل المكالمات (Call Log)</h3>
+                <p>
+                    لا تفقد أثر أي مكالمة مهمة! سجل كل تفاصيل المكالمات الواردة والصادرة، من المتصل والموضوع، 
+                    إلى الإجراءات المتخذة. هذه الميزة من SeaStar تضمن لك تتبع جميع التفاعلات الصوتية الهامة، 
+                    وتقديم خدمة عملاء ومتابعة لا تشوبها شائبة.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- إعدادات الإدارة -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?q=80&w=2070&auto=format&fit=crop" alt="إعدادات الإدارة">
+                </div>
+                <h3><i class="fas fa-sliders-h"></i> إعدادات الإدارة (Admin Setup)</h3>
+                <p>
+                    التحكم الكامل بين يديك! قم بتهيئة نظام SeaStar ليناسب احتياجات مؤسستك بالضبط. 
+                    من الإعدادات العامة، إلى تحديد الصلاحيات، هذا القسم يمنحك مرونة لا مثيل لها 
+                    لتخصيص بيئة العمل لتكون مثالية لك ولفريقك.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- بطاقة الهوية/شهادة الطالب -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=2070&auto=format&fit=crop" alt="بطاقة الهوية">
+                </div>
+                <h3><i class="fas fa-id-card"></i> بطاقة الهوية/شهادة الطالب</h3>
+                <p>
+                    احترافية بلمسة زر! أنشئ بطاقات هوية أنيقة وشهادات طلابية معتمدة بسهولة وسرعة عبر SeaStar. 
+                    وفر الوقت والجهد في عمليات الطباعة والتصميم، وقدم لطلابك وموظفيك وثائق تعكس الاحترافية 
+                    والجودة العالية لمؤسستك.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- نظرة عامة -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop" alt="نظام الإدارة">
+                </div>
+                <h3><i class="fas fa-tachometer-alt"></i> نظام الإدارة المتكامل</h3>
+                <p>
+                    نظام إدارة متكامل يوفر لك كل الأدوات التي تحتاجها لإدارة مؤسستك التعليمية بكفاءة وفعالية. 
+                    من إدارة الطلاب والموظفين إلى تنظيم الموارد والمراسلات، كل ذلك في نظام واحد متكامل.
+                </p>
+                <a href="contact.html" class="cta-button">طلب عرض تجريبي <i class="fas fa-arrow-left"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-arrow-left"></i> الرئيسية</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> الأسعار</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> الدعم</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li> 
+                    <li><a href="blog.html"><i class="fas fa-arrow-left"></i> المدونة</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
