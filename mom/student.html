@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الطلاب - نظام SeaStar لإدارة المؤسسات التعليمية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* محتوى الصفحة */
+        .students-container {
+            max-width: 1400px;
+            margin: 120px auto 50px;
+            padding: 20px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .page-title {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .page-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .students-intro {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .students-intro:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+        }
+        
+        .students-intro p {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
+            max-width: 900px;
+            margin: 0 auto 30px;
+        }
+        
+        .students-intro .highlight {
+            color: var(--cyber-green);
+            font-weight: 700;
+            font-size: 1.6rem;
+            display: block;
+            margin: 30px 0;
+            text-shadow: 0 0 10px rgba(11, 232, 129, 0.3);
+        }
+        
+        /* قسم الميزات */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--cyber-green);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .feature-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--cyber-blue);
+        }
+        
+        .feature-image {
+            height: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .feature-card:hover .feature-image img {
+            transform: scale(1.1);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--cyber-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .feature-card h3 i {
+            color: var(--cyber-blue);
+        }
+        
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+        
+        .feature-card .badge {
+            display: inline-block;
+            background: rgba(11, 232, 129, 0.1);
+            color: var(--cyber-green);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* أزرار */
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            max-width: 250px;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .students-container {
+                margin-top: 100px;
+                padding: 10px;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .students-intro {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .feature-card {
+                min-height: auto;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="portfolio.html">الاسعار</a></li>
+            <li><a href="about.html">الدعم </a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <div class="students-container">
+        <div class="page-header animate">
+            <h1 class="page-title">الطلاب (Student)</h1>
+            <p class="page-subtitle">
+                مركز متكامل لإدارة جميع جوانب الحياة الطلابية من التسجيل والتقييم إلى الأنشطة والخدمات
+            </p>
+        </div>
+        
+        <div class="students-intro animate">
+            <p>
+                نظام SeaStar يضع الطالب في قلب العملية التعليمية، حيث يوفر أدوات متكاملة لإدارة جميع جوانب 
+                الحياة الطلابية بدءًا من التسجيل والتقييم وحتى الأنشطة والخدمات. نظامنا يضمن تجربة تعليمية 
+                شاملة ومتميزة لكل طالب.
+            </p>
+            <span class="highlight">رحلة تعليمية متكاملة - إدارة شاملة - تجربة طلابية فريدة</span>
+        </div>
+        
+        <div class="features-grid">
+            <!-- معلومات الطلاب -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop" alt="معلومات الطلاب">
+                </div>
+                <h3><i class="fas fa-user-graduate"></i> معلومات الطلاب (Student Information)</h3>
+                <p>
+                    التحكم الكامل ببيانات طلابك! من تسجيل الطلاب الجدد، تصنيفهم، وإدارة سجلاتهم التفصيلية، 
+                    إلى تتبع حضورهم وتقارير سلوكهم. هذا القسم في SeaStar هو مركز بيانات شامل يمنحك رؤية 
+                    360 درجة عن كل طالب، مما يسهل عمليات المتابعة، التقييم، واتخاذ القرارات لدعم رحلتهم التعليمية.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- سجلات السلوك -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1584697964358-3e14ca57658b?q=80&w=2070&auto=format&fit=crop" alt="سجلات السلوك">
+                </div>
+                <h3><i class="fas fa-clipboard-list"></i> سجلات السلوك (Behavior Records)</h3>
+                <p>
+                    نحو بيئة تعليمية إيجابية! تتبع سلوك الطلاب، تسجيل الحوادث، وإصدار التقارير بمنهجية 
+                    منظمة عبر SeaStar. هذه الميزة تمكنك من فهم ديناميكيات الفصول، التعامل مع التحديات 
+                    السلوكية بفعالية، وتعزيز الانضباط الإيجابي الذي يصب في مصلحة الجميع.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- الرسوم -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1604594849809-dfedbc827105?q=80&w=2070&auto=format&fit=crop" alt="الرسوم">
+                </div>
+                <h3><i class="fas fa-money-bill-wave"></i> الرسوم (Fees)</h3>
+                <p>
+                    إدارة مالية شفافة وفعالة! قم بإدارة جميع جوانب الرسوم الدراسية، من تحديد أنواع الرسوم 
+                    ومجموعاتها، إلى إصدار الفواتير وتتبع المدفوعات والتحصيلات عبر SeaStar. بسط عمليات 
+                    التحصيل، قلل الأخطاء، وقدم لأولياء الأمور تجربة دفع سهلة وشفافة.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- الواجبات المنزلية -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?q=80&w=2070&auto=format&fit=crop" alt="الواجبات المنزلية">
+                </div>
+                <h3><i class="fas fa-book-open"></i> الواجبات المنزلية (Homework)</h3>
+                <p>
+                    عزز التعلم خارج الصف! قم بتعيين الواجبات المنزلية، متابعة إنجازها، وتقديم التغذية 
+                    الراجعة للطلاب والمعلمين عبر SeaStar. هذه الميزة تضمن استمرارية التعلم، تعزيز مهارات 
+                    الطلاب، وتوفير رؤية واضحة لأولياء الأمور حول تقدم أبنائهم.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- المكتبة -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1495741545814-2d7f4d75ea09?q=80&w=2070&auto=format&fit=crop" alt="المكتبة">
+                </div>
+                <h3><i class="fas fa-book"></i> المكتبة (Library)</h3>
+                <p>
+                    بوابة المعرفة بين يديك! أدر مكتبتك المدرسية بفاعلية غير مسبوقة مع SeaStar. من إضافة 
+                    الكتب وتصنيفها، إلى إدارة الأعضاء وعمليات الإعارة والإرجاع. حوّل مكتبتك إلى مركز 
+                    حيوي للمعرفة والبحث، يسهل الوصول إليه ويشجع على القراءة والتعلم المستمر.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- النقل -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?q=80&w=2070&auto=format&fit=crop" alt="النقل">
+                </div>
+                <h3><i class="fas fa-bus"></i> النقل (Transport)</h3>
+                <p>
+                    رحلة آمنة ومنظمة! نظم خدمة النقل المدرسي بكل تفاصيلها، من تحديد المسارات، إدارة 
+                    المركبات، وتعيين السائقين عبر SeaStar. ضمان وصول الطلاب بأمان وفي الوقت المحدد 
+                    هو أولويتنا، وهذه الميزة توفر لك الأدوات اللازمة لتحقيق ذلك بكفاءة.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- السكن الداخلي -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?q=80&w=2070&auto=format&fit=crop" alt="السكن الداخلي">
+                </div>
+                <h3><i class="fas fa-bed"></i> السكن الداخلي (Dormitory)</h3>
+                <p>
+                    بيئة معيشية وتعليمية متكاملة! أدر مرافق السكن الداخلي، تخصيص الغرف، ومتابعة الطلاب 
+                    المقيمين بسهولة مع SeaStar. وفر بيئة آمنة ومنظمة للطلاب المقيمين، مع تتبع جميع 
+                    التفاصيل لضمان راحتهم وسلامتهم.
+                </p>
+                <a href="#" class="cta-button">التفاصيل <i class="fas fa-arrow-left"></i></a>
+            </div>
+            
+            <!-- نظرة عامة -->
+            <div class="feature-card animate">
+                <div class="feature-image">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop" alt="نظام الطلاب">
+                </div>
+                <h3><i class="fas fa-users"></i> نظام إدارة الطلاب المتكامل</h3>
+                <p>
+                    نظام متكامل يوفر لك كل الأدوات التي تحتاجها لإدارة الطلاب بكفاءة وفعالية. 
+                    من التسجيل والتقييم إلى الأنشطة والخدمات، كل ذلك في نظام واحد متكامل.
+                </p>
+                <a href="contact.html" class="cta-button">طلب عرض تجريبي <i class="fas fa-arrow-left"></i></a>
+            </div>
+        </div>
+        
+        <!-- دعوة للاتصال -->
+        <div class="students-intro animate" style="text-align: center;">
+            <h2 style="font-size: 2.2rem; margin-bottom: 20px; color: var(--cyber-green);">جاهز لتحويل تجربة طلابك؟</h2>
+            <p style="font-size: 1.3rem; max-width: 800px; margin: 0 auto 30px;">
+                نظام SeaStar لإدارة الطلاب يوفر لك الحلول المتكاملة التي تحتاجها لإدارة جميع جوانب الحياة الطلابية. 
+                تواصل معنا اليوم لمعرفة كيف يمكننا مساعدتك في تحويل تجربة طلابك.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;">
+                <a href="tel:+967779168887" class="cta-button"><i class="fas fa-phone-alt"></i> اتصل بنا الآن</a>
+                <a href="contact.html" class="cta-button" style="background: transparent; border: 2px solid var(--cyber-green);">طلب عرض تجريبي</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين المؤسسات التعليمية من تحقيق أهدافها.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-arrow-left"></i> الرئيسية</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> الأسعار</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> الدعم</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li> 
+                    <li><a href="blog.html"><i class="fas fa-arrow-left"></i> المدونة</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
