@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - نظام SeaStar لإدارة المؤسسات التعليمية</title>
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* محتوى الصفحة */
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 120px auto 50px;
+            padding: 20px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 20px;
+        }
+        
+        .page-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .page-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .dashboard-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            color: var(--cyber-green);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-right: 4px solid var(--cyber-blue);
+            padding-right: 20px;
+        }
+        
+        .section-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .section-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .section-text p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 25px;
+        }
+        
+        .features-list {
+            list-style: none;
+            margin: 30px 0;
+        }
+        
+        .features-list li {
+            margin-bottom: 20px;
+            padding-right: 25px;
+            position: relative;
+            font-size: 1.1rem;
+        }
+        
+        .features-list li:before {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 10px;
+            width: 12px;
+            height: 12px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+        }
+        
+        .section-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+        }
+        
+        .section-image:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+        }
+        
+        .section-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .dashboard-container {
+                margin-top: 100px;
+                padding: 10px;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .dashboard-section {
+                padding: 30px 20px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .section-content {
+                flex-direction: column;
+            }
+            
+            .section-image {
+                min-width: 100%;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="portfolio.html">الاسعار</a></li>
+            <li><a href="about.html">الدعم </a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <div class="dashboard-container">
+        <div class="page-header animate">
+            <h1 class="page-title">لوحة التحكم (DASHBOARD)</h1>
+            <p class="page-subtitle">مركز القيادة الذكي الذي يمنحك نظرة شاملة على أداء مؤسستك التعليمية في لمحة واحدة</p>
+        </div>
+        
+        <!-- اللوحة الرئيسية -->
+        <div class="dashboard-section animate">
+            <h2 class="section-title">
+                <i class="fas fa-tachometer-alt"></i>
+                اللوحة الرئيسية (Main Dashboard)
+            </h2>
+            
+            <div class="section-content">
+                <div class="section-text">
+                    <p>
+                        تخيل أنك تقود سيارتك بلوحة قيادة تعرض لك كل البيانات الحيوية بوضوح تام. 
+                        لوحة التحكم الرئيسية في SeaStar تقدم لك ذلك بالضبط: نظرة شاملة وذكية على أداء مؤسستك التعليمية في لحظة واحدة.
+                    </p>
+                    
+                    <p>
+                        اعرف عدد الطلاب النشطين، الموظفين، الرسوم المستحقة، وأحدث الإشعارات دون الحاجة للتنقل بين الصفحات. 
+                        هذه ليست مجرد شاشة عرض، بل هي مركز قيادة SeaStar الذي يضع القوة والوضوح بين يديك لاتخاذ قرارات سريعة وفعالة.
+                    </p>
+                    
+                    <h3>مميزات اللوحة الرئيسية:</h3>
+                    <ul class="features-list">
+                        <li>نظرة فورية على مؤشرات الأداء الرئيسية (KPI)</li>
+                        <li>مخططات بيانية تفاعلية لتطور أعداد الطلاب والإيرادات</li>
+                        <li>لوحة إشعارات ذكية تعرض أحدث الأحداث والتنبيهات</li>
+                        <li>وصول سريع إلى الأقسام الأكثر استخدامًا</li>
+                        <li>تخصيص كامل لعناصر اللوحة حسب احتياجاتك</li>
+                    </ul>
+                    
+                    <a href="#" class="cta-button">تجربة اللوحة الرئيسية الآن <i class="fas fa-arrow-left"></i></a>
+                </div>
+                
+                <div class="section-image">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop" alt="لوحة التحكم الرئيسية في SeaStar">
+                </div>
+            </div>
+        </div>
+        
+        <!-- مدير الشريط الجانبي -->
+        <div class="dashboard-section animate">
+            <h2 class="section-title">
+                <i class="fas fa-sliders-h"></i>
+                مدير الشريط الجانبي (Sidebar Manager)
+            </h2>
+            
+            <div class="section-content">
+                <div class="section-image">
+                    <img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=1986&auto=format&fit=crop" alt="إدارة الشريط الجانبي في SeaStar">
+                </div>
+                
+                <div class="section-text">
+                    <p>
+                        المرونة هي مفتاح الإنتاجية. مع ميزة إدارة الشريط الجانبي في SeaStar، 
+                        يمكنك تخصيص واجهة استخدامك لتناسب احتياجاتك تمامًا.
+                    </p>
+                    
+                    <p>
+                        رتب الأقسام الأكثر استخدامًا، أخفِ ما لا تحتاج إليه، واجعل وصولك للمعلومات أسرع وأسهل. 
+                        هذه ليست مجرد ميزة شكلية، بل هي تصميم مدروس من SeaStar يمنحك تجربة استخدام شخصية، 
+                        ويرفع من كفاءة عملك اليومي.
+                    </p>
+                    
+                    <h3>مميزات مدير الشريط الجانبي:</h3>
+                    <ul class="features-list">
+                        <li>إعادة ترتيب عناصر القائمة بسهولة بالسحب والإفلات</li>
+                        <li>إظهار/إخفاء الأقسام حسب دورك في النظام</li>
+                        <li>إنشاء مجموعات مخصصة من الأدوات المتعلقة بمهامك</li>
+                        <li>حفظ تخطيطات متعددة للواجهة حسب المهام المختلفة</li>
+                        <li>استعادة التخطيط الافتراضي بضغطة زر</li>
+                    </ul>
+                    
+                    <a href="#" class="cta-button">تخصيص الشريط الجانبي الآن <i class="fas fa-arrow-left"></i></a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم مميزات إضافية -->
+        <div class="dashboard-section animate">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i>
+                لماذا تختار لوحة تحكم SeaStar؟
+            </h2>
+            
+            <div class="section-content">
+                <div class="section-text">
+                    <p>
+                        نظام SeaStar يقدم أكثر من مجرد لوحة تحكم، إنه مركز قيادة ذكي يمنحك:
+                    </p>
+                    
+                    <ul class="features-list">
+                        <li>رؤية شاملة لمؤسستك التعليمية في شاشة واحدة</li>
+                        <li>تحديثات فورية للبيانات دون الحاجة للتحديث اليدوي</li>
+                        <li>تحليلات ذكية تساعد في التنبؤ بالمستقبل الأكاديمي</li>
+                        <li>تكامل سلس مع جميع أقسام النظام</li>
+                        <li>تجربة مستخدم مصممة خصيصًا للمؤسسات التعليمية</li>
+                        <li>دعم فني متكامل داخل لوحة التحكم نفسها</li>
+                    </ul>
+                    
+                    <p>
+                        مع SeaStar، لم تعد الإدارة التعليمية مهمة شاقة، بل أصبحت تجربة سلسة وفعالة تمنحك الوقت 
+                        للتركيز على ما يهم حقًا: تطوير التعليم ورفع جودته.
+                    </p>
+                    
+                    <a href="contact.html" class="cta-button">اطلب نسختك التجريبية الآن <i class="fas fa-arrow-left"></i></a>
+                </div>
+                
+                <div class="section-image">
+                    <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop" alt="مميزات لوحة تحكم SeaStar">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-arrow-left"></i> الرئيسية</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> الأسعار</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> الدعم</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li> 
+                    <li><a href="blog.html"><i class="fas fa-arrow-left"></i> المدونة</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-arrow-left"></i> سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
