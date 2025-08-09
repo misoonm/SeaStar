@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التقارير - نظام SeaStar لإدارة المؤسسات التعليمية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* محتوى الصفحة */
+        .reports-container {
+            max-width: 1400px;
+            margin: 120px auto 50px;
+            padding: 20px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 20px;
+            position: relative;
+        }
+        
+        .page-title {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .page-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        .reports-intro {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .reports-intro:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+        }
+        
+        .reports-intro p {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 25px;
+            max-width: 900px;
+            margin: 0 auto 30px;
+        }
+        
+        .reports-intro .highlight {
+            color: var(--cyber-green);
+            font-weight: 700;
+            font-size: 1.6rem;
+            display: block;
+            margin: 30px 0;
+            text-shadow: 0 0 10px rgba(11, 232, 129, 0.3);
+        }
+        
+        /* أقسام التقارير */
+        .section {
+            margin-bottom: 70px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--cyber-blue);
+        }
+        
+        .section-icon {
+            font-size: 2.5rem;
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--cyber-green);
+            margin: 0;
+        }
+        
+        .section-description {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin-top: 15px;
+        }
+        
+        /* شبكة التقارير */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        
+        .report-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .report-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--cyber-green);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        .report-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--cyber-blue);
+        }
+        
+        .report-image {
+            height: 180px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+        
+        .report-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .report-card:hover .report-image img {
+            transform: scale(1.05);
+        }
+        
+        .report-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--cyber-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        
+        .report-card h3 i {
+            color: var(--cyber-blue);
+            font-size: 1.2rem;
+        }
+        
+        .report-card ul {
+            padding-right: 20px;
+            margin-top: 10px;
+            flex-grow: 1;
+        }
+        
+        .report-card ul li {
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.85);
+            position: relative;
+            padding-right: 15px;
+            font-size: 1.05rem;
+        }
+        
+        .report-card ul li:before {
+            content: '•';
+            position: absolute;
+            right: 0;
+            color: var(--cyber-blue);
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* أزرار */
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: center;
+            max-width: 300px;
+            margin: 30px auto 0;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .reports-container {
+                margin-top: 100px;
+                padding: 10px;
+            }
+            
+            .page-title {
+                font-size: 2.2rem;
+            }
+            
+            .page-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .reports-intro {
+                padding: 30px 20px;
+            }
+            
+            .section-header {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .page-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .report-card {
+                min-height: 380px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="portfolio.html">الاسعار</a></li>
+            <li><a href="about.html">الدعم </a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <div class="reports-container">
+        <div class="page-header animate">
+            <h1 class="page-title">التقارير (REPORTS)</h1>
+            <p class="page-subtitle">
+                نظام متكامل لتوليد وتحليل التقارير في المؤسسات التعليمية
+            </p>
+        </div>
+        
+        <div class="reports-intro animate">
+            <p>
+                نظام التقارير في SeaStar يوفر حلولاً شاملة لاستخراج وتحليل جميع أنواع التقارير في مؤسستك التعليمية، 
+                بدءًا من تقارير الطلاب والموظفين وحتى التقارير المالية والمحاسبية.
+            </p>
+            <span class="highlight">تحليل البيانات - اتخاذ القرارات - تتبع الأداء</span>
+        </div>
+        
+        <!-- تقارير الطالب -->
+        <div class="section animate">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">تقارير الطالب</h2>
+                    <p class="section-description">
+                        نظام متكامل لتوليد تقارير شاملة عن الطلاب وأدائهم الأكاديمي
+                    </p>
+                </div>
+            </div>
+            
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-image">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=2070&auto=format&fit=crop" alt="تقرير الطالب">
+                    </div>
+                    <h3><i class="fas fa-file-alt"></i> تقارير الطالب</h3>
+                    <ul>
+                        <li>تقرير الطالب (Student Report)</li>
+                        <li>تقرير حضور الطلاب (Student Attendance Report)</li>
+                        <li>تقرير حضور المادة (Subject Attendance Report)</li>
+                        <li>تقرير التقييم (Assessment Report)</li>
+                        <li>تقرير أولياء الأمور (Parent Report)</li>
+                        <li>السجل الأكاديمي للطلاب (Student Academic Record)</li>
+                        <li>تقرير دخول الطلاب (Student Login Report)</li>
+                        <li>تقرير الفصل (Class Report)</li>
+                        <li>جدول المخصص (Class Routine Report)</li>
+                        <li>سجل المستخدمين (User Log)</li>
+                        <li>السجل السابق (Previous Record)</li>
+                        <li>تقرير نقل الطلاب (Student Transport Report)</li>
+                        <li>تقرير سكن الطلاب (Student Dormitory Report)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- تقارير الاختبار -->
+        <div class="section animate">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-file-contract"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">تقارير الاختبار</h2>
+                    <p class="section-description">
+                        نظام متكامل لتوليد تقارير شاملة عن الاختبارات والنتائج الأكاديمية
+                    </p>
+                </div>
+            </div>
+            
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-image">
+                        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop" alt="تقرير الاختبار">
+                    </div>
+                    <h3><i class="fas fa-clipboard-list"></i> تقارير الاختبار</h3>
+                    <ul>
+                        <li>تقرير الاختبار (Exam Report)</li>
+                        <li>جدول الامتحانات (Exam Schedule)</li>
+                        <li>تقرير كلمة التميز (Marksheet Report)</li>
+                        <li>تقرير الامتحان الإلكتروني (Online Exam Report)</li>
+                        <li>تقرير كشف الدرجات (Marksheet Report)</li>
+                        <li>تقرير بطاقة التقدم (Progress Card Report)</li>
+                        <li>النتيجة السابقة (Previous Result)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- تقارير الموظفين -->
+        <div class="section animate">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">تقارير الموظفين</h2>
+                    <p class="section-description">
+                        نظام متكامل لتوليد تقارير شاملة عن أداء الموظفين وحضورهم
+                    </p>
+                </div>
+            </div>
+            
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-image">
+                        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?q=80&w=2070&auto=format&fit=crop" alt="تقرير الموظفين">
+                    </div>
+                    <h3><i class="fas fa-users"></i> تقارير الموظفين</h3>
+                    <ul>
+                        <li>تقرير الموظفين (Staff Report)</li>
+                        <li>تقرير حضور الموظفين (Staff Attendance Report)</li>
+                        <li>تقرير كشوف المرتبات (Payroll Report)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- تقارير الرسوم -->
+        <div class="section animate">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">تقارير الرسوم</h2>
+                    <p class="section-description">
+                        نظام متكامل لتوليد تقارير شاملة عن الرسوم والمدفوعات المالية
+                    </p>
+                </div>
+            </div>
+            
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-image">
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1911&auto=format&fit=crop" alt="تقرير الرسوم">
+                    </div>
+                    <h3><i class="fas fa-file-invoice-dollar"></i> تقارير الرسوم</h3>
+                    <ul>
+                        <li>تقرير الرسوم (Fees Report)</li>
+                        <li>تقرير الرسوم المستحقة (Fees Due Report)</li>
+                        <li>تقرير الغرامات (Fine Report)</li>
+                        <li>تقرير المدفوعات (Payment Report)</li>
+                        <li>تقرير الرصيد (Balance Report)</li>
+                        <li>تقرير الإعفاءات (Waiver Report)</li>
+                        <li>تقرير المحفظة (Wallet Report)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- تقارير الحسابات -->
+        <div class="section animate">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div>
+                    <h2 class="section-title">تقارير الحسابات</h2>
+                    <p class="section-description">
+                        نظام متكامل لتوليد تقارير شاملة عن الحسابات المالية والمحاسبية
+                    </p>
+                </div>
+            </div>
+            
+            <div class="reports-grid">
+                <div class="report-card">
+                    <div class="report-image">
+                        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=1911&auto=format&fit=crop" alt="تقرير الحسابات">
+                    </div>
+                    <h3><i class="fas fa-chart-line"></i> تقارير الحسابات</h3>
+                    <ul>
+                        <li>تقرير الحسابات (Accounts Report)</li>
+                        <li>تقرير الإيرادات (Income Report)</li>
+                        <li>تقرير المصروفات (Expense Report)</li>
+                        <li>تقرير الأرباح والخسائر (Profit & Loss Report)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- دعوة للاتصال -->
+        <a href="contact.html" class="cta-button animate">
+            <i class="fas fa-file-download"></i> اطلب تقاريرك الآن
+        </a>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نظام متكامل لإدارة المؤسسات التعليمية يوفر حلولاً شاملة لجميع العمليات الإدارية والأكاديمية.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-arrow-left"></i> الرئيسية</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> الأسعار</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> الدعم</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li> 
+                    <li><a href="blog.html"><i class="fas fa-arrow-left"></i> المدونة</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
