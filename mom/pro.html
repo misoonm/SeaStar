@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeaStar | خطط الأسعار - نظام إدارة المؤسسات التعليمية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            min-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            display: block;
+            padding: 12px 15px;
+            color: #ddd;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background: rgba(11, 232, 129, 0.2);
+            color: var(--cyber-green);
+            transform: translateX(-5px);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* أشرطة الأخبار المتحركة */
+        .news-ticker-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            height: 40px;
+            margin-top: 80px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ticker-label {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--dark-blue));
+            color: white;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-width: 130px;
+        }
+        
+        .ticker-label i {
+            margin-left: 10px;
+            color: var(--cyber-green);
+        }
+        
+        .ticker-content {
+            position: absolute;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding-right: 20px;
+            animation: tickerAnimation 30s linear infinite;
+        }
+        
+        .ticker-content a {
+            color: white;
+            text-decoration: none;
+            margin: 0 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-content a:hover {
+            color: var(--cyber-green);
+            transform: translateY(-2px);
+        }
+        
+        .ticker-content a i {
+            margin-left: 10px;
+            color: var(--cyber-blue);
+        }
+        
+        @keyframes tickerAnimation {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .section {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .pricing-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 50px;
+        }
+        
+        .pricing-card {
+            flex: 1;
+            min-width: 320px;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 50px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+        
+        .pricing-card.pro {
+            border-color: var(--cyber-green);
+            box-shadow: 0 10px 30px rgba(11, 232, 129, 0.2);
+            position: relative;
+        }
+        
+        .pricing-card.pro:before {
+            content: 'موصى به';
+            position: absolute;
+            top: 20px;
+            left: -30px;
+            background: var(--cyber-green);
+            color: var(--dark-blue);
+            font-weight: 700;
+            padding: 8px 40px;
+            transform: rotate(-45deg);
+            font-size: 1.1rem;
+        }
+        
+        .pricing-header {
+            margin-bottom: 30px;
+        }
+        
+        .pricing-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--cyber-blue);
+        }
+        
+        .pricing-card.pro .pricing-title {
+            color: var(--cyber-green);
+            font-size: 2.2rem;
+        }
+        
+        .pricing-price {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin: 20px 0;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .pricing-card.pro .pricing-price {
+            font-size: 4rem;
+        }
+        
+        .pricing-period {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .pricing-features {
+            list-style: none;
+            margin: 40px 0;
+            text-align: right;
+        }
+        
+        .pricing-features li {
+            padding: 15px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .pricing-features li:first-child {
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        
+        .pricing-features li i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+        }
+        
+        .pricing-card.pro .pricing-features li i {
+            color: var(--cyber-blue);
+        }
+        
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+        
+        .secondary-btn {
+            background: transparent;
+            color: var(--cyber-green);
+            border: 2px solid var(--cyber-green);
+        }
+        
+        .secondary-btn:hover {
+            background: rgba(11, 232, 129, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .comparison-section {
+            margin-top: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        
+        .comparison-table th, .comparison-table td {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .comparison-table th {
+            font-size: 1.3rem;
+            color: var(--cyber-green);
+        }
+        
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .feature-name {
+            text-align: right;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .check-icon {
+            color: var(--cyber-green);
+            font-size: 1.5rem;
+        }
+        
+        .cross-icon {
+            color: var(--cyber-red);
+            font-size: 1.5rem;
+        }
+        
+        .faq-section {
+            margin-top: 100px;
+        }
+        
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .faq-question {
+            padding: 25px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-answer {
+            padding: 0 25px 25px;
+            color: rgba(255, 255, 255, 0.8);
+            display: none;
+        }
+        
+        .faq-item.active .faq-answer {
+            display: block;
+        }
+        
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        
+        .contact-banner {
+            background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-blue));
+            border-radius: 20px;
+            padding: 70px 40px;
+            text-align: center;
+            margin: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .contact-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .contact-banner p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .dropdown-content {
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                padding: 10px 0 0 20px;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .section {
+                padding: 80px 20px;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+            
+            .pricing-card {
+                min-width: 280px;
+                padding: 40px 30px;
+            }
+            
+            .pricing-card.pro:before {
+                top: 15px;
+                left: -35px;
+                padding: 6px 35px;
+                font-size: 1rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .pricing-price {
+                font-size: 2.8rem;
+            }
+            
+            .pricing-card.pro .pricing-price {
+                font-size: 3.2rem;
+            }
+            
+            .comparison-section {
+                padding: 30px 15px;
+            }
+            
+            .comparison-table th, .comparison-table td {
+                padding: 15px 10px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="portfolio.html" class="active">الاسعار</a></li>
+            <li><a href="about.html">الدعم </a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <div class="news-ticker-container">
+        <div class="ticker-label">
+            <i class="fas fa-tags"></i> عروض خاصة
+        </div>
+        <div class="ticker-content">
+            <a href="#"><i class="fas fa-arrow-left"></i> خصم 15% للاشتراك السنوي في النسخة الاحترافية</a>
+            <a href="#"><i class="fas fa-arrow-left"></i> عروض خاصة للمدارس الحكومية والجامعات الكبرى</a>
+            <a href="#"><i class="fas fa-arrow-left"></i> تجربة مجانية لمدة 14 يومًا بدون بطاقة ائتمان</a>
+        </div>
+    </div>
+    
+    <section class="section">
+        <div class="section-header">
+            <h1 class="section-title">خطط الأسعار المناسبة لمؤسستك</h1>
+            <p class="section-subtitle">اختر الحل الذي يتناسب مع احتياجات مؤسستك التعليمية، مع خيارات مرنة للترقية في أي وقت</p>
+        </div>
+        
+        <div class="pricing-container">
+            <div class="pricing-card animate">
+                <div class="pricing-header">
+                    <h2 class="pricing-title">النسخة العادية</h2>
+                    <p>الحل المثالي للمدارس والمعاهد الصغيرة والمتوسطة</p>
+                    <div class="pricing-price">$499<span>/سنويًا</span></div>
+                    <p class="pricing-period">أو $49 شهريًا</p>
+                </div>
+                
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> لوحة تحكم أساسية متكاملة</li>
+                    <li><i class="fas fa-check-circle"></i> إدارة الطلاب والموظفين الأساسية</li>
+                    <li><i class="fas fa-check-circle"></i> نظام الحضور والانصراف</li>
+                    <li><i class="fas fa-check-circle"></i> إدارة الجداول الدراسية</li>
+                    <li><i class="fas fa-check-circle"></i> نظام الامتحانات والتقييم</li>
+                    <li><i class="fas fa-check-circle"></i> تقارير أساسية</li>
+                    <li><i class="fas fa-check-circle"></i> دعم فني عبر البريد الإلكتروني</li>
+                </ul>
+                
+                <button class="btn secondary-btn">ابدأ التجربة المجانية</button>
+            </div>
+            
+            <div class="pricing-card pro animate">
+                <div class="pricing-header">
+                    <h2 class="pricing-title">النسخة الاحترافية PRO</h2>
+                    <p>الحل المتكامل للجامعات والمؤسسات التعليمية الكبرى</p>
+                    <div class="pricing-price">$999<span>/سنويًا</span></div>
+                    <p class="pricing-period">أو $99 شهريًا</p>
+                </div>
+                
+                <ul class="pricing-features">
+                    <li><i class="fas fa-check-circle"></i> كل مميزات النسخة العادية</li>
+                    <li><i class="fas fa-check-circle"></i> لوحة تحكم متقدمة مع تحليلات ذكية</li>
+                    <li><i class="fas fa-check-circle"></i> نظام الموارد البشرية المتكامل</li>
+                    <li><i class="fas fa-check-circle"></i> إدارة مالية متقدمة</li>
+                    <li><i class="fas fa-check-circle"></i> نظام إدارة المخزون</li>
+                    <li><i class="fas fa-check-circle"></i> تطبيقات الجوال للطلاب والمعلمين</li>
+                    <li><i class="fas fa-check-circle"></i> تكامل مع أنظمة التعلم الإلكتروني</li>
+                    <li><i class="fas fa-check-circle"></i> دعم فني متميز 24/7</li>
+                </ul>
+                
+                <button class="btn primary-btn">اشترك الآن واحصل على خصم 15%</button>
+            </div>
+        </div>
+        
+        <div class="comparison-section animate">
+            <h2 style="text-align: center; margin-bottom: 40px; font-size: 2.2rem; color: var(--cyber-green);">مقارنة بين النسختين</h2>
+            
+            <table class="comparison-table">
+                <tr>
+                    <th class="feature-name">الميزة</th>
+                    <th>النسخة العادية</th>
+                    <th>النسخة الاحترافية PRO</th>
+                </tr>
+                <tr>
+                    <td class="feature-name">لوحة التحكم</td>
+                    <td><i class="fas fa-check check-icon"></i></td>
+                    <td><i class="fas fa-check check-icon"></i></td>
+                </tr>
+                <tr>
+                    <td class="feature-name">إدارة الطلاب</td>
+                    <td><i class="fas fa-check check-icon"></i></td>
+                    <td><i class="fas fa-check check-icon"></i></td>
+                </tr>
+                <tr>
+                    <td class="feature-name">نظام الامتحانات</td>
+                    <td><i class="fas fa-check check-icon"></i></td>
+                    <td><i class="fas fa-check check-icon"></i></td>
+                </tr>
+                <tr>
+                    <td class="feature-name">تطبيقات الجوال</td>
+                    <td><i class="fas fa-times cross-icon"></i></td>
+                    <td><i class="fas fa-check check-icon"></i></td>
+                </tr>
+                <tr>
+                    <td class="feature-name">التحليلات الذكية</td>
+                    <td><i class="fas fa-times cross-icon"></i></td>
+                    <td><i class="fas fa-check check-icon"></i></td>
+                </tr>
+                <tr>
+                    <td class="feature-name">نظام الموارد البشرية</td>
+                    <td>محدود</td>
+                    <td><i class="fas fa-check check-icon"></i></td>
+                </tr>
+                <tr>
+                    <td class="feature-name">إدارة مالية متقدمة</td>
+                    <td><i class="fas fa-times cross-icon"></i></td>
+                    <td><i class="fas fa-check check-icon"></i></td>
+                </tr>
+                <tr>
+                    <td class="feature-name">الدعم الفني</td>
+                    <td>بريد إلكتروني</td>
+                    <td>24/7 عبر الهاتف والدردشة</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="faq-section">
+            <div class="section-header">
+                <h2 class="section-title">الأسئلة الشائعة</h2>
+                <p class="section-subtitle">إجابات على أكثر الأسئلة شيوعًا حول خططنا وخدماتنا</p>
+            </div>
+            
+            <div class="faq-container">
+                <div class="faq-item animate">
+                    <div class="faq-question">
+                        <span>هل يمكنني الترقية من النسخة العادية إلى الاحترافية لاحقًا؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، يمكنك الترقية في أي وقت بكل سهولة. ستتم محاسبتك فقط على الفرق بين النسختين للمدة المتبقية من اشتراكك.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item animate">
+                    <div class="faq-question">
+                        <span>هل يوجد فترة تجريبية مجانية؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، نقدم فترة تجريبية مجانية لمدة 14 يومًا لجميع خططنا، بدون الحاجة إلى بطاقة ائتمان. يمكنك خلالها تجربة جميع الميزات.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item animate">
+                    <div class="faq-question">
+                        <span>هل هناك خصم للمؤسسات التعليمية الحكومية؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، نقدم خصومات خاصة للمدارس والجامعات الحكومية تصل إلى 30% على النسخة الاحترافية. اتصل بفريق المبيعات لمعرفة التفاصيل.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item animate">
+                    <div class="faq-question">
+                        <span>هل يمكنني إضافة مستخدمين إضافيين؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، يمكنك إضافة مستخدمين إضافيين بأي وقت. تختلف تكلفة المستخدم الإضافي حسب الخطة التي اخترتها.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item animate">
+                    <div class="faq-question">
+                        <span>ما هي طرق الدفع المتاحة؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نحن نقبل جميع وسائل الدفع الرئيسية: البطاقات الائتمانية، التحويل البنكي، PayPal. كما يمكننا تقديم فواتير رسمية للدفع.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="contact-banner animate">
+            <h2>هل لديك استفسارات خاصة بمؤسستك؟</h2>
+            <p>فريق الدعم لدينا جاهز للإجابة على جميع استفساراتك وتقديم الحلول المناسبة لمتطلباتك</p>
+            
+            <div class="btn-group">
+                <a href="tel:+967779168887" class="btn primary-btn"><i class="fas fa-phone-alt"></i> اتصل بنا الآن</a>
+                <a href="mailto:prcmased@gmail.com" class="btn secondary-btn"><i class="fas fa-envelope"></i> أرسل بريدًا إلكترونيًا</a>
+                <a href="#" class="btn primary-btn"><i class="fas fa-comments"></i> دردشة مباشرة</a>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html"><i class="fas fa-arrow-left"></i> الصفحة الرئيسية</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> خطط الأسعار</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> الدعم الفني</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+            
+            // FAQ toggle functionality
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', () => {
+                    const faqItem = question.parentElement;
+                    faqItem.classList.toggle('active');
+                });
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
