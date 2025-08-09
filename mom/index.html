@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام SeaStar لإدارة المؤسسات التعليمية | حل متكامل للجامعات والمدارس والمعاهد</title>
+    <meta name="description" content="نظام SeaStar الاحترافي لإدارة المؤسسات التعليمية يوفر حلولاً متكاملة لإدارة الجامعات والمدارس والمعاهد بكفاءة وفعالية غير مسبوقة. لوحة تحكم شاملة، إدارة الطلاب، الامتحانات، الموارد البشرية والمزيد.">
+    <meta name="keywords" content="نظام إدارة مؤسسات تعليمية, لوحة تحكم, إدارة طلاب, إدارة امتحانات, شؤون الموظفين, الحسابات المالية, تقارير, إعدادات, نظام SeaStar, إدارة المدارس, إدارة الجامعات, إدارة المعاهد, نظام أكاديمي, برنامج إدارة تعليمية">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1a73e8;
+            --secondary-blue: #0d47a1;
+            --accent-green: #00c853;
+            --light-gray: #f5f7fa;
+            --dark-gray: #2d3748;
+            --text-color: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+        
+        /* التنقل */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            padding: 1.2rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+        }
+        
+        .logo span {
+            color: var(--accent-green);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .contact-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .contact-btn {
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            background: white;
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-btn:hover {
+            background: var(--accent-green);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* القسم البطولي */
+        .hero-section {
+            background: linear-gradient(rgba(26, 115, 232, 0.9), rgba(13, 71, 161, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            padding: 5rem 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 1.5rem;
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .feature-item i {
+            font-size: 2.5rem;
+            color: var(--accent-green);
+            margin-bottom: 1rem;
+        }
+        
+        .cta-section {
+            margin-top: 3rem;
+        }
+        
+        .cta-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-align: center;
+        }
+        
+        .primary-btn {
+            background: var(--accent-green);
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 200, 83, 0.3);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 200, 83, 0.4);
+            background: #00b347;
+        }
+        
+        .secondary-btn {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .secondary-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        /* أقسام النظام */
+        .system-section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            width: 80px;
+            height: 4px;
+            background: var(--accent-green);
+            border-radius: 2px;
+        }
+        
+        .section-subtitle {
+            font-size: 1.3rem;
+            color: var(--dark-gray);
+            max-width: 800px;
+            margin: 1.5rem auto 0;
+        }
+        
+        .features-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .feature-img {
+            height: 220px;
+            overflow: hidden;
+        }
+        
+        .feature-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .feature-card:hover .feature-img img {
+            transform: scale(1.05);
+        }
+        
+        .feature-content {
+            padding: 1.8rem;
+        }
+        
+        .feature-number {
+            display: inline-block;
+            background: var(--primary-blue);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+        }
+        
+        .feature-name {
+            font-size: 1.6rem;
+            color: var(--secondary-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .sub-features {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .sub-features li {
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+        
+        .sub-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .sub-features li i {
+            color: var(--accent-green);
+            font-size: 0.9rem;
+        }
+        
+        .learn-more-btn {
+            display: inline-block;
+            background: var(--primary-blue);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: fit-content;
+        }
+        
+        .learn-more-btn:hover {
+            background: var(--secondary-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(26, 115, 232, 0.3);
+        }
+        
+        /* دعوة للعمل */
+        .cta-banner {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            padding: 4rem 2rem;
+            text-align: center;
+            color: white;
+            margin: 4rem 0;
+        }
+        
+        .cta-banner-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .cta-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta-banner p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            opacity: 0.9;
+        }
+        
+        /* فوتر */
+        footer {
+            background: var(--dark-gray);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-green);
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+        
+        .footer-section h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent-green);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent-green);
+            padding-right: 8px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background: var(--accent-green);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Responsive */
+        @media (max-width: 900px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .features-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- شريط التنقل -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Sea<span>Star</span></div>
+            
+            <div class="nav-links">
+                <a href="#">الرئيسية</a>
+                <a href="#">المميزات</a>
+                <a href="#">الأسعار</a>
+                <a href="#">تواصل معنا</a>
+                <a href="#">تجربة مجانية</a>
+            </div>
+            
+            <div class="contact-buttons">
+                <a href="tel:779168887" class="contact-btn">
+                    <i class="fas fa-phone"></i> 779168887
+                </a>
+                <a href="mailto:prcmased@gmail.com" class="contact-btn">
+                    <i class="fas fa-envelope"></i> البريد الإلكتروني
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- القسم البطولي -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">هل تبحث عن لوحة تحكم ذكية لمؤسستك التعليمية؟</h1>
+            <p class="hero-subtitle">نظام SeaStar ليس مجرد نظام لإدارة المؤسسات التعليمية، بل هو شريكك الذكي الذي يضع القوة والوضوح بين يديك</p>
+            
+            <div class="hero-features">
+                <div class="feature-item">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <h3>لوحة تحكم شاملة</h3>
+                    <p>نظرة فورية على أداء مؤسستك في شاشة واحدة</p>
+                </div>
+                
+                <div class="feature-item">
+                    <i class="fas fa-clock"></i>
+                    <h3>توفير الوقت والجهد</h3>
+                    <p>أتمتة المهام اليومية وتوفير وقت ثمين</p>
+                </div>
+                
+                <div class="feature-item">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>اتخاذ قرارات أفضل</h3>
+                    <p>تقارير دقيقة تمنحك رؤى قيمة لاتخاذ قرارات حكيمة</p>
+                </div>
+            </div>
+            
+            <div class="cta-section">
+                <h2 class="cta-title">اكتشف الفرق بنفسك!</h2>
+                <p>نحن واثقون من جودة نظامنا. لذا، ندعوك لتجربة SeaStar مجانًا لمدة 14 يومًا، مع دعم فني كامل.</p>
+                
+                <div class="cta-buttons">
+                    <a href="#" class="btn primary-btn">
+                        <i class="fas fa-play-circle"></i> طلب عرض تجريبي
+                    </a>
+                    <a href="tel:779168887" class="btn secondary-btn">
+                        <i class="fas fa-phone"></i> اتصل بنا الآن
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- أقسام النظام -->
+    <section class="system-section">
+        <div class="section-header">
+            <h2 class="section-title">نظام SeaStar الاحترافي لإدارة المؤسسات التعليمية</h2>
+            <p class="section-subtitle">حل متكامل يقدم إدارة شاملة للجامعات والمدارس والمعاهد بكفاءة وفعالية غير مسبوقة</p>
+        </div>
+        
+        <div class="features-container">
+            <!-- قسم لوحة التحكم -->
+            <div class="feature-card">
+                <div class="feature-img">
+                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=600&q=80" alt="لوحة تحكم نظام SeaStar">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-number">1</div>
+                    <h3 class="feature-name">لوحة التحكم (DASHBOARD)</h3>
+                    <p>لوحة تحكم ذكية تمنحك نظرة شاملة على أداء مؤسستك التعليمية في لمحة واحدة.</p>
+                    
+                    <ul class="sub-features">
+                        <li><i class="fas fa-check-circle"></i> لوحة التحكم الرئيسية</li>
+                    </ul>
+                    
+                    <a href="#" class="learn-more-btn">
+                        اعرف أكثر <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- قسم الإدارة -->
+            <div class="feature-card">
+                <div class="feature-img">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80" alt="إدارة المؤسسات التعليمية">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-number">2</div>
+                    <h3 class="feature-name">الإدارة (ADMINISTRATION)</h3>
+                    <p>إدارة شاملة لكافة جوانب المؤسسة التعليمية بسهولة وكفاءة.</p>
+                    
+                    <ul class="sub-features">
+                        <li><i class="fas fa-check-circle"></i> قسم الإدارة</li>
+                        <li><i class="fas fa-check-circle"></i> أكاديميات</li>
+                        <li><i class="fas fa-check-circle"></i> مادة دراسية</li>
+                        <li><i class="fas fa-check-circle"></i> خطة الدرس</li>
+                        <li><i class="fas fa-check-circle"></i> طباعة مجمعة</li>
+                        <li><i class="fas fa-check-circle"></i> مركز التحميل</li>
+                    </ul>
+                    
+                    <a href="#" class="learn-more-btn">
+                        اعرف أكثر <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- قسم الطلاب -->
+            <div class="feature-card">
+                <div class="feature-img">
+                    <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80" alt="إدارة الطلاب">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-number">3</div>
+                    <h3 class="feature-name">الطلاب (STUDENT)</h3>
+                    <p>إدارة كاملة لشؤون الطلاب من التسجيل إلى التخرج.</p>
+                    
+                    <ul class="sub-features">
+                        <li><i class="fas fa-check-circle"></i> معلومات الطالب</li>
+                        <li><i class="fas fa-check-circle"></i> سجلات السلوك</li>
+                        <li><i class="fas fa-check-circle"></i> رسوم</li>
+                        <li><i class="fas fa-check-circle"></i> الواجب المنزلي</li>
+                        <li><i class="fas fa-check-circle"></i> المكتبة</li>
+                        <li><i class="fas fa-check-circle"></i> النقل</li>
+                        <li><i class="fas fa-check-circle"></i> السكن</li>
+                    </ul>
+                    
+                    <a href="#" class="learn-more-btn">
+                        اعرف أكثر <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- قسم الامتحانات -->
+            <div class="feature-card">
+                <div class="feature-img">
+                    <img src="https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=600&q=80" alt="إدارة الامتحانات">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-number">4</div>
+                    <h3 class="feature-name">الامتحانات (EXAM)</h3>
+                    <p>تنظيم وإدارة كافة عمليات الامتحانات والتقييمات.</p>
+                    
+                    <ul class="sub-features">
+                        <li><i class="fas fa-check-circle"></i> امتحانات</li>
+                        <li><i class="fas fa-check-circle"></i> خطة الامتحانات</li>
+                    </ul>
+                    
+                    <a href="#" class="learn-more-btn">
+                        اعرف أكثر <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- قسم الموارد البشرية -->
+            <div class="feature-card">
+                <div class="feature-img">
+                    <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80" alt="إدارة الموارد البشرية">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-number">5</div>
+                    <h3 class="feature-name">الموارد البشرية (HR)</h3>
+                    <p>إدارة شاملة لشؤون الموظفين والأكاديميين في المؤسسة التعليمية.</p>
+                    
+                    <ul class="sub-features">
+                        <li><i class="fas fa-check-circle"></i> الموارد البشرية</li>
+                        <li><i class="fas fa-check-circle"></i> تقييم المعلم</li>
+                        <li><i class="fas fa-check-circle"></i> الاجازات</li>
+                        <li><i class="fas fa-check-circle"></i> الادوار والصلاحيات</li>
+                    </ul>
+                    
+                    <a href="#" class="learn-more-btn">
+                        اعرف أكثر <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- قسم الحسابات -->
+            <div class="feature-card">
+                <div class="feature-img">
+                    <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80" alt="إدارة الحسابات المالية">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-number">6</div>
+                    <h3 class="feature-name">الحسابات (ACCOUNTS)</h3>
+                    <p>إدارة كاملة للحسابات المالية والمخزون في المؤسسة التعليمية.</p>
+                    
+                    <ul class="sub-features">
+                        <li><i class="fas fa-check-circle"></i> الحسابات</li>
+                        <li><i class="fas fa-check-circle"></i> المخزون</li>
+                    </ul>
+                    
+                    <a href="#" class="learn-more-btn">
+                        اعرف أكثر <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- قسم الأدوات المساعدة -->
+            <div class="feature-card">
+                <div class="feature-img">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="أدوات مساعدة للنظام">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-number">7</div>
+                    <h3 class="feature-name">الأدوات المساعدة (UTILITIES)</h3>
+                    <p>أدوات مساعدة تعزز تجربة المستخدم وتسهل عمليات التواصل.</p>
+                    
+                    <ul class="sub-features">
+                        <li><i class="fas fa-check-circle"></i> الدردشة الداخلية</li>
+                        <li><i class="fas fa-check-circle"></i> نمط النظام</li>
+                    </ul>
+                    
+                    <a href="#" class="learn-more-btn">
+                        اعرف أكثر <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- قسم التقارير -->
+            <div class="feature-card">
+                <div class="feature-img">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="تقارير نظام SeaStar">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-number">8</div>
+                    <h3 class="feature-name">التقارير (REPORT)</h3>
+                    <p>تقارير شاملة ودقيقة لجميع جوانب المؤسسة التعليمية.</p>
+                    
+                    <ul class="sub-features">
+                        <li><i class="fas fa-check-circle"></i> تقارير الطالب</li>
+                        <li><i class="fas fa-check-circle"></i> تقارير الامتحانات</li>
+                        <li><i class="fas fa-check-circle"></i> تقارير الحسابات</li>
+                        <li><i class="fas fa-check-circle"></i> تقارير الرسوم</li>
+                        <li><i class="fas fa-check-circle"></i> تقارير الموظفين</li>
+                    </ul>
+                    
+                    <a href="#" class="learn-more-btn">
+                        اعرف أكثر <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- قسم الإعدادات -->
+            <div class="feature-card">
+                <div class="feature-img">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80" alt="إعدادات النظام">
+                </div>
+                <div class="feature-content">
+                    <div class="feature-number">9</div>
+                    <h3 class="feature-name">قسم الإعدادات (SETTINGS SECTION)</h3>
+                    <p>تخصيص النظام ليتناسب مع احتياجات مؤسستك التعليمية.</p>
+                    
+                    <ul class="sub-features">
+                        <li><i class="fas fa-check-circle"></i> إعدادات الرسوم</li>
+                        <li><i class="fas fa-check-circle"></i> اعدادات الامتحانات</li>
+                        <li><i class="fas fa-check-circle"></i> الحقول المخصصة</li>
+                        <li><i class="fas fa-check-circle"></i> الاعدادات العامة</li>
+                    </ul>
+                    
+                    <a href="#" class="learn-more-btn">
+                        اعرف أكثر <i class="fas fa-arrow-left"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- دعوة للعمل -->
+    <section class="cta-banner">
+        <div class="cta-banner-content">
+            <h2>مميزات النظام الاستثنائية</h2>
+            <p>أحدث التقنيات وأذكى الحلول لتحويل مؤسستك التعليمية إلى نموذج للكفاءة والابتكار</p>
+            
+            <div class="cta-buttons">
+                <a href="tel:779168887" class="btn primary-btn">
+                    <i class="fas fa-phone"></i> اتصل بنا للاستفسار
+                </a>
+                <a href="#" class="btn secondary-btn">
+                    <i class="fas fa-play-circle"></i> طلب عرض تجريبي
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- فوتر -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>عن SeaStar</h3>
+                <p>نظام SeaStar هو الحل المتكامل الذي يمنحك المرونة والكفاءة التي تحتاجها لقيادة مؤسستك نحو التميز في مجال التعليم.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="#">الرئيسية</a></li>
+                    <li><a href="#">المميزات</a></li>
+                    <li><a href="#">الأسعار</a></li>
+                    <li><a href="#">تواصل معنا</a></li>
+                    <li><a href="#">تجربة مجانية</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، اليمن</p>
+                <p><i class="fas fa-phone"></i> 779168887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 نظام SeaStar لإدارة المؤسسات التعليمية. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // إضافة تأثيرات عند التمرير
+        document.addEventListener('DOMContentLoaded', function() {
+            // إضافة تأثير ظهور البطاقات عند التمرير
+            const featureCards = document.querySelectorAll('.feature-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            featureCards.forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+            
+            // إضافة تأثيرات للروابط
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('mouseenter', () => {
+                    link.style.transform = 'translateY(-3px)';
+                });
+                
+                link.addEventListener('mouseleave', () => {
+                    link.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
