@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SeaStar | نظام إدارة المؤسسات التعليمية | حلول مدرسية وجامعية متكاملة</title>
+    <meta name="description" content="نظام SeaStar هو الحل المتكامل لإدارة المؤسسات التعليمية. نقدم لوحة تحكم شاملة، إدارة للطلاب، الامتحانات، الموارد البشرية، والحسابات. اطلب عرضًا تجريبيًا مجانيًا لمدة 14 يومًا.">
+    <meta name="keywords" content="نظام SeaStar, نظام إدارة المدارس, نظام إدارة الجامعات, نظام إدارة المعاهد, نظام تعليمي, حلول تقنية للمؤسسات التعليمية, برنامج إدارة الطلاب, إدارة الامتحانات, الموارد البشرية, الحسابات المدرسية, لوحة تحكم ذكية, أتمتة المهام التعليمية, تقارير مدرسية, نظام SeaStar اليمن, صنعاء">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-blue: #00204A;
+            --deep-blue: #0a1930;
+            --light-blue: #007bff;
+            --cyber-blue: #00a8ff;
+            --cyber-green: #0be881;
+            --cyber-purple: #9c88ff;
+            --cyber-red: #ff3f34;
+            --light-gray: #f8f9fa;
+            --dark-gray: #1e272e;
+            --cyber-yellow: #ffdd59;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, var(--deep-blue), var(--dark-blue));
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.7;
+        }
+        
+        /* شبكة خلفية */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 168, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(155, 136, 255, 0.05) 0%, transparent 20%);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .grid-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 168, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 168, 255, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        
+        /* عناصر رسومية متحركة */
+        .cyber-circle {
+            position: fixed;
+            border-radius: 50%;
+            border: 2px solid var(--cyber-blue);
+            opacity: 0.1;
+            z-index: -1;
+        }
+        
+        .pulse {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--cyber-green);
+            border-radius: 50%;
+            box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7);
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(11, 232, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(11, 232, 129, 0); }
+        }
+        
+        /* التنقل */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--cyber-green);
+            background: rgba(11, 232, 129, 0.1);
+        }
+        
+        .dropdown {
+            position: relative;
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(0, 0, 0, 0.85);
+            min-width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            padding: 15px;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown-content a {
+            display: block;
+            padding: 12px 15px;
+            color: #ddd;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-content a:hover {
+            background: rgba(11, 232, 129, 0.2);
+            color: var(--cyber-green);
+            transform: translateX(-5px);
+        }
+        
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .hamburger .bar {
+            width: 30px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        /* أشرطة الأخبار المتحركة */
+        .news-ticker-container {
+            position: relative;
+            background: rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            height: 40px;
+            margin-top: 80px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ticker-label {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--dark-blue));
+            color: white;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            z-index: 2;
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-width: 130px;
+        }
+        
+        .ticker-label i {
+            margin-left: 10px;
+            color: var(--cyber-green);
+        }
+        
+        .ticker-content {
+            position: absolute;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding-right: 20px;
+            animation: tickerAnimation 30s linear infinite;
+        }
+        
+        .ticker-content a {
+            color: white;
+            text-decoration: none;
+            margin: 0 30px;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticker-content a:hover {
+            color: var(--cyber-green);
+            transform: translateY(-2px);
+        }
+        
+        .ticker-content a i {
+            margin-left: 10px;
+            color: var(--cyber-blue);
+        }
+        
+        @keyframes tickerAnimation {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* شريط جديدنا المتحرك */
+        .new-feature-bar {
+            background: linear-gradient(90deg, rgba(0, 168, 255, 0.2), rgba(11, 232, 129, 0.2));
+            overflow: hidden;
+            height: 50px;
+            border-bottom: 1px solid rgba(0, 168, 255, 0.3);
+            position: relative;
+        }
+        
+        .new-feature-content {
+            position: absolute;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            animation: featureAnimation 20s linear infinite;
+            padding: 0 20px;
+        }
+        
+        .new-feature-content a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .new-feature-content a:hover {
+            color: var(--cyber-green);
+            text-shadow: 0 0 10px rgba(11, 232, 129, 0.7);
+        }
+        
+        .new-feature-content a i {
+            color: var(--cyber-blue);
+            font-size: 1.5rem;
+            animation: pulseIcon 2s infinite;
+        }
+        
+        @keyframes featureAnimation {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        @keyframes pulseIcon {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* القسم البطولي */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 40px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .hero-content {
+            flex: 1;
+            padding: 0 30px;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.3;
+        }
+        
+        .hero-content p {
+            font-size: 1.4rem;
+            max-width: 600px;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .primary-btn {
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 168, 255, 0.3);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 168, 255, 0.5);
+        }
+        
+        .secondary-btn {
+            background: transparent;
+            color: var(--cyber-green);
+            border: 2px solid var(--cyber-green);
+        }
+        
+        .secondary-btn:hover {
+            background: rgba(11, 232, 129, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s ease;
+        }
+        
+        .hero-image img:hover {
+            transform: scale(1.03) rotate(1deg);
+        }
+        
+        /* قسم الخدمات */
+        .section {
+            padding: 100px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .section-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .service-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .card {
+            flex: 1;
+            min-width: 280px;
+            max-width: 350px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--cyber-green);
+        }
+        
+        .card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--cyber-blue);
+        }
+        
+        .icon {
+            font-size: 3.5rem;
+            color: var(--cyber-green);
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover .icon {
+            transform: scale(1.2);
+        }
+        
+        .card h3 {
+            font-size: 1.7rem;
+            margin-bottom: 20px;
+            color: var(--cyber-green);
+        }
+        
+        .card p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .learn-more {
+            color: var(--cyber-blue);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .learn-more:hover {
+            color: var(--cyber-green);
+            gap: 12px;
+        }
+        
+        /* قسم العملاء */
+        .clients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 30px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        .client-logo img {
+            width: 100%;
+            max-width: 150px;
+            filter: grayscale(100%) brightness(150%);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+        }
+        
+        .client-logo img:hover {
+            filter: grayscale(0%) brightness(100%);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* قسم مميزات النظام */
+        .features-section .service-cards .card {
+            min-width: 300px;
+            max-width: 400px;
+            padding: 30px;
+        }
+
+        .features-section .service-cards .card h3 {
+            font-size: 1.5rem;
+        }
+        
+        .features-section .service-cards .card p {
+            font-size: 1rem;
+            text-align: right;
+            margin: 10px 0;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .features-section .service-cards .card ul {
+            list-style: none;
+            text-align: right;
+            margin-top: 15px;
+        }
+        
+        .features-section .service-cards .card ul li {
+            position: relative;
+            padding-right: 25px;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+        }
+
+        .features-section .service-cards .card ul li:before {
+            content: "\f058"; /* أيقونة علامة صح */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--cyber-green);
+            position: absolute;
+            right: 0;
+            top: 2px;
+            font-size: 1.1rem;
+        }
+        
+        /* قسم لماذا تختارنا */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 35px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--cyber-purple);
+        }
+        
+        .feature-item .icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--cyber-purple);
+        }
+        
+        .feature-item h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: var(--cyber-purple);
+        }
+        
+        /* قسم آراء العملاء */
+        .testimonial-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-item {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .testimonial-item p {
+            font-size: 1.4rem;
+            font-style: italic;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .testimonial-item p:before, .testimonial-item p:after {
+            content: '"';
+            font-size: 3rem;
+            color: var(--cyber-green);
+            opacity: 0.3;
+            position: absolute;
+        }
+        
+        .testimonial-item p:before {
+            top: -20px;
+            left: 10px;
+        }
+        
+        .testimonial-item p:after {
+            bottom: -40px;
+            right: 10px;
+        }
+        
+        .testimonial-item span {
+            font-weight: 700;
+            color: var(--cyber-blue);
+            font-size: 1.2rem;
+        }
+        
+        /* قسم الحث على الاتصال */
+        .call-to-action-banner {
+            background: linear-gradient(135deg, var(--cyber-purple), var(--cyber-blue));
+            border-radius: 20px;
+            padding: 70px 40px;
+            text-align: center;
+            margin: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .call-to-action-banner h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .call-to-action-banner p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* التذييل */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 60px 40px 30px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section {
+            padding: 20px;
+        }
+        
+        .footer-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--cyber-green);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--cyber-green);
+            border-radius: 3px;
+        }
+        
+        .footer-section p {
+            margin-bottom: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.7;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--cyber-green);
+            transform: translateY(-5px);
+            color: var(--dark-blue);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: var(--cyber-green);
+            padding-right: 10px;
+        }
+        
+        .contact-info p {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info i {
+            color: var(--cyber-green);
+            font-size: 1.2rem;
+            min-width: 25px;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .hero-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-content {
+                margin-bottom: 50px;
+            }
+            
+            .hero-buttons {
+                justify-content: center;
+            }
+        }
+        
+        @media (max-width: 900px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+            
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .dropdown-content {
+                position: static;
+                background: transparent;
+                box-shadow: none;
+                padding: 10px 0 0 20px;
+            }
+            
+            .hamburger {
+                display: flex;
+            }
+            
+            .section {
+                padding: 80px 20px;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.2rem;
+            }
+            
+            .btn {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .ticker-label {
+                font-size: 0.9rem;
+                min-width: 110px;
+            }
+            
+            .ticker-content a {
+                font-size: 0.9rem;
+                margin: 0 15px;
+            }
+            
+            .new-feature-content a {
+                font-size: 1rem;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate {
+            animation: fadeIn 0.8s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+    <div class="grid-lines"></div>
+    
+    <div class="cyber-circle" style="width: 300px; height: 300px; top: 10%; left: 15%;"></div>
+    <div class="cyber-circle" style="width: 200px; height: 200px; bottom: 15%; right: 10%;"></div>
+    <div class="pulse" style="top: 20%; left: 20%;"></div>
+    <div class="pulse" style="bottom: 25%; right: 25%;"></div>
+    
+    <nav class="navbar">
+        <div class="logo">SeaStar</div>
+        <ul class="nav-links">
+            <li><a href="index.html">الرئيسية</a></li>
+            <li><a href="gallery.html">معرض الصور</a></li>
+            <li class="dropdown">
+                <a href="services.html" class="dropbtn">الخدمات <i class="fas fa-caret-down"></i></a>
+                <div class="dropdown-content">
+                    <a href="services.html#content-writing">كتابة المحتوى والترجمة</a>
+                    <a href="services.html#graphic-design">التصميم الجرافيكي</a>
+                    <a href="services.html#web-dev">تطوير الويب والتطبيقات</a>
+                    <a href="services.html#network-it">الشبكات وتقنية المعلومات</a>
+                    <a href="services.html#digital-marketing">التسويق الرقمي</a>
+                    <a href="services.html#data-entry">إدخال البيانات</a>
+                    <a href="services.html#info-security">أمن المعلومات</a>
+                    <a href="services.html#erp-maint">الأنظمة الإدارية والمحاسبية</a>
+                </div>
+            </li>
+            <li><a href="portfolio.html">أعمالنا</a></li>
+            <li><a href="about.html">من نحن</a></li>
+            <li><a href="contact.html">اتصل بنا</a></li>
+            <li><a href="blog.html">المدونة</a></li>
+            <li><a href="http://127.0.0.1/schoolmanagement/home#">تسجيل الدخول</a></li>
+        </ul>
+        <div class="hamburger">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </nav>
+    
+    <div class="news-ticker-container">
+        <div class="ticker-label">
+            <i class="fas fa-newspaper"></i> آخر الأخبار
+        </div>
+        <div class="ticker-content">
+            <a href="https://wa.me/+967777220455?text=أريد%20نسخة%20تجريبية%20لنظام%20swastar%20لمؤسستي التعليمية?"><i class="fas fa-arrow-left"></i>لادارة المؤسسات التعليمية  SeaStar تواصل معنا للحصول على نسخة تجريبية مجانية من نظام</a>
+            <a href="qrsea.html"><i class="fas fa-arrow-left"></i> SeaStar تطلق خدمة إنشاء الباركود الجديدة</a>
+            <a href="iot.html"><i class="fas fa-arrow-left"></i> إطلاق دورة تدريبية جديدة في الذكاء الاصطناعي  </a>
+            <a href="news.html#3"><i class="fas fa-arrow-left"></i> خصم 20% على خدمات التصميم الجرافيكي خلال الشهر الحالي</a>
+            <a href="news.html#4"><i class="fas fa-arrow-left"></i> تعاون جديد مع شركة التقنية المتطورة لتقديم حلول متكاملة</a>
+            <a href="news.html#5"><i class="fas fa-arrow-left"></i> ورشة عمل مجانية حول التسويق الرقمي يوم الخميس القادم</a>
+        </div>
+    </div>
+    
+    <div class="new-feature-bar">
+        <div class="new-feature-content">
+            <a href="qrsea.html">
+                <i class="fas fa-qrcode"></i>
+                الآن وعن طريق SeaStar بات بإمكانك إنشاء باركود بسهولة لكل البيانات التي تريدها
+            </a>
+        </div>
+    </div>
+    
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>نظام SeaStar: الحل الشامل لإدارة المؤسسات التعليمية</h1>
+            <p>حل متكامل يقدم إدارة شاملة للجامعات والمدارس والمعاهد بكفاءة وفعالية غير مسبوقة.</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn primary-btn">اطلب عرض تجريبي</a>
+                <a href="#features" class="btn secondary-btn">اكتشف مميزاتنا</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="school-dashboard.webp" alt="لوحة تحكم نظام SeaStar">
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">هل تبحث عن لوحة تحكم ذكية لمؤسستك التعليمية؟</h2>
+            <p class="section-subtitle">
+                هل تشعر أن إدارة مؤسستك التعليمية تزداد تعقيدًا يومًا بعد يوم؟ هل تقضي وقتًا طويلاً في المهام الروتينية بدلاً من التركيز على استراتيجيات النمو؟
+            </p>
+        </div>
+        
+        <div class="service-cards">
+            <div class="card animate">
+                <i class="fas fa-chart-line icon"></i>
+                <h3>لوحة تحكم شاملة (Dashboard)</h3>
+                <p>احصل على نظرة فورية على أداء مؤسستك: عدد الطلاب، الرسوم المستحقة، وأحدث الإشعارات في شاشة واحدة.</p>
+            </div>
+            
+            <div class="card animate">
+                <i class="fas fa-clock icon"></i>
+                <h3>توفير الوقت والجهد</h3>
+                <p>بفضل ميزات مثل الطباعة الجماعية، إدارة الرسوم، ونظام المراسلات الداخلية، يمكنك أتمتة المهام اليومية وتوفير وقت ثمين.</p>
+            </div>
+            
+            <div class="card animate">
+                <i class="fas fa-cogs icon"></i>
+                <h3>اتخاذ قرارات أفضل</h3>
+                <p>تقارير دقيقة ومفصلة عن أداء الطلاب، الموظفين، والوضع المالي تمنحك رؤى قيمة لاتخاذ قرارات حكيمة.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="section features-section">
+        <div class="section-header">
+            <h2 class="section-title">مميزات النظام الاستثنائية</h2>
+            <p class="section-subtitle">أحدث التقنيات وأذكى الحلول لتحويل مؤسستك التعليمية إلى نموذج للكفاءة والابتكار.</p>
+        </div>
+        
+        <div class="service-cards">
+            <div class="card animate">
+                <i class="fas fa-tachometer-alt icon"></i>
+                <h3>1. لوحة التحكم (DASHBOARD)</h3>
+                <p>نظرة عامة فورية على كل ما يهمك في مؤسستك التعليمية.</p>
+                <a href="#" class="learn-more">
+                    اعرف المزيد <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+            <div class="card animate">
+                <i class="fas fa-user-tie icon"></i>
+                <h3>2. الإدارة (ADMINISTRATION)</h3>
+                <p>أدوات متكاملة لإدارة الأكاديميات، والمواد الدراسية، والخطط التعليمية.</p>
+                <a href="#" class="learn-more">
+                    اعرف المزيد <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+            <div class="card animate">
+                <i class="fas fa-user-graduate icon"></i>
+                <h3>3. الطلاب (STUDENT)</h3>
+                <p>إدارة شاملة لملفات الطلاب، رسومهم، واجباتهم، وسجلاتهم السلوكية.</p>
+                <a href="#" class="learn-more">
+                    اعرف المزيد <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+            <div class="card animate">
+                <i class="fas fa-file-alt icon"></i>
+                <h3>4. الامتحانات (EXAM)</h3>
+                <p>نظام متطور لتنظيم الامتحانات وتحديد الخطط والمواعيد بكل سهولة.</p>
+                <a href="#" class="learn-more">
+                    اعرف المزيد <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+            <div class="card animate">
+                <i class="fas fa-users icon"></i>
+                <h3>5. الموارد البشرية (HR)</h3>
+                <p>إدارة فعالة للموظفين، تقييم الأداء، الإجازات، وتحديد الصلاحيات.</p>
+                <a href="#" class="learn-more">
+                    اعرف المزيد <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+            <div class="card animate">
+                <i class="fas fa-calculator icon"></i>
+                <h3>6. الحسابات (ACCOUNTS)</h3>
+                <p>متابعة دقيقة للحسابات المالية والمخزون لضمان الشفافية.</p>
+                <a href="#" class="learn-more">
+                    اعرف المزيد <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+            <div class="card animate">
+                <i class="fas fa-tools icon"></i>
+                <h3>7. الأدوات المساعدة (UTILITIES)</h3>
+                <p>مجموعة من الأدوات المساعدة مثل الدردشة الداخلية لتسهيل التواصل.</p>
+                <a href="#" class="learn-more">
+                    اعرف المزيد <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+            <div class="card animate">
+                <i class="fas fa-chart-pie icon"></i>
+                <h3>8. التقارير (REPORT)</h3>
+                <p>تقارير مفصلة عن أداء الطلاب، الموظفين، والوضع المالي لاتخاذ قرارات حكيمة.</p>
+                <a href="#" class="learn-more">
+                    اعرف المزيد <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+            <div class="card animate">
+                <i class="fas fa-cog icon"></i>
+                <h3>9. قسم الإعدادات (SETTINGS)</h3>
+                <p>تخصيص كامل لإعدادات النظام بما يتناسب مع احتياجات مؤسستك.</p>
+                <a href="#" class="learn-more">
+                    اعرف المزيد <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">عملاؤنا يثقون بنا</h2>
+            <p class="section-subtitle">نظام SeaStar هو الشريك المفضل للعديد من المؤسسات التعليمية الرائدة.</p>
+        </div>
+        <div class="clients-grid animate">
+            <div class="client-logo"><img src="client1.webp" alt="شعار مؤسسة تعليمية 1"></div>
+            <div class="client-logo"><img src="client2.webp" alt="شعار مؤسسة تعليمية 2"></div>
+            <div class="client-logo"><img src="client3.webp" alt="شعار مؤسسة تعليمية 3"></div>
+            <div class="client-logo"><img src="client4.webp" alt="شعار مؤسسة تعليمية 4"></div>
+            <div class="client-logo"><img src="client5.webp" alt="شعار مؤسسة تعليمية 5"></div>
+            <div class="client-logo"><img src="client6.webp" alt="شعار مؤسسة تعليمية 6"></div>
+        </div>
+    </section>
+
+    <section id="demo" class="section">
+        <div class="call-to-action-banner animate">
+            <h2>اكتشف الفرق بنفسك!</h2>
+            <p>نحن واثقون من جودة نظامنا. لذا، ندعوك لتجربة SeaStar مجانًا لمدة 14 يومًا، مع دعم فني كامل.</p>
+            <div class="hero-buttons" style="justify-content: center;">
+                <a href="tel:+967779168887" class="btn primary-btn"><i class="fas fa-phone-alt"></i> اتصل بنا الآن</a>
+                <a href="mailto:prcmased@gmail.com" class="btn secondary-btn"><i class="fas fa-envelope"></i> أرسل بريدًا إلكترونيًا</a>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3 class="footer-title">عن SeaStar</h3>
+                <p>نقدم مجموعة شاملة من حلول تقنية المعلومات لتمكين الشركات من تحقيق أهدافها الرقمية.</p>
+                <div class="social-links">
+                    <a href="https://www.facebook.com/profile.php?id=61569730196174"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/Sea_st_ar?s=09"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/sea-star-67a18a372?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://www.instagram.com/sea_st_ar?igsh=a3VsMnYxdHFvNm50"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">روابط سريعة</h3>
+                <ul class="footer-links">
+                    <li><a href="services.html"><i class="fas fa-arrow-left"></i> الخدمات</a></li>
+                    <li><a href="portfolio.html"><i class="fas fa-arrow-left"></i> أعمالنا</a></li>
+                    <li><a href="about.html"><i class="fas fa-arrow-left"></i> من نحن</a></li>
+                    <li><a href="contact.html"><i class="fas fa-arrow-left"></i> اتصل بنا</a></li> 
+                    <li><a href="iot/iot.html"><i class="fas fa-arrow-left"></i> دورة الذكاء الاصطناعي</a></li>
+                    <li><a href="sybsec/dorat.html"><i class="fas fa-arrow-left"></i> دورة الامن السيبراني</a></li>
+                    <li><a href="privacy-policy.html"><i class="fas fa-arrow-left"></i> سياسة الخصوصية</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3 class="footer-title">معلومات الاتصال</h3>
+                <p><i class="fas fa-map-marker-alt"></i> صنعاء، دارس، المدينة الخضراء</p>
+                <p><i class="fas fa-phone"></i> +967 779 168 887</p>
+                <p><i class="fas fa-envelope"></i> prcmased@gmail.com</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SeaStar. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            document.querySelectorAll('.animate').forEach(element => {
+                element.classList.remove('animate');
+                observer.observe(element);
+            });
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if(targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>
+
