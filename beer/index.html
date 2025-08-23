@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سيستار - إدارة الآبار</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+       <!-- شاشة التحميل -->
+    <div id="splash-screen">
+        <div class="splash-logo">
+            <i class="fas fa-water"></i>
+        </div>
+        <h1 class="splash-title">سيستار</h1>
+        <p class="splash-subtitle">نظام إدارة الآبار والمشتركين</p>
+        <div class="progress-bar">
+            <div class="progress" id="splash-progress"></div>
+        </div>
+    </div>
+    
+    <!-- زر تثبيت التطبيق -->
+    <button id="install-button">
+        <i class="fas fa-download"></i> تثبيت التطبيق
+    </button>
+
+    <!-- بقية الهيكل كما هو -->
+    <div class="app-container">
+        <!-- الشريط الجانبي -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1><i class="fas fa-water"></i> سيستار</h1>
+                <p>نظام إدارة الآبار والمشتركين</p>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-home"></i> الرئيسية</a></li>
+                <li><a href="#" data-section="subscribers"><i class="fas fa-users"></i> المشتركين</a></li>
+                <li><a href="#" data-section="buyers"><i class="fas fa-user-tag"></i> المشترين</a></li>
+                <li><a href="#" data-section="appointments"><i class="fas fa-calendar-alt"></i> المواعيد</a></li>
+                <li><a href="#" data-section="balance"><i class="fas fa-wallet"></i> الرصيد</a></li>
+                <li><a href="#" data-section="debts"><i class="fas fa-file-invoice-dollar"></i> الديون</a></li>
+                <li><a href="#" data-section="purchases"><i class="fas fa-shopping-cart"></i> المشتروات</a></li>
+            </ul>
+        </div>
+        
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <!-- لوحة التحكم -->
+            <div class="section" id="dashboard">
+                <div class="header">
+                    <h2><i class="fas fa-tachometer-alt"></i> لوحة التحكم</h2>
+                    <div class="actions">
+                        <div class="search-container">
+                            <input type="text" id="globalSearch" placeholder="ابحث باسم المشترك أو المشتري...">
+                            <i class="fas fa-search search-icon"></i>
+                            <div class="search-results" id="searchResults"></div>
+                        </div>
+                        <button class="btn btn-primary" id="refreshBtn"><i class="fas fa-sync-alt"></i> تحديث البيانات</button>
+                    </div>
+                </div>
+                
+                <div class="alert alert-success" id="success-alert">
+                    <i class="fas fa-check-circle"></i> تم حفظ البيانات بنجاح!
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <div class="title">عدد المشتركين</div>
+                        <div class="value" id="subscribersCount">0</div>
+                        <div class="progress-bar">
+                            <div class="progress" id="subscribersProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <i class="fas fa-user-tag"></i>
+                        <div class="title">عدد المشترين</div>
+                        <div class="value" id="buyersCount">0</div>
+                        <div class="progress-bar">
+                            <div class="progress" id="buyersProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <div class="title">عدد المواعيد</div>
+                        <div class="value" id="appointmentsCount">0</div>
+                        <div class="progress-bar">
+                            <div class="progress" id="appointmentsProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <i class="fas fa-wallet"></i>
+                        <div class="title">إجمالي الرصيد</div>
+                        <div class="value" id="totalBalance">0 ريال</div>
+                        <div class="progress-bar">
+                            <div class="progress" id="balanceProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <div class="title">إجمالي الديون</div>
+                        <div class="value" id="totalDebts">0 ريال</div>
+                        <div class="progress-bar">
+                            <div class="progress" id="debtsProgress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="charts-row">
+                    <div class="chart-container">
+                        <h3><i class="fas fa-chart-line"></i> إحصائيات المشتركين</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="subscribersChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3><i class="fas fa-chart-pie"></i> توزيع الديون</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="debtsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- قسم المشتركين -->
+            <div class="section" id="subscribers" style="display:none;">
+                <div class="section-header">
+                    <h3 class="section-title"><i class="fas fa-users"></i> إدارة المشتركين</h3>
+                    <div>
+                        <button class="btn btn-primary" id="addSubscriberBtn">
+                            <i class="fas fa-plus"></i> إضافة مشترك
+                        </button>
+                        <button class="btn btn-info print-section" data-section="subscribers">
+                            <i class="fas fa-print"></i> طباعة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="subscribersTable">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>الساعات/الأسبوع</th>
+                                <th>المأخوذ</th>
+                                <th>المتبقي</th>
+                                <th>المدفوع</th>
+                                <th>المتبقي</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="subscribersTableBody">
+                            <!-- سيتم ملؤها ديناميكيًا -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- قسم المشترين -->
+            <div class="section" id="buyers" style="display:none;">
+                <div class="section-header">
+                    <h3 class="section-title"><i class="fas fa-user-tag"></i> إدارة المشترين</h3>
+                    <div>
+                        <button class="btn btn-primary" id="addBuyerBtn">
+                            <i class="fas fa-plus"></i> إضافة مشتري
+                        </button>
+                        <button class="btn btn-info print-section" data-section="buyers">
+                            <i class="fas fa-print"></i> طباعة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="buyersTable">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>عدد الساعات</th>
+                                <th>تاريخ الاستلام</th>
+                                <th>المدفوع</th>
+                                <th>المتبقي</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="buyersTableBody">
+                            <!-- سيتم ملؤها ديناميكيًا -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- قسم المواعيد -->
+            <div class="section" id="appointments" style="display:none;">
+                <div class="section-header">
+                    <h3 class="section-title"><i class="fas fa-calendar-alt"></i> إدارة المواعيد</h3>
+                    <div>
+                        <button class="btn btn-primary" id="addAppointmentBtn">
+                            <i class="fas fa-plus"></i> إضافة موعد
+                        </button>
+                        <button class="btn btn-info print-section" data-section="appointments">
+                            <i class="fas fa-print"></i> طباعة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="appointmentsTable">
+                        <thead>
+                            <tr>
+                                <th>نوع العميل</th>
+                                <th>اسم العميل</th>
+                                <th>التاريخ</th>
+                                <th>المدة</th>
+                                <th>الحالة</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointmentsTableBody">
+                            <!-- سيتم ملؤها ديناميكيًا -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- قسم الرصيد -->
+            <div class="section" id="balance" style="display:none;">
+                <div class="section-header">
+                    <h3 class="section-title"><i class="fas fa-wallet"></i> إدارة الرصيد</h3>
+                    <div>
+                        <span class="stat-card" style="display: inline-block; padding: 10px 20px; background: #e8f4f3; color: var(--primary);">
+                            إجمالي الرصيد: <strong id="balanceTotal">0 ريال</strong>
+                        </span>
+                        <button class="btn btn-info print-section" data-section="balance">
+                            <i class="fas fa-print"></i> طباعة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="balanceTable">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>النوع</th>
+                                <th>المبلغ المدفوع</th>
+                                <th>تاريخ الدفع</th>
+                                <th>المصدر</th>
+                            </tr>
+                        </thead>
+                        <tbody id="balanceTableBody">
+                            <!-- سيتم ملؤها ديناميكيًا -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- قسم الديون -->
+            <div class="section" id="debts" style="display:none;">
+                <div class="section-header">
+                    <h3 class="section-title"><i class="fas fa-file-invoice-dollar"></i> إدارة الديون</h3>
+                    <div>
+                        <span class="stat-card" style="display: inline-block; padding: 10px 20px; background: #fbecec; color: var(--danger);">
+                            إجمالي الديون: <strong id="debtsTotal">0 ريال </strong>
+                        </span>
+                        <button class="btn btn-info print-section" data-section="debts">
+                            <i class="fas fa-print"></i> طباعة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="debtsTable">
+                        <thead>
+                            <tr>
+                                <th>الاسم</th>
+                                <th>النوع</th>
+                                <th>المبلغ المتبقي</th>
+                                <th>تاريخ الاستحقاق</th>
+                                <th>المصدر</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="debtsTableBody">
+                            <!-- سيتم ملؤها ديناميكيًا -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- قسم المشتروات -->
+            <div class="section" id="purchases" style="display:none;">
+                <div class="section-header">
+                    <h3 class="section-title"><i class="fas fa-shopping-cart"></i> إدارة المشتروات</h3>
+                    <div>
+                        <button class="btn btn-primary" id="addPurchaseBtn">
+                            <i class="fas fa-plus"></i> إضافة مشتروات
+                        </button>
+                        <button class="btn btn-info print-section" data-section="purchases">
+                            <i class="fas fa-print"></i> طباعة
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table id="purchasesTable">
+                        <thead>
+                            <tr>
+                                <th>الصنف</th>
+                                <th>النوع</th>
+                                <th>تاريخ الشراء</th>
+                                <th>المبلغ</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="purchasesTableBody">
+                            <!-- سيتم ملؤها ديناميكيًا -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نموذج إضافة/تعديل مشترك -->
+    <div class="modal" id="subscriberModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="subscriberModalTitle"><i class="fas fa-user-plus"></i> إضافة مشترك جديد</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="subscriberId">
+                <div class="form-group">
+                    <label for="subscriberName"><i class="fas fa-user"></i> اسم المشترك</label>
+                    <input type="text" id="subscriberName" class="form-control" placeholder="أدخل الاسم الكامل">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="hoursPerWeek"><i class="fas fa-clock"></i> عدد الساعات في الأسبوع</label>
+                        <input type="number" id="hoursPerWeek" class="form-control" min="1" value="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="takenHours"><i class="fas fa-hourglass-half"></i> المأخوذ من الساعات</label>
+                        <input type="number" id="takenHours" class="form-control" min="0" value="0">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="paidAmount"><i class="fas fa-money-bill-wave"></i> المدفوع من الرسوم</label>
+                        <input type="number" id="paidAmount" class="form-control" min="0" value="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="remainingAmount"><i class="fas fa-money-bill-alt"></i> المتبقي من الرسوم</label>
+                        <input type="number" id="remainingAmount" class="form-control" min="0" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning close-modal"><i class="fas fa-times"></i> إلغاء</button>
+                <button class="btn btn-primary" id="saveSubscriber"><i class="fas fa-save"></i> حفظ البيانات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج إضافة/تعديل مشتري -->
+    <div class="modal" id="buyerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="buyerModalTitle"><i class="fas fa-user-tag"></i> إضافة مشتري جديد</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="buyerId">
+                <div class="form-group">
+                    <label for="buyerName"><i class="fas fa-user"></i> اسم المشتري</label>
+                    <input type="text" id="buyerName" class="form-control" placeholder="أدخل الاسم الكامل">
+                </div>
+                
+                <div class="form-group">
+                    <label for="hoursCount"><i class="fas fa-clock"></i> عدد الساعات</label>
+                    <input type="number" id="hoursCount" class="form-control" min="1" value="5">
+                </div>
+                
+                <div class="form-group">
+                    <label for="deliveryDate"><i class="fas fa-calendar-day"></i> تاريخ الاستلام</label>
+                    <input type="datetime-local" id="deliveryDate" class="form-control">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="buyerPaid"><i class="fas fa-money-bill-wave"></i> المدفوع من الرسوم</label>
+                        <input type="number" id="buyerPaid" class="form-control" min="0" value="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="buyerRemaining"><i class="fas fa-money-bill-alt"></i> المتبقي من الرسوم</label>
+                        <input type="number" id="buyerRemaining" class="form-control" min="0" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning close-modal"><i class="fas fa-times"></i> إلغاء</button>
+                <button class="btn btn-primary" id="saveBuyer"><i class="fas fa-save"></i> حفظ البيانات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج إضافة/تعديل موعد -->
+    <div class="modal" id="appointmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="appointmentModalTitle"><i class="fas fa-calendar-plus"></i> إضافة موعد جديد</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="appointmentId">
+                <div class="form-group">
+                    <label for="clientType"><i class="fas fa-user-tag"></i> نوع العميل</label>
+                    <select id="clientType" class="form-control">
+                        <option value="subscriber">مشترك</option>
+                        <option value="buyer">مشتري</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="clientName"><i class="fas fa-user"></i> اسم العميل</label>
+                    <select id="clientName" class="form-control">
+                        <option value="">-- اختر اسم العميل --</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="appointmentDate"><i class="fas fa-calendar-day"></i> التاريخ</label>
+                    <input type="date" id="appointmentDate" class="form-control">
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="startTime"><i class="fas fa-clock"></i> من الساعة</label>
+                        <input type="time" id="startTime" class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endTime"><i class="fas fa-clock"></i> إلى الساعة</label>
+                        <input type="time" id="endTime" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning close-modal"><i class="fas fa-times"></i> إلغاء</button>
+                <button class="btn btn-primary" id="saveAppointment"><i class="fas fa-save"></i> حفظ البيانات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج إضافة/تعديل مشتروات -->
+    <div class="modal" id="purchaseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="purchaseModalTitle"><i class="fas fa-cart-plus"></i> إضافة مشتروات جديدة</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="purchaseId">
+                <div class="form-group">
+                    <label for="itemName"><i class="fas fa-box"></i> اسم الصنف</label>
+                    <input type="text" id="itemName" class="form-control" placeholder="أدخل اسم الصنف">
+                </div>
+                
+                <div class="form-group">
+                    <label for="itemType"><i class="fas fa-tag"></i> نوع الصنف</label>
+                    <select id="itemType" class="form-control">
+                        <option value="مواد">مواد</option>
+                        <option value="صيانة">صيانة</option>
+                        <option value="أدوات">أدوات</option>
+                        <option value="أخرى">أخرى</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="purchaseDate"><i class="fas fa-calendar"></i> تاريخ الشراء</label>
+                    <input type="date" id="purchaseDate" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="purchaseAmount"><i class="fas fa-money-bill"></i> المبلغ</label>
+                    <input type="number" id="purchaseAmount" class="form-control" min="0" value="0">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning close-modal"><i class="fas fa-times"></i> إلغاء</button>
+                <button class="btn btn-primary" id="savePurchase"><i class="fas fa-save"></i> حفظ البيانات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نموذج تسديد دين -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fas fa-money-check-alt"></i> تسديد دين</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="debtId">
+                <input type="hidden" id="debtType">
+                <input type="hidden" id="debtName">
+                <div class="form-group">
+                    <label for="debtAmount"><i class="fas fa-money-bill-wave"></i> المبلغ المستحق</label>
+                    <input type="text" id="debtAmount" class="form-control" readonly>
+                </div>
+                
+                <div class="form-group">
+                    <label for="paymentAmount"><i class="fas fa-money-bill-alt"></i> المبلغ المدفوع</label>
+                    <input type="number" id="paymentAmount" class="form-control" min="0" value="0">
+                </div>
+                
+                <div class="form-group">
+                    <label for="paymentDate"><i class="fas fa-calendar"></i> تاريخ التسديد</label>
+                    <input type="date" id="paymentDate" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-warning close-modal"><i class="fas fa-times"></i> إلغاء</button>
+                <button class="btn btn-success" id="confirmPayment"><i class="fas fa-check"></i> تأكيد التسديد</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
