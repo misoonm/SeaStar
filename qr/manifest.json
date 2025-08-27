@@ -1,0 +1,25 @@
+{
+  "name": "مولد رموز QR - SeaStar",
+  "short_name": "QR SeaStar",
+  "description": "تطبيق لإنشاء رموز QR ديناميكية متعددة الاستخدامات",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#00204A",
+  "theme_color": "#00a8ff",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE5MiIgaGVpZ2h0PSIxOTIiIGZpbGw9IiMwMDI4NUEiLz48cGF0aCBkPSJNNjQgNjRIMTI4VjEyOEg2NFY2NFoiIGZpbGw9IiMwMEE4RkYiLz48cGF0aCBkPSJNMTI4IDY0SDE5MlYxMjhIMTI4VjY0WiIgZmlsbD0iIzBCRTg4MSIvPjxwYXRoIGQ9Ik02NCAxMjhIMTI4VjE5Mkg2NFYxMjhaIiBmaWxsPSIjOUM4OEZGIi8+PHBhdGggZD0iTTEyOCAxMjhIMTkyVjE5MkgxMjhWMTI4WiIgZmlsbD0iI0ZGM0YzNCIvPjwvc3ZnPg==",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIGZpbGw9IiMwMDI4NUEiLz48cGF0aCBkPSJNMTI4IDEyOEgzODRWMzg0SDEyOFYxMjhaIiBmaWxsPSIjMDBBOEZGIi8+PHBhdGggZD0iTTM4NCAxMjhINTEyVjM4NEgzODRWMTI4WiIgZmlsbD0iIzBCRTg4MSIvPjxwYXRoIGQ9Ik0xMjggMzg0SDM4NFY1MTJIMTI4VjM4NFoiIGZpbGw9IiM5Qzg4RkYiLz48cGF0aCBkPSJNMzg0IDM4NEg1MTJWNTEySDM4NFYzODRaIiBmaWxsPSIjRkYzRjM0Ii8+PC9zdmc+",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["utilities", "productivity"],
+  "lang": "ar",
+  "dir": "rtl"
+}
