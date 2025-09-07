@@ -1,0 +1,22 @@
+{
+  "name": "نظام إدارة المحلات التجارية",
+  "short_name": "إدارة المتجر",
+  "description": "نظام متكامل لإدارة المحلات التجارية والمخازن",
+  "start_url": "/login.html",
+  "display": "standalone",
+  "background_color": "#4e73df",
+  "theme_color": "#4e73df",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

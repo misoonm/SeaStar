@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - نظام إدارة المحلات التجارية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏪</text></svg>">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#4e73df">
+    <meta name="description" content="نظام متكامل لإدارة المحلات التجارية - إدارة المبيعات، المخزون، العملاء، والتقارير">
+    <meta name="keywords" content="نظام إدارة, محلات تجارية, نقطة بيع, إدارة مخزون, تقارير مبيعات">
+    <meta name="author" content="نظام الإدارة">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏪</text></svg>">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            font-family: 'Cairo', 'Tahoma', sans-serif;
+            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-header h2 {
+            color: #4e73df;
+            font-weight: 700;
+        }
+        
+        .form-control {
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .btn-login {
+            background: linear-gradient(to right, #4e73df, #7a9ff7);
+            border: none;
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            font-weight: 600;
+            width: 100%;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            background: linear-gradient(to right, #2a4b9e, #4e73df);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h2>تسجيل الدخول</h2>
+            <p class="text-muted">يجب تسجيل الدخول للوصول إلى النظام</p>
+        </div>
+        
+        <form id="login-form">
+            <div class="mb-3">
+                <label for="username" class="form-label">اسم المستخدم</label>
+                <input type="text" class="form-control" id="username" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">كلمة المرور</label>
+                <input type="password" class="form-control" id="password" required>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="rememberMe">
+                <label class="form-check-label" for="rememberMe">تذكرني</label>
+            </div>
+            <button type="submit" class="btn btn-login">تسجيل الدخول</button>
+        </form>
+        
+        <div id="login-error" class="alert alert-danger mt-3 d-none"></div>
+    </div>
+
+    <!-- تضمين ملف قاعدة البيانات -->
+    <script src="db1.js"></script>
+    
+    <script>
+        // تهيئة قاعدة البيانات
+        let databaseInitialized = false;
+        
+        async function initializeApp() {
+            try {
+                // تهيئة قاعدة البيانات
+                const success = await initDatabase();
+                if (!success) {
+                    throw new Error('فشل في تهيئة قاعدة البيانات');
+                }
+                
+                // ترحيل البيانات من localStorage إذا كانت موجودة
+                await migrateFromLocalStorage();
+                
+                databaseInitialized = true;
+                
+                // التحقق من وجود مستخدم مسجل دخوله
+                const currentUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+                if (currentUser) {
+                    window.location.href = 'dashboard.html';
+                }
+            } catch (error) {
+                console.error('خطأ في تهيئة التطبيق:', error);
+                document.getElementById('login-error').textContent = 'خطأ في تهيئة النظام. يرجى تحديث الصفحة.';
+                document.getElementById('login-error').classList.remove('d-none');
+            }
+        }
+
+        // معالجة تسجيل الدخول
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!databaseInitialized) {
+                document.getElementById('login-error').textContent = 'قاعدة البيانات غير مهيأة بعد. يرجى الانتظار...';
+                document.getElementById('login-error').classList.remove('d-none');
+                return;
+            }
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const errorDiv = document.getElementById('login-error');
+            
+            try {
+                // التحقق من المستخدم باستخدام قاعدة البيانات الجديدة
+                const user = await db.verifyUser(username, password);
+                
+                if (user) {
+                    // تسجيل الدخول الناجح
+                    if (rememberMe) {
+                        localStorage.setItem('currentUser', JSON.stringify(user));
+                    } else {
+                        sessionStorage.setItem('currentUser', JSON.stringify(user));
+                    }
+                    
+                    // الانتقال إلى لوحة التحكم
+                    window.location.href = 'dashboard.html';
+                } else {
+                    // تسجيل الدخول فاشل
+                    errorDiv.textContent = 'اسم المستخدم أو كلمة المرور غير صحيحة';
+                    errorDiv.classList.remove('d-none');
+                }
+            } catch (error) {
+                console.error('خطأ في تسجيل الدخول:', error);
+                errorDiv.textContent = 'حدث خطأ أثناء تسجيل الدخول. يرجى المحاولة مرة أخرى.';
+                errorDiv.classList.remove('d-none');
+            }
+        });
+
+        // تهيئة التطبيق عند تحميل الصفحة
+        initializeApp();
+    </script>
+</body>
+</html>

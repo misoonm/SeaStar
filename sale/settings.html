@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإعدادات - نظام إدارة المحلات التجارية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --primary-light: #7a9ff7;
+            --primary-dark: #2a4b9e;
+            --secondary-color: #1cc88a;
+            --secondary-light: #4adca8;
+            --secondary-dark: #138a5e;
+            --warning-color: #f6c23e;
+            --warning-light: #f9d37a;
+            --warning-dark: #c99a1a;
+            --danger-color: #e74a3b;
+            --danger-light: #ef7e73;
+            --danger-dark: #b21f15;
+            --dark-color: #5a5c69;
+            --light-color: #f8f9fc;
+            --gray-100: #f8f9fc;
+            --gray-200: #eaecf4;
+            --gray-300: #dddfeb;
+            --gray-400: #d1d3e2;
+            --gray-500: #b7b9cc;
+            --gray-600: #858796;
+            --gray-700: #6e707e;
+            --gray-800: #5a5c69;
+            --gray-900: #3a3b45;
+            --transition: all 0.3s ease;
+            --shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --shadow-hover: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
+            --radius: 0.75rem;
+            --navbar-height: 70px;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4e73df;
+            --primary-light: #7a9ff7;
+            --primary-dark: #2a4b9e;
+            --secondary-color: #1cc88a;
+            --secondary-light: #4adca8;
+            --secondary-dark: #138a5e;
+            --warning-color: #f6c23e;
+            --warning-light: #f9d37a;
+            --warning-dark: #c99a1a;
+            --danger-color: #e74a3b;
+            --danger-light: #ef7e73;
+            --danger-dark: #b21f15;
+            --dark-color: #d1d3e2;
+            --light-color: #2a2b3d;
+            --gray-100: #2a2b3d;
+            --gray-200: #353646;
+            --gray-300: #3f4051;
+            --gray-400: #4a4b5c;
+            --gray-500: #5a5c69;
+            --gray-600: #858796;
+            --gray-700: #b7b9cc;
+            --gray-800: #d1d3e2;
+            --gray-900: #eaecf4;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tahoma', sans-serif;
+            background-color: var(--light-color);
+            color: var(--gray-900);
+            transition: var(--transition);
+            padding-top: var(--navbar-height);
+            min-height: 100vh;
+        }
+
+        .navbar-top {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            height: var(--navbar-height);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
+            transition: var(--transition);
+        }
+
+        .navbar-top .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .navbar-bottom {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--gray-100);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1020;
+            border-top: 1px solid var(--gray-300);
+            transition: var(--transition);
+        }
+
+        .nav-item-bottom {
+            text-align: center;
+            padding: 12px 0;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            color: var(--gray-600);
+            text-decoration: none;
+        }
+
+        .nav-item-bottom:hover, .nav-item-bottom.active {
+            color: var(--primary-color);
+        }
+
+        .nav-item-bottom.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            transform: translateX(50%);
+            width: 70%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 0 0 3px 3px;
+        }
+
+        .nav-item-bottom i {
+            font-size: 1.25rem;
+            display: block;
+            margin: 0 auto 5px;
+            transition: var(--transition);
+        }
+
+        .nav-item-bottom span {
+            font-size: 0.75rem;
+            display: block;
+        }
+
+        .card {
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            transition: var(--transition);
+            border: none;
+            background-color: var(--gray-100);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: var(--radius) var(--radius) 0 0 !important;
+        }
+
+        .btn {
+            border-radius: var(--radius);
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn i {
+            margin-left: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(78, 115, 223, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(to right, var(--secondary-color), var(--secondary-light));
+            border: none;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(to right, var(--secondary-dark), var(--secondary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(28, 200, 138, 0.3);
+        }
+
+        .form-select, .form-control {
+            margin-bottom: 15px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-300);
+            padding: 0.75rem 1rem;
+            transition: var(--transition);
+        }
+
+        .form-select:focus, .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+            border-color: var(--primary-light);
+        }
+
+        .settings-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background-color: var(--gray-100);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .settings-section h4 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary-light);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .theme-option {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-option:hover {
+            border-color: var(--primary-color);
+        }
+
+        .theme-option.active {
+            border-color: var(--primary-color);
+            background-color: rgba(78, 115, 223, 0.1);
+        }
+
+        .theme-option .theme-preview {
+            width: 100%;
+            height: 60px;
+            border-radius: calc(var(--radius) - 0.25rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .theme-option.light .theme-preview {
+            background: linear-gradient(135deg, #f8f9fc 0%, #eaecf4 100%);
+        }
+
+        .theme-option.dark .theme-preview {
+            background: linear-gradient(135deg, #2a2b3d 0%, #353646 100%);
+        }
+
+        .backup-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .backup-actions .btn {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .theme-selector {
+                flex-direction: column;
+            }
+            
+            .backup-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar-top">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-4">
+                    <span id="store-name">متجري</span>
+                </div>
+                <div class="col-4 text-center">
+                    <span id="current-date"></span>
+                </div>
+                <div class="col-4 text-end">
+                    <span>مرحباً، مدير النظام</span>
+                    <button class="btn btn-outline-light btn-sm ms-2" id="logout-btn">
+                        <i class="bi bi-box-arrow-right"></i> تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <h2 class="mb-4">الإعدادات</h2>
+        
+        <div class="settings-section">
+            <h4><i class="bi bi-shop"></i> إعدادات المتجر</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="storeName" class="form-label">اسم المتجر</label>
+                        <input type="text" class="form-control" id="storeName">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="storePhone" class="form-label">هاتف المتجر</label>
+                        <input type="tel" class="form-control" id="storePhone">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="storeAddress" class="form-label">عنوان المتجر</label>
+                <textarea class="form-control" id="storeAddress" rows="2"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="storeTaxNumber" class="form-label">الرقم الضريبي (إن وجد)</label>
+                <input type="text" class="form-control" id="storeTaxNumber">
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h4><i class="bi bi-wallet2"></i> إعدادات الفواتير</h4>
+            <div class="mb-3">
+                <label for="receiptFooter" class="form-label">تذييل الفاتورة</label>
+                <textarea class="form-control" id="receiptFooter" rows="2"></textarea>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="invoicePrefix" class="form-label">بادئة رقم الفاتورة</label>
+                        <input type="text" class="form-control" id="invoicePrefix" value="INV-">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label for="nextInvoiceNumber" class="form-label">رقم الفاتورة التالي</label>
+                        <input type="number" class="form-control" id="nextInvoiceNumber" min="1">
+                    </div>
+                </div>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="printAutomatically">
+                <label class="form-check-label" for="printAutomatically">الطباعة التلقائية بعد البيع</label>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="showDiscounts">
+                <label class="form-check-label" for="showDiscounts">إظهار خيار الخصم في الفواتير</label>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h4><i class="bi bi-gear"></i> إعدادات النظام</h4>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="enableBarcode">
+                <label class="form-check-label" for="enableBarcode">تمكين مسح الباركود</label>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="enableNotifications">
+                <label class="form-check-label" for="enableNotifications">تمكين الإشعارات</label>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="lowStockAlerts">
+                <label class="form-check-label" for="lowStockAlerts">تنبيهات المخزون المنخفض</label>
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="expiryAlerts">
+                <label class="form-check-label" for="expiryAlerts">تنبيهات انتهاء الصلاحية</label>
+            </div>
+            <div class="mb-3">
+                <label for="lowStockThreshold" class="form-label">حد المخزون المنخفض</label>
+                <input type="number" class="form-control" id="lowStockThreshold" min="1" value="10">
+                <div class="form-text">سيتم إشعارك عندما يقل المخزون عن هذه الكمية</div>
+            </div>
+            <div class="mb-3">
+                <label for="expiryThreshold" class="form-label">حد تنبيه انتهاء الصلاحية (أيام)</label>
+                <input type="number" class="form-control" id="expiryThreshold" min="1" value="30">
+                <div class="form-text">سيتم إشعارك قبل انتهاء الصلاحية بهذه الأيام</div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h4><i class="bi bi-palette"></i> المظهر والثيم</h4>
+            <div class="theme-selector">
+                <div class="theme-option light active" data-theme="light">
+                    <div class="theme-preview"></div>
+                    <span>الوضع النهاري</span>
+                </div>
+                <div class="theme-option dark" data-theme="dark">
+                    <div class="theme-preview"></div>
+                    <span>الوضع الليلي</span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="primaryColor" class="form-label">اللون الأساسي</label>
+                <input type="color" class="form-control form-control-color" id="primaryColor" value="#4e73df">
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="autoTheme">
+                <label class="form-check-label" for="autoTheme">تغيير الثيم تلقائياً حسب وقت اليوم</label>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h4><i class="bi bi-database"></i> النسخ الاحتياطي والاستعادة</h4>
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> قم بعمل نسخة احتياطية من بياناتك بانتظام لتجنب فقدانها.
+            </div>
+            <div class="backup-actions">
+                <button class="btn btn-primary" id="backup-btn">
+                    <i class="bi bi-cloud-arrow-down"></i> إنشاء نسخة احتياطية
+                </button>
+                <button class="btn btn-outline-primary" id="restore-btn">
+                    <i class="bi bi-cloud-arrow-up"></i> استعادة نسخة احتياطية
+                </button>
+                <input type="file" id="restore-file" accept=".json" style="display: none;">
+            </div>
+            <div class="mt-3">
+                <label class="form-label">آخر نسخة احتياطية</label>
+                <div id="last-backup-info">لم تقم بعمل أي نسخة احتياطية بعد</div>
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h4><i class="bi bi-shield-lock"></i> الأمان</h4>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="autoLogout">
+                <label class="form-check-label" for="autoLogout">تسجيل الخروج التلقائي بعد فترة</label>
+            </div>
+            <div class="mb-3" id="autoLogoutTimeoutContainer" style="display: none;">
+                <label for="autoLogoutTimeout" class="form-label">مدة التسجيل الخروج التلقائي (دقائق)</label>
+                <input type="number" class="form-control" id="autoLogoutTimeout" min="1" value="30">
+            </div>
+            <div class="form-check form-switch mb-3">
+                <input class="form-check-input" type="checkbox" id="passwordChangeRequired">
+                <label class="form-check-label" for="passwordChangeRequired">طلب تغيير كلمة المرور بعد فترة</label>
+            </div>
+            <div class="mb-3" id="passwordChangeDaysContainer" style="display: none;">
+                <label for="passwordChangeDays" class="form-label">عدد الأيام بين كل تغيير لكلمة المرور</label>
+                <input type="number" class="form-control" id="passwordChangeDays" min="1" value="90">
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <button class="btn btn-secondary" id="cancel-btn">
+                <i class="bi bi-x-circle"></i> إلغاء
+            </button>
+            <button class="btn btn-success" id="save-settings-btn">
+                <i class="bi bi-check-circle"></i> حفظ الإعدادات
+            </button>
+        </div>
+    </div>
+
+    <nav class="navbar-bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-2 nav-item-bottom" onclick="window.location.href='dashboard.html'">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>لوحة التحكم</span>
+                </div>
+                <div class="col-2 nav-item-bottom" onclick="window.location.href='products.html'">
+                    <i class="bi bi-box-seam"></i>
+                    <span>المنتجات</span>
+                </div>
+                <div class="col-2 nav-item-bottom" onclick="window.location.href='pos.html'">
+                    <i class="bi bi-cash-coin"></i>
+                    <span>نقطة البيع</span>
+                </div>
+                <div class="col-2 nav-item-bottom" onclick="window.location.href='reports.html'">
+                    <i class="bi bi-graph-up"></i>
+                    <span>التقارير</span>
+                </div>
+                <div class="col-2 nav-item-bottom" onclick="window.location.href='suppliers.html'">
+                    <i class="bi bi-truck"></i>
+                    <span>الموردين</span>
+                </div>
+                <div class="col-2 nav-item-bottom active">
+                    <i class="bi bi-gear"></i>
+                    <span>الإعدادات</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+     <script src="settings.js"></script>
+ <script>    
+        // التحقق من تسجيل الدخول
+        const currentUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+
+        // تهيئة التاريخ والوقت
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('ar-YE', options);
+        }
+        
+        updateDateTime();
+        setInterval(updateDateTime, 60000);
+
+        // تسجيل الخروج
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        });
+
+        // تحميل الإعدادات
+        function loadSettings() {
+            // تحميل إعدادات المتجر
+            document.getElementById('storeName').value = localStorage.getItem('storeName') || 'متجري';
+            document.getElementById('storeAddress').value = localStorage.getItem('storeAddress') || '';
+            document.getElementById('storePhone').value = localStorage.getItem('storePhone') || '';
+            document.getElementById('storeTaxNumber').value = localStorage.getItem('storeTaxNumber') || '';
+            
+            // تحميل إعدادات الفواتير
+            const settings = JSON.parse(localStorage.getItem('settings') || '{}');
+            document.getElementById('receiptFooter').value = settings.receiptFooter || 'شكراً لشرائكم من متجرنا';
+            document.getElementById('invoicePrefix').value = settings.invoicePrefix || 'INV-';
+            document.getElementById('nextInvoiceNumber').value = settings.nextInvoiceNumber || 1;
+            document.getElementById('printAutomatically').checked = settings.printAutomatically !== false;
+            document.getElementById('showDiscounts').checked = settings.showDiscounts !== false;
+            
+            // تحميل إعدادات النظام
+            document.getElementById('enableBarcode').checked = settings.enableBarcode !== false;
+            document.getElementById('enableNotifications').checked = settings.enableNotifications !== false;
+            document.getElementById('lowStockAlerts').checked = settings.lowStockAlerts !== false;
+            document.getElementById('expiryAlerts').checked = settings.expiryAlerts !== false;
+            document.getElementById('lowStockThreshold').value = settings.lowStockThreshold || 10;
+            document.getElementById('expiryThreshold').value = settings.expiryThreshold || 30;
+            
+            // تحميل إعدادات المظهر
+            const currentTheme = localStorage.getItem('theme') || 'light';
+            document.querySelector(`.theme-option.${currentTheme}`).classList.add('active');
+            document.getElementById('primaryColor').value = settings.primaryColor || '#4e73df';
+            document.getElementById('autoTheme').checked = settings.autoTheme || false;
+            
+            // تحميل إعدادات الأمان
+            document.getElementById('autoLogout').checked = settings.autoLogout || false;
+            document.getElementById('autoLogoutTimeout').value = settings.autoLogoutTimeout || 30;
+            document.getElementById('passwordChangeRequired').checked = settings.passwordChangeRequired || false;
+            document.getElementById('passwordChangeDays').value = settings.passwordChangeDays || 90;
+            
+            // تحميل معلومات النسخ الاحتياطي
+            const lastBackup = localStorage.getItem('lastBackup');
+            if (lastBackup) {
+                document.getElementById('last-backup-info').textContent = new Date(parseInt(lastBackup)).toLocaleString('ar-YE');
+            }
+            
+            // إظهار/إخفاء الحقول المشروطة
+            toggleConditionalFields();
+        }
+
+        // إظهار/إخفاء الحقول المشروطة
+        function toggleConditionalFields() {
+            const autoLogout = document.getElementById('autoLogout');
+            const autoLogoutTimeoutContainer = document.getElementById('autoLogoutTimeoutContainer');
+            autoLogoutTimeoutContainer.style.display = autoLogout.checked ? 'block' : 'none';
+            
+            const passwordChangeRequired = document.getElementById('passwordChangeRequired');
+            const passwordChangeDaysContainer = document.getElementById('passwordChangeDaysContainer');
+            passwordChangeDaysContainer.style.display = passwordChangeRequired.checked ? 'block' : 'none';
+        }
+
+        // تغيير الثيم
+        document.querySelectorAll('.theme-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                
+                const theme = this.getAttribute('data-theme');
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('theme', theme);
+            });
+        });
+
+        // إظهار/إخفاء الحقول عند تغيير التبديل
+        document.getElementById('autoLogout').addEventListener('change', toggleConditionalFields);
+        document.getElementById('passwordChangeRequired').addEventListener('change', toggleConditionalFields);
+
+        // حفظ الإعدادات
+        document.getElementById('save-settings-btn').addEventListener('click', function() {
+            // حفظ إعدادات المتجر
+            localStorage.setItem('storeName', document.getElementById('storeName').value);
+            localStorage.setItem('storeAddress', document.getElementById('storeAddress').value);
+            localStorage.setItem('storePhone', document.getElementById('storePhone').value);
+            localStorage.setItem('storeTaxNumber', document.getElementById('storeTaxNumber').value);
+            
+            // حفظ إعدادات الفواتير والنظام
+            const settings = {
+                receiptFooter: document.getElementById('receiptFooter').value,
+                invoicePrefix: document.getElementById('invoicePrefix').value,
+                nextInvoiceNumber: parseInt(document.getElementById('nextInvoiceNumber').value),
+                printAutomatically: document.getElementById('printAutomatically').checked,
+                showDiscounts: document.getElementById('showDiscounts').checked,
+                enableBarcode: document.getElementById('enableBarcode').checked,
+                enableNotifications: document.getElementById('enableNotifications').checked,
+                lowStockAlerts: document.getElementById('lowStockAlerts').checked,
+                expiryAlerts: document.getElementById('expiryAlerts').checked,
+                lowStockThreshold: parseInt(document.getElementById('lowStockThreshold').value),
+                expiryThreshold: parseInt(document.getElementById('expiryThreshold').value),
+                primaryColor: document.getElementById('primaryColor').value,
+                autoTheme: document.getElementById('autoTheme').checked,
+                autoLogout: document.getElementById('autoLogout').checked,
+                autoLogoutTimeout: parseInt(document.getElementById('autoLogoutTimeout').value),
+                passwordChangeRequired: document.getElementById('passwordChangeRequired').checked,
+                passwordChangeDays: parseInt(document.getElementById('passwordChangeDays').value)
+            };
+            
+            localStorage.setItem('settings', JSON.stringify(settings));
+            
+            // تحديث اسم المتجر في الشريط العلوي
+            document.getElementById('store-name').textContent = document.getElementById('storeName').value;
+            
+            alert('تم حفظ الإعدادات بنجاح');
+        });
+
+        // إنشاء نسخة احتياطية
+        document.getElementById('backup-btn').addEventListener('click', function() {
+            // جمع جميع البيانات من localStorage
+            const backupData = {
+                products: JSON.parse(localStorage.getItem('products') || '[]'),
+                sales: JSON.parse(localStorage.getItem('sales') || '[]'),
+                creditSales: JSON.parse(localStorage.getItem('creditSales') || '[]'),
+                paidCreditSales: JSON.parse(localStorage.getItem('paidCreditSales') || '[]'),
+                suppliers: JSON.parse(localStorage.getItem('suppliers') || '[]'),
+                purchases: JSON.parse(localStorage.getItem('purchases') || '[]'),
+                employees: JSON.parse(localStorage.getItem('employees') || '[]'),
+                expenses: JSON.parse(localStorage.getItem('expenses') || '[]'),
+                users: JSON.parse(localStorage.getItem('users') || '[]'),
+                settings: JSON.parse(localStorage.getItem('settings') || '{}'),
+                storeName: localStorage.getItem('storeName'),
+                storeAddress: localStorage.getItem('storeAddress'),
+                storePhone: localStorage.getItem('storePhone'),
+                storeTaxNumber: localStorage.getItem('storeTaxNumber'),
+                backupDate: new Date().getTime()
+            };
+            
+            // تحويل البيانات إلى JSON
+            const jsonData = JSON.stringify(backupData, null, 2);
+            
+            // إنشاء ملف للتحميل
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // حفظ تاريخ آخر نسخة احتياطية
+            localStorage.setItem('lastBackup', new Date().getTime().toString());
+            document.getElementById('last-backup-info').textContent = new Date().toLocaleString('ar-YE');
+            
+            alert('تم إنشاء النسخة الاحتياطية بنجاح');
+        });
+
+        // استعادة نسخة احتياطية
+        document.getElementById('restore-btn').addEventListener('click', function() {
+            document.getElementById('restore-file').click();
+        });
+
+        document.getElementById('restore-file').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            if (!confirm('تحذير: سيتم استبدال جميع البيانات الحالية بالبيانات من النسخة الاحتياطية. هل تريد المتابعة؟')) {
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const backupData = JSON.parse(e.target.result);
+                    
+                    // استعادة البيانات إلى localStorage
+                    if (backupData.products) localStorage.setItem('products', JSON.stringify(backupData.products));
+                    if (backupData.sales) localStorage.setItem('sales', JSON.stringify(backupData.sales));
+                    if (backupData.creditSales) localStorage.setItem('creditSales', JSON.stringify(backupData.creditSales));
+                    if (backupData.paidCreditSales) localStorage.setItem('paidCreditSales', JSON.stringify(backupData.paidCreditSales));
+                    if (backupData.suppliers) localStorage.setItem('suppliers', JSON.stringify(backupData.suppliers));
+                    if (backupData.purchases) localStorage.setItem('purchases', JSON.stringify(backupData.purchases));
+                    if (backupData.employees) localStorage.setItem('employees', JSON.stringify(backupData.employees));
+                    if (backupData.expenses) localStorage.setItem('expenses', JSON.stringify(backupData.expenses));
+                    if (backupData.users) localStorage.setItem('users', JSON.stringify(backupData.users));
+                    if (backupData.settings) localStorage.setItem('settings', JSON.stringify(backupData.settings));
+                    if (backupData.storeName) localStorage.setItem('storeName', backupData.storeName);
+                    if (backupData.storeAddress) localStorage.setItem('storeAddress', backupData.storeAddress);
+                    if (backupData.storePhone) localStorage.setItem('storePhone', backupData.storePhone);
+                    if (backupData.storeTaxNumber) localStorage.setItem('storeTaxNumber', backupData.storeTaxNumber);
+                    if (backupData.backupDate) localStorage.setItem('lastBackup', backupData.backupDate.toString());
+                    
+                    // إعادة تحميل الإعدادات
+                    loadSettings();
+                    
+                    alert('تم استعادة النسخة الاحتياطية بنجاح');
+                } catch (error) {
+                    alert('خطأ في استعادة النسخة الاحتياطية: الملف غير صالح');
+                    console.error(error);
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // إلغاء التغييرات
+        document.getElementById('cancel-btn').addEventListener('click', function() {
+            if (confirm('هل تريد تجاهل التغييرات التي قمت بها؟')) {
+                loadSettings();
+            }
+        });
+
+        // تحميل البيانات عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            
+            // تطبيق الثيم المحفوظ
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.querySelectorAll('.theme-option').forEach(opt => {
+                opt.classList.remove('active');
+                if (opt.getAttribute('data-theme') === savedTheme) {
+                    opt.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
