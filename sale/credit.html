@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المبيعات الآجلة - نظام إدارة المحلات التجارية</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --primary-light: #7a9ff7;
+            --primary-dark: #2a4b9e;
+            --secondary-color: #1cc88a;
+            --secondary-light: #4adca8;
+            --secondary-dark: #138a5e;
+            --warning-color: #f6c23e;
+            --warning-light: #f9d37a;
+            --warning-dark: #c99a1a;
+            --danger-color: #e74a3b;
+            --danger-light: #ef7e73;
+            --danger-dark: #b21f15;
+            --dark-color: #5a5c69;
+            --light-color: #f8f9fc;
+            --gray-100: #f8f9fc;
+            --gray-200: #eaecf4;
+            --gray-300: #dddfeb;
+            --gray-400: #d1d3e2;
+            --gray-500: #b7b9cc;
+            --gray-600: #858796;
+            --gray-700: #6e707e;
+            --gray-800: #5a5c69;
+            --gray-900: #3a3b45;
+            --transition: all 0.3s ease;
+            --shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            --shadow-hover: 0 0.5rem 2rem 0 rgba(58, 59, 69, 0.2);
+            --radius: 0.75rem;
+            --navbar-height: 70px;
+        }
+
+        [data-theme="dark"] {
+            --primary-color: #4e73df;
+            --primary-light: #7a9ff7;
+            --primary-dark: #2a4b9e;
+            --secondary-color: #1cc88a;
+            --secondary-light: #4adca8;
+            --secondary-dark: #138a5e;
+            --warning-color: #f6c23e;
+            --warning-light: #f9d37a;
+            --warning-dark: #c99a1a;
+            --danger-color: #e74a3b;
+            --danger-light: #ef7e73;
+            --danger-dark: #b21f15;
+            --dark-color: #d1d3e2;
+            --light-color: #2a2b3d;
+            --gray-100: #2a2b3d;
+            --gray-200: #353646;
+            --gray-300: #3f4051;
+            --gray-400: #4a4b5c;
+            --gray-500: #5a5c69;
+            --gray-600: #858796;
+            --gray-700: #b7b9cc;
+            --gray-800: #d1d3e2;
+            --gray-900: #eaecf4;
+        }
+
+        body {
+            font-family: 'Cairo', 'Tahoma', sans-serif;
+            background-color: var(--light-color);
+            color: var(--gray-900);
+            transition: var(--transition);
+            padding-top: var(--navbar-height);
+            min-height: 100vh;
+        }
+
+        .navbar-top {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            height: var(--navbar-height);
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
+            transition: var(--transition);
+        }
+
+        .navbar-top .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .navbar-bottom {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: var(--gray-100);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1020;
+            border-top: 1px solid var(--gray-300);
+            transition: var(--transition);
+        }
+
+        .nav-item-bottom {
+            text-align: center;
+            padding: 12px 0;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            color: var(--gray-600);
+            text-decoration: none;
+        }
+
+        .nav-item-bottom:hover, .nav-item-bottom.active {
+            color: var(--primary-color);
+        }
+
+        .nav-item-bottom.active::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            transform: translateX(50%);
+            width: 70%;
+            height: 3px;
+            background-color: var(--primary-color);
+            border-radius: 0 0 3px 3px;
+        }
+
+        .nav-item-bottom i {
+            font-size: 1.25rem;
+            display: block;
+            margin: 0 auto 5px;
+            transition: var(--transition);
+        }
+
+        .nav-item-bottom span {
+            font-size: 0.75rem;
+            display: block;
+        }
+
+        .card {
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            transition: var(--transition);
+            border: none;
+            background-color: var(--gray-100);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: var(--radius) var(--radius) 0 0 !important;
+        }
+
+        .card-header.bg-warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, var(--warning-dark) 100%) !important;
+        }
+
+        .card-header.bg-success {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%) !important;
+        }
+
+        .table {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .table th {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-color: var(--gray-300);
+            vertical-align: middle;
+        }
+
+        .table tbody tr {
+            transition: var(--transition);
+        }
+
+        .table tbody tr:hover {
+            background-color: var(--gray-200);
+        }
+
+        .search-box {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-box .form-control {
+            border-radius: 50px;
+            padding-right: 45px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--gray-300);
+            transition: var(--transition);
+        }
+
+        .search-box .form-control:focus {
+            box-shadow: 0 2px 10px rgba(78, 115, 223, 0.2);
+            border-color: var(--primary-light);
+        }
+
+        .search-box .btn {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-color);
+            border: none;
+            transition: var(--transition);
+        }
+
+        .search-box .btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn {
+            border-radius: var(--radius);
+            padding: 0.5rem 1.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn i {
+            margin-left: 5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(78, 115, 223, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(to right, var(--secondary-color), var(--secondary-light));
+            border: none;
+        }
+
+        .btn-success:hover {
+            background: linear-gradient(to right, var(--secondary-dark), var(--secondary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(28, 200, 138, 0.3);
+        }
+
+        .btn-warning {
+            background: linear-gradient(to right, var(--warning-color), var(--warning-light));
+            border: none;
+        }
+
+        .btn-warning:hover {
+            background: linear-gradient(to right, var(--warning-dark), var(--warning-color));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(246, 194, 62, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(to right, var(--danger-color), var(--danger-light));
+            border: none;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(to right, var(--danger-dark), var(--danger-color));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(231, 74, 59, 0.3);
+        }
+
+        .btn-action {
+            margin: 0 3px;
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .modal-content {
+            border-radius: var(--radius);
+            border: none;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1);
+        }
+
+        .form-select, .form-control {
+            margin-bottom: 15px;
+            border-radius: var(--radius);
+            border: 1px solid var(--gray-300);
+            padding: 0.75rem 1rem;
+            transition: var(--transition);
+        }
+
+        .form-select:focus, .form-control:focus {
+            box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+            border-color: var(--primary-light);
+        }
+
+        .badge {
+            border-radius: 50px;
+            padding: 0.5rem 0.75rem;
+            font-weight: 600;
+        }
+
+        .text-danger {
+            color: var(--danger-color) !important;
+        }
+
+        .text-success {
+            color: var(--secondary-color) !important;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            margin-bottom: 20px;
+        }
+
+        .summary-cards {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            flex: 1;
+            margin: 0 10px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            border-radius: var(--radius);
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .summary-card.success {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+        }
+
+        .summary-card.warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, var(--warning-dark) 100%);
+        }
+
+        .summary-card h5 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .summary-card p {
+            margin: 5px 0 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .print-section, .print-section * {
+                visibility: visible;
+            }
+            .print-section {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .table-responsive {
+                font-size: 0.9rem;
+            }
+            .summary-cards {
+                flex-direction: column;
+            }
+            .summary-card {
+                margin: 5px 0;
+            }
+        }
+
+        .table-total {
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        .table-total td {
+            border-top: 2px solid var(--gray-600);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar-top">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-4">
+                    <span id="store-name">متجري</span>
+                </div>
+                <div class="col-4 text-center">
+                    <span id="current-date"></span>
+                </div>
+                <div class="col-4 text-end">
+                    <span>مرحباً، مدير النظام</span>
+                    <button class="btn btn-outline-light btn-sm ms-2" id="logout-btn">
+                        <i class="bi bi-box-arrow-right"></i> تسجيل الخروج
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <h2 class="mb-4">إدارة المبيعات الآجلة</h2>
+        
+        <!-- مخططات إجمالي الفواتير -->
+        <div class="card no-print">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-white">نظرة عامة على الفواتير</h6>
+            </div>
+            <div class="card-body">
+                <div class="summary-cards">
+                    <div class="summary-card success">
+                        <h5>إجمالي الفواتير المسددة</h5>
+                        <p id="total-paid-amount">0 ريال</p>
+                    </div>
+                    <div class="summary-card warning">
+                        <h5>إجمالي المديونية</h5>
+                        <p id="total-debt-amount">0 ريال</p>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="creditChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mb-4 no-print">
+            <div class="col-md-6">
+                <div class="input-group search-box">
+                    <input type="text" class="form-control" placeholder="بحث باسم العميل..." id="credit-search">
+                    <button class="btn btn-primary" type="button">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-6 text-end">
+                <button class="btn btn-info" id="refresh-credit-btn">
+                    <i class="bi bi-arrow-clockwise"></i> تحديث
+                </button>
+                <button class="btn btn-primary" id="print-unpaid-btn">
+                    <i class="bi bi-printer"></i> طباعة الفواتير غير المسددة
+                </button>
+                <button class="btn btn-success" id="print-paid-btn">
+                    <i class="bi bi-printer"></i> طباعة الفواتير المسددة
+                </button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header py-3 bg-warning">
+                <h6 class="m-0 font-weight-bold text-white">الفواتير الآجلة (غير المسددة)</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="credit-sales-table" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>رقم الفاتورة</th>
+                                <th>التاريخ</th>
+                                <th>اسم العميل</th>
+                                <th>إجمالي المبلغ</th>
+                                <th>المبلغ المتبقي</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                        </tbody>
+                        <tfoot id="unpaid-total-footer">
+                            <!-- سيتم ملء هذا القسم بواسطة JavaScript -->
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header py-3 bg-success">
+                <h6 class="m-0 font-weight-bold text-white">الفواتير المسددة</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="paid-credit-table" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>رقم الفاتورة</th>
+                                <th>التاريخ</th>
+                                <th>اسم العميل</th>
+                                <th>إجمالي المبلغ</th>
+                                <th>تاريخ التسديد</th>
+                                <th>الإجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                        </tbody>
+                        <tfoot id="paid-total-footer">
+                            <!-- سيتم ملء هذا القسم بواسطة JavaScript -->
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="navbar-bottom no-print">
+        <div class="container">
+            <div class="row">
+                <div class="col-2 nav-item-bottom" onclick="window.location.href='dashboard.html'">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>لوحة التحكم</span>
+                </div>
+                <div class="col-2 nav-item-bottom" onclick="window.location.href='products.html'">
+                    <i class="bi bi-box-seam"></i>
+                    <span>المنتجات</span>
+                </div>
+                <div class="col-2 nav-item-bottom" onclick="window.location.href='pos.html'">
+                    <i class="bi bi-cash-coin"></i>
+                    <span>نقطة البيع</span>
+                </div>
+                <div class="col-2 nav-item-bottom" onclick="window.location.href='reports.html'">
+                    <i class="bi bi-graph-up"></i>
+                    <span>التقارير</span>
+                </div>
+                <div class="col-2 nav-item-bottom" onclick="window.location.href='suppliers.html'">
+                    <i class="bi bi-truck"></i>
+                    <span>الموردين</span>
+                </div>
+                <div class="col-2 nav-item-bottom active">
+                    <i class="bi bi-credit-card"></i>
+                    <span>آجل</span>
+                </div>      
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal لتسديد الدين -->
+    <div class="modal fade" id="payCreditModal" tabindex="-1" aria-labelledby="payCreditModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="payCreditModalLabel">تسديد الدين</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="pay-credit-form">
+                        <input type="hidden" id="credit-invoice-id">
+                        <div class="mb-3">
+                            <label class="form-label">رقم الفاتورة</label>
+                            <input type="text" class="form-control" id="credit-invoice-number" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">اسم العميل</label>
+                            <input type="text" class="form-control" id="credit-customer-name" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">المبلغ الإجمالي</label>
+                            <input type="text" class="form-control" id="credit-total-amount" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">المبلغ المتبقي</label>
+                            <input type="text" class="form-control" id="credit-remaining-amount" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="credit-payment-amount" class="form-label">المبلغ المسدد</label>
+                            <input type="number" class="form-control" id="credit-payment-amount" required min="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="credit-payment-method" class="form-label">طريقة الدفع</label>
+                            <select class="form-select" id="credit-payment-method" required>
+                                <option value="نقدي">نقدي</option>
+                                <option value="بطاقة">بطاقة</option>
+                                <option value="تحويل">تحويل</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-primary" id="confirm-payment-btn">تأكيد التسديد</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal لعرض تفاصيل الفاتورة -->
+    <div class="modal fade" id="viewCreditModal" tabindex="-1" aria-labelledby="viewCreditModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewCreditModalLabel">تفاصيل الفاتورة الآجلة</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="credit-details">
+                        <!-- سيتم ملء هذا القسم بواسطة JavaScript -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                    <button type="button" class="btn btn-primary" id="print-invoice-btn">
+                        <i class="bi bi-printer"></i> طباعة الفاتورة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- قسم الطباعة للفواتير غير المسددة -->
+    <div id="print-unpaid-section" class="print-section" style="display: none;">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2>الفواتير غير المسددة</h2>
+                <p id="print-date"></p>
+                <p id="print-customer-filter"></p>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>رقم الفاتورة</th>
+                        <th>التاريخ</th>
+                        <th>اسم العميل</th>
+                        <th>إجمالي المبلغ</th>
+                        <th>المبلغ المتبقي</th>
+                    </tr>
+                </thead>
+                <tbody id="print-unpaid-body">
+                    <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                </tbody>
+                <tfoot>
+                    <tr class="table-total">
+                        <td colspan="3" class="text-end"><strong>الإجمالي:</strong></td>
+                        <td><strong id="print-unpaid-total">0 ريال</strong></td>
+                        <td><strong id="print-unpaid-remaining">0 ريال</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- قسم الطباعة للفواتير المسددة -->
+    <div id="print-paid-section" class="print-section" style="display: none;">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2>الفواتير المسددة</h2>
+                <p id="print-paid-date"></p>
+                <p id="print-paid-customer-filter"></p>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>رقم الفاتورة</th>
+                        <th>التاريخ</th>
+                        <th>اسم العميل</th>
+                        <th>إجمالي المبلغ</th>
+                        <th>تاريخ التسديد</th>
+                    </tr>
+                </thead>
+                <tbody id="print-paid-body">
+                    <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                </tbody>
+                <tfoot>
+                    <tr class="table-total">
+                        <td colspan="3" class="text-end"><strong>الإجمالي:</strong></td>
+                        <td><strong id="print-paid-total">0 ريال</strong></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <!-- قسم الطباعة للفاتورة المفردة -->
+    <div id="print-invoice-section" class="print-section" style="display: none;">
+        <div class="container">
+            <div class="text-center mb-4">
+                <h2>فاتورة بيع آجل</h2>
+                <p id="print-invoice-date"></p>
+            </div>
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><strong>رقم الفاتورة: </strong><span id="print-invoice-number"></span></p>
+                    <p><strong>التاريخ: </strong><span id="print-invoice-date2"></span></p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>اسم العميل: </strong><span id="print-invoice-customer"></span></p>
+                    <p><strong>طريقة الدفع: </strong><span id="print-invoice-payment-method"></span></p>
+                </div>
+            </div>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>اسم المنتج</th>
+                        <th>الكمية</th>
+                        <th>السعر</th>
+                        <th>الإجمالي</th>
+                    </tr>
+                </thead>
+                <tbody id="print-invoice-items">
+                    <!-- سيتم ملء هذا الجدول بواسطة JavaScript -->
+                </tbody>
+            </table>
+            <div class="row mt-4">
+                <div class="col-md-6"></div>
+                <div class="col-md-6">
+                    <p><strong>إجمالي الفاتورة: </strong><span id="print-invoice-total">0 ريال</span></p>
+                    <p><strong>الخصم: </strong><span id="print-invoice-discount">0 ريال</span></p>
+                    <p><strong>المبلغ المتبقي: </strong><span id="print-invoice-remaining">0 ريال</span></p>
+                    <p><strong>تاريخ التسديد: </strong><span id="print-invoice-payment-date"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+     
+
+    <script>
+        // التحقق من تسجيل الدخول
+        const currentUser = localStorage.getItem('currentUser') || sessionStorage.getItem('currentUser');
+        if (!currentUser) {
+            window.location.href = 'index.html';
+        }
+
+        // تهيئة التاريخ والوقت
+        function updateDateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('ar-YE', options);
+        }
+        
+        updateDateTime();
+        setInterval(updateDateTime, 60000);
+
+        // تسجيل الخروج
+        document.getElementById('logout-btn').addEventListener('click', function() {
+            localStorage.removeItem('currentUser');
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        });
+
+        // مخطط الفواتير
+        let creditChart;
+        function updateCreditChart() {
+            const creditSales = JSON.parse(localStorage.getItem('creditSales') || '[]');
+            const paidCreditSales = JSON.parse(localStorage.getItem('paidCreditSales') || '[]');
+            
+            // حساب إجمالي الفواتير المسددة والمديونية
+            const totalPaid = paidCreditSales.reduce((sum, sale) => sum + sale.total, 0);
+            const totalDebt = creditSales.reduce((sum, sale) => sum + sale.remainingAmount, 0);
+            
+            // تحديث العناصر النصية
+            document.getElementById('total-paid-amount').textContent = totalPaid.toLocaleString() + ' ريال';
+            document.getElementById('total-debt-amount').textContent = totalDebt.toLocaleString() + ' ريال';
+            
+            // تحديث المخطط
+            const ctx = document.getElementById('creditChart').getContext('2d');
+            
+            if (creditChart) {
+                creditChart.destroy();
+            }
+            
+            creditChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['الفواتير المسددة', 'المديونية'],
+                    datasets: [{
+                        data: [totalPaid, totalDebt],
+                        backgroundColor: [
+                            'rgba(28, 200, 138, 0.8)',
+                            'rgba(246, 194, 62, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(28, 200, 138, 1)',
+                            'rgba(246, 194, 62, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            rtl: true,
+                            labels: {
+                                font: {
+                                    family: 'Cairo, Tahoma, sans-serif'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    label += context.raw.toLocaleString() + ' ريال';
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // تحميل المبيعات الآجلة
+        function loadCreditSales() {
+            const creditSales = JSON.parse(localStorage.getItem('creditSales') || '[]');
+            const paidCreditSales = JSON.parse(localStorage.getItem('paidCreditSales') || '[]');
+            
+            // تحديث جدول الفواتير الآجلة غير المسددة
+            const creditTableBody = document.querySelector('#credit-sales-table tbody');
+            creditTableBody.innerHTML = '';
+            
+            let unpaidTotal = 0;
+            let unpaidRemaining = 0;
+            
+            if (creditSales.length === 0) {
+                creditTableBody.innerHTML = '<tr><td colspan="6" class="text-center">لا توجد فواتير آجلة</td></tr>';
+            } else {
+                creditSales.forEach(sale => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${sale.invoiceNumber}</td>
+                        <td>${sale.date}</td>
+                        <td>${sale.customerName}</td>
+                        <td>${sale.total.toLocaleString()} ريال</td>
+                        <td class="text-danger">${sale.remainingAmount.toLocaleString()} ريال</td>
+                        <td>
+                            <button class="btn btn-sm btn-success pay-credit-btn" data-id="${sale.invoiceNumber}">
+                                <i class="bi bi-cash"></i> تسديد
+                            </button>
+                            <button class="btn btn-sm btn-info view-credit-btn" data-id="${sale.invoiceNumber}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </td>
+                    `;
+                    creditTableBody.appendChild(row);
+                    
+                    unpaidTotal += sale.total;
+                    unpaidRemaining += sale.remainingAmount;
+                });
+            }
+            
+            // تحديث تذييل الجدول غير المسدد
+            const unpaidFooter = document.getElementById('unpaid-total-footer');
+            unpaidFooter.innerHTML = `
+                <tr class="table-total">
+                    <td colspan="3" class="text-end"><strong>الإجمالي:</strong></td>
+                    <td><strong>${unpaidTotal.toLocaleString()} ريال</strong></td>
+                    <td class="text-danger"><strong>${unpaidRemaining.toLocaleString()} ريال</strong></td>
+                    <td></td>
+                </tr>
+            `;
+            
+            // تحديث جدول الفواتير المسددة
+            const paidTableBody = document.querySelector('#paid-credit-table tbody');
+            paidTableBody.innerHTML = '';
+            
+            let paidTotal = 0;
+            
+            if (paidCreditSales.length === 0) {
+                paidTableBody.innerHTML = '<tr><td colspan="6" class="text-center">لا توجد فواتير مسددة</td></tr>';
+            } else {
+                paidCreditSales.forEach(sale => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${sale.invoiceNumber}</td>
+                        <td>${sale.date}</td>
+                        <td>${sale.customerName}</td>
+                        <td>${sale.total.toLocaleString()} ريال</td>
+                        <td>${sale.paymentDate}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info view-paid-credit-btn" data-id="${sale.invoiceNumber}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </td>
+                    `;
+                    paidTableBody.appendChild(row);
+                    
+                    paidTotal += sale.total;
+                });
+            }
+            
+            // تحديث تذييل الجدول المسدد
+            const paidFooter = document.getElementById('paid-total-footer');
+            paidFooter.innerHTML = `
+                <tr class="table-total">
+                    <td colspan="3" class="text-end"><strong>الإجمالي:</strong></td>
+                    <td><strong>${paidTotal.toLocaleString()} ريال</strong></td>
+                    <td colspan="2"></td>
+                </tr>
+            `;
+            
+            // تحديث المخطط
+            updateCreditChart();
+            
+            // إضافة معالجات الأحداث لأزرار التسديد والعرض
+            document.querySelectorAll('.pay-credit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const invoiceNumber = this.getAttribute('data-id');
+                    openPayCreditModal(invoiceNumber);
+                });
+            });
+            
+            document.querySelectorAll('.view-credit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const invoiceNumber = this.getAttribute('data-id');
+                    viewCreditSale(invoiceNumber, false);
+                });
+            });
+            
+            document.querySelectorAll('.view-paid-credit-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const invoiceNumber = this.getAttribute('data-id');
+                    viewCreditSale(invoiceNumber, true);
+                });
+            });
+        }
+
+        // فتح نموذج تسديد الدين
+        function openPayCreditModal(invoiceNumber) {
+            const creditSales = JSON.parse(localStorage.getItem('creditSales') || '[]');
+            const sale = creditSales.find(s => s.invoiceNumber === invoiceNumber);
+            
+            if (!sale) {
+                alert('لم يتم العثور على الفاتورة');
+                return;
+            }
+            
+            // تعبئة النموذج ببيانات الفاتورة
+            document.getElementById('credit-invoice-id').value = sale.invoiceNumber;
+            document.getElementById('credit-invoice-number').value = sale.invoiceNumber;
+            document.getElementById('credit-customer-name').value = sale.customerName;
+            document.getElementById('credit-total-amount').value = sale.total.toLocaleString() + ' ريال';
+            document.getElementById('credit-remaining-amount').value = sale.remainingAmount.toLocaleString() + ' ريال';
+            document.getElementById('credit-payment-amount').value = sale.remainingAmount;
+            document.getElementById('credit-payment-amount').setAttribute('max', sale.remainingAmount);
+            
+            // فتح النموذج
+            const payModal = new bootstrap.Modal(document.getElementById('payCreditModal'));
+            payModal.show();
+        }
+
+        // تأكيد تسديد الدين
+        document.getElementById('confirm-payment-btn').addEventListener('click', function() {
+            const invoiceNumber = document.getElementById('credit-invoice-id').value;
+            const paymentAmount = parseFloat(document.getElementById('credit-payment-amount').value);
+            const paymentMethod = document.getElementById('credit-payment-method').value;
+            
+            if (isNaN(paymentAmount) || paymentAmount <= 0) {
+                alert('يرجى إدخال مبلغ صحيح');
+                return;
+            }
+            
+            const creditSales = JSON.parse(localStorage.getItem('creditSales') || '[]');
+            const saleIndex = creditSales.findIndex(s => s.invoiceNumber === invoiceNumber);
+            
+            if (saleIndex === -1) {
+                alert('لم يتم العثور على الفاتورة');
+                return;
+            }
+            
+            const sale = creditSales[saleIndex];
+            
+            if (paymentAmount > sale.remainingAmount) {
+                alert('المبلغ المسدد أكبر من المبلغ المتبقي');
+                return;
+            }
+            
+            // تحديث المبلغ المتبقي
+            sale.remainingAmount -= paymentAmount;
+            
+            if (sale.remainingAmount <= 0) {
+                // إذا تم سداد كامل المبلغ، نقل الفاتورة إلى الفواتير المسددة
+                const paidCreditSales = JSON.parse(localStorage.getItem('paidCreditSales') || '[]');
+                
+                sale.paymentDate = new Date().toLocaleDateString('en-CA');
+                sale.paymentMethod = paymentMethod;
+                
+                paidCreditSales.push(sale);
+                localStorage.setItem('paidCreditSales', JSON.stringify(paidCreditSales));
+                
+                // إزالة الفاتورة من الفواتير الآجلة
+                creditSales.splice(saleIndex, 1);
+                
+                alert('تم سداد الدين بالكامل بنجاح');
+                
+                // طباعة الفاتورة بعد التسديد
+                prepareInvoiceForPrint(sale, true);
+                setTimeout(() => {
+                    window.print();
+                }, 500);
+            } else {
+                // إذا لم يتم سداد كامل المبلغ، تحديث الفاتورة فقط
+                creditSales[saleIndex] = sale;
+                alert('تم تسديد جزء من الدين بنجاح');
+            }
+            
+            // حفظ البيانات المحدثة
+            localStorage.setitem('creditSales', JSON.stringify(creditSales));
+            
+            // إغلاق النموذج
+            bootstrap.Modal.getInstance(document.getElementById('payCreditModal')).hide();
+            
+            // إعادة تحميل البيانات
+            loadCreditSales();
+            
+            // تحديث لوحة التحكم
+            updateDashboardIfOpen();
+        });
+
+        // عرض تفاصيل فاتورة آجلة
+        let currentInvoiceForPrint = null;
+        function viewCreditSale(invoiceNumber, isPaid = false) {
+            const creditSales = isPaid ? 
+                JSON.parse(localStorage.getItem('paidCreditSales') || '[]') :
+                JSON.parse(localStorage.getItem('creditSales') || '[]');
+                
+            const sale = creditSales.find(s => s.invoiceNumber === invoiceNumber);
+            
+            if (!sale) {
+                alert('لم يتم العثور على الفاتورة');
+                return;
+            }
+            
+            currentInvoiceForPrint = sale;
+            
+            let creditDetails = `
+                <div class="mb-3">
+                    <h5>تفاصيل الفاتورة: ${sale.invoiceNumber}</h5>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p><strong>التاريخ:</strong> ${sale.date}</p>
+                        <p><strong>اسم العميل:</strong> ${sale.customerName}</p>
+                        <p><strong>طريقة الدفع الأصلية:</strong> ${sale.paymentMethod}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>إجمالي الفاتورة:</strong> ${sale.total.toLocaleString()} ريال</p>
+            `;
+            
+            if (isPaid) {
+                creditDetails += `
+                        <p><strong>تاريخ التسديد:</strong> ${sale.paymentDate}</p>
+                        <p><strong>طريقة التسديد:</strong> ${sale.paymentMethod || 'غير محدد'}</p>
+                `;
+            } else {
+                creditDetails += `
+                        <p class="text-danger"><strong>المبلغ المتبقي:</strong> ${sale.remainingAmount.toLocaleString()} ريال</p>
+                `;
+            }
+            
+            creditDetails += `
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <h6>المنتجات:</h6>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>اسم المنتج</th>
+                                <th>الكمية</th>
+                                <th>السعر</th>
+                                <th>الإجمالي</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            sale.items.forEach(item => {
+                creditDetails += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.price.toLocaleString()} ريال</td>
+                        <td>${(item.quantity * item.price).toLocaleString()} ريال</td>
+                    </tr>
+                `;
+            });
+            
+            creditDetails += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            if (sale.discount > 0) {
+                creditDetails += `
+                    <div class="mb-3">
+                        <p><strong>الخصم:</strong> ${sale.discount.toLocaleString()} ريال</p>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('credit-details').innerHTML = creditDetails;
+            
+            // إظهار زر الطباعة فقط للفواتير المسددة
+            const printBtn = document.getElementById('print-invoice-btn');
+            if (isPaid) {
+                printBtn.style.display = 'inline-block';
+            } else {
+                printBtn.style.display = 'none';
+            }
+            
+            // فتح النموذج
+            const viewModal = new bootstrap.Modal(document.getElementById('viewCreditModal'));
+            viewModal.show();
+        }
+
+        // البحث في المبيعات الآجلة
+        document.getElementById('credit-search').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const creditSales = JSON.parse(localStorage.getItem('creditSales') || '[]');
+            const paidCreditSales = JSON.parse(localStorage.getItem('paidCreditSales') || '[]');
+            
+            // تصفية الفواتير غير المسددة
+            const filteredCredit = creditSales.filter(sale => 
+                sale.customerName.toLowerCase().includes(searchTerm) || 
+                sale.invoiceNumber.includes(searchTerm)
+            );
+            
+            // تصفية الفواتير المسددة
+            const filteredPaid = paidCreditSales.filter(sale => 
+                sale.customerName.toLowerCase().includes(searchTerm) || 
+                sale.invoiceNumber.includes(searchTerm)
+            );
+            
+            // تحديث الجداول مع الإجمالي
+            updateCreditTable(filteredCredit, document.querySelector('#credit-sales-table tbody'), document.getElementById('unpaid-total-footer'), false);
+            updateCreditTable(filteredPaid, document.querySelector('#paid-credit-table tbody'), document.getElementById('paid-total-footer'), true);
+        });
+
+        // تحديث جدول المبيعات الآجلة مع الإجمالي
+        function updateCreditTable(sales, tableBody, footerElement, isPaid = false) {
+            tableBody.innerHTML = '';
+            
+            let totalAmount = 0;
+            let totalRemaining = 0;
+            
+            if (sales.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="6" class="text-center">لا توجد فواتير</td></tr>';
+            } else {
+                sales.forEach(sale => {
+                    const row = document.createElement('tr');
+                    
+                    if (isPaid) {
+                        row.innerHTML = `
+                            <td>${sale.invoiceNumber}</td>
+                            <td>${sale.date}</td>
+                            <td>${sale.customerName}</td>
+                            <td>${sale.total.toLocaleString()} ريال</td>
+                            <td>${sale.paymentDate}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info view-paid-credit-btn" data-id="${sale.invoiceNumber}">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </td>
+                        `;
+                        totalAmount += sale.total;
+                    } else {
+                        row.innerHTML = `
+                            <td>${sale.invoiceNumber}</td>
+                            <td>${sale.date}</td>
+                            <td>${sale.customerName}</td>
+                            <td>${sale.total.toLocaleString()} ريال</td>
+                            <td class="text-danger">${sale.remainingAmount.toLocaleString()} ريال</td>
+                            <td>
+                                <button class="btn btn-sm btn-success pay-credit-btn" data-id="${sale.invoiceNumber}">
+                                    <i class="bi bi-cash"></i> تسديد
+                                </button>
+                                <button class="btn btn-sm btn-info view-credit-btn" data-id="${sale.invoiceNumber}">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </td>
+                        `;
+                        totalAmount += sale.total;
+                        totalRemaining += sale.remainingAmount;
+                    }
+                    
+                    tableBody.appendChild(row);
+                });
+            }
+            
+            // تحديث التذييل
+            if (isPaid) {
+                footerElement.innerHTML = `
+                    <tr class="table-total">
+                        <td colspan="3" class="text-end"><strong>الإجمالي:</strong></td>
+                        <td><strong>${totalAmount.toLocaleString()} ريال</strong></td>
+                        <td colspan="2"></td>
+                    </tr>
+                `;
+            } else {
+                footerElement.innerHTML = `
+                    <tr class="table-total">
+                        <td colspan="3" class="text-end"><strong>الإجمالي:</strong></td>
+                        <td><strong>${totalAmount.toLocaleString()} ريال</strong></td>
+                        <td class="text-danger"><strong>${totalRemaining.toLocaleString()} ريال</strong></td>
+                        <td></td>
+                    </tr>
+                `;
+            }
+            
+            // إعادة إضافة معالجات الأحداث
+            if (!isPaid) {
+                document.querySelectorAll('.pay-credit-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const invoiceNumber = this.getAttribute('data-id');
+                        openPayCreditModal(invoiceNumber);
+                    });
+                });
+                
+                document.querySelectorAll('.view-credit-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const invoiceNumber = this.getAttribute('data-id');
+                        viewCreditSale(invoiceNumber, false);
+                    });
+                });
+            } else {
+                document.querySelectorAll('.view-paid-credit-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const invoiceNumber = this.getAttribute('data-id');
+                        viewCreditSale(invoiceNumber, true);
+                    });
+                }); 
+            }
+        }
+
+        // تحديث لوحة التحكم إذا كانت مفتوحة
+        function updateDashboardIfOpen() {
+            // هذه الدالة ستعمل إذا كان dashboard.html مفتوحاً في نفس المتصفح
+            // يمكن استخدام localStorage أو BroadcastChannel لمزامنة البيانات بين الصفحات
+            localStorage.setItem('updateDashboard', 'true');
+        }
+
+        // تحديث البيانات
+        document.getElementById('refresh-credit-btn').addEventListener('click', function() {
+            loadCreditSales();
+            alert('تم تحديث البيانات بنجاح');
+        });
+
+        // إعداد الفاتورة للطباعة
+        function prepareInvoiceForPrint(invoice, isPaid = false) {
+            document.getElementById('print-invoice-number').textContent = invoice.invoiceNumber;
+            document.getElementById('print-invoice-date').textContent = new Date().toLocaleDateString('ar-YE');
+            document.getElementById('print-invoice-date2').textContent = invoice.date;
+            document.getElementById('print-invoice-customer').textContent = invoice.customerName;
+            document.getElementById('print-invoice-payment-method').textContent = invoice.paymentMethod;
+            document.getElementById('print-invoice-total').textContent = invoice.total.toLocaleString() + ' ريال';
+            document.getElementById('print-invoice-discount').textContent = (invoice.discount || 0).toLocaleString() + ' ريال';
+            document.getElementById('print-invoice-remaining').textContent = (invoice.remainingAmount || 0).toLocaleString() + ' ريال';
+            
+            if (isPaid) {
+                document.getElementById('print-invoice-payment-date').textContent = invoice.paymentDate || new Date().toLocaleDateString('ar-YE');
+            } else {
+                document.getElementById('print-invoice-payment-date').textContent = 'لم يتم السداد بعد';
+            }
+            
+            // إضافة العناصر
+            const itemsBody = document.getElementById('print-invoice-items');
+            itemsBody.innerHTML = '';
+            
+            invoice.items.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.name}</td>
+                    <td>${item.quantity}</td>
+                    <td>${item.price.toLocaleString()} ريال</td>
+                    <td>${(item.quantity * item.price).toLocaleString()} ريال</td>
+                `;
+                itemsBody.appendChild(row);
+            });
+        }
+
+        // طباعة الفاتورة
+        document.getElementById('print-invoice-btn').addEventListener('click', function() {
+            if (currentInvoiceForPrint) {
+                prepareInvoiceForPrint(currentInvoiceForPrint, true);
+                setTimeout(() => {
+                    window.print();
+                }, 500);
+            }
+        });
+
+        // طباعة الفواتير غير المسددة
+        document.getElementById('print-unpaid-btn').addEventListener('click', function() {
+            const searchTerm = document.getElementById('credit-search').value.toLowerCase();
+            const creditSales = JSON.parse(localStorage.getItem('creditSales') || '[]');
+            
+            // تصفية الفواتير غير المسددة
+            let filteredCredit = creditSales;
+            if (searchTerm) {
+                filteredCredit = creditSales.filter(sale => 
+                    sale.customerName.toLowerCase().includes(searchTerm) || 
+                    sale.invoiceNumber.includes(searchTerm)
+                );
+            }
+            
+            // إعداد البيانات للطباعة
+            const printBody = document.getElementById('print-unpaid-body');
+            printBody.innerHTML = '';
+            
+            let totalAmount = 0;
+            let totalRemaining = 0;
+            
+            filteredCredit.forEach(sale => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${sale.invoiceNumber}</td>
+                    <td>${sale.date}</td>
+                    <td>${sale.customerName}</td>
+                    <td>${sale.total.toLocaleString()} ريال</td>
+                    <td>${sale.remainingAmount.toLocaleString()} ريال</td>
+                `;
+                printBody.appendChild(row);
+                
+                totalAmount += sale.total;
+                totalRemaining += sale.remainingAmount;
+            });
+            
+            document.getElementById('print-date').textContent = new Date().toLocaleDateString('ar-YE');
+            document.getElementById('print-customer-filter').textContent = searchTerm ? `نتائج البحث عن: ${searchTerm}` : 'جميع الفواتير غير المسددة';
+            document.getElementById('print-unpaid-total').textContent = totalAmount.toLocaleString() + ' ريال';
+            document.getElementById('print-unpaid-remaining').textContent = totalRemaining.toLocaleString() + ' ريال';
+            
+            // طباعة المستند
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        });
+
+        // طباعة الفواتير المسددة
+        document.getElementById('print-paid-btn').addEventListener('click', function() {
+            const searchTerm = document.getElementById('credit-search').value.toLowerCase();
+            const paidCreditSales = JSON.parse(localStorage.getItem('paidCreditSales') || '[]');
+            
+            // تصفية الفواتير المسددة
+            let filteredPaid = paidCreditSales;
+            if (searchTerm) {
+                filteredPaid = paidCreditSales.filter(sale => 
+                    sale.customerName.toLowerCase().includes(searchTerm) || 
+                    sale.invoiceNumber.includes(searchTerm)
+                );
+            }
+            
+            // إعداد البيانات للطباعة
+            const printBody = document.getElementById('print-paid-body');
+            printBody.innerHTML = '';
+            
+            let totalAmount = 0;
+            
+            filteredPaid.forEach(sale => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${sale.invoiceNumber}</td>
+                    <td>${sale.date}</td>
+                    <td>${sale.customerName}</td>
+                    <td>${sale.total.toLocaleString()} ريال</td>
+                    <td>${sale.paymentDate}</td>
+                `;
+                printBody.appendChild(row);
+                
+                totalAmount += sale.total;
+            });
+            
+            document.getElementById('print-paid-date').textContent = new Date().toLocaleDateString('ar-YE');
+            document.getElementById('print-paid-customer-filter').textContent = searchTerm ? `نتائج البحث عن: ${searchTerm}` : 'جميع الفواتير المسددة';
+            document.getElementById('print-paid-total').textContent = totalAmount.toLocaleString() + ' ريال';
+            
+            // طباعة المستند
+            setTimeout(() => {
+                window.print();
+            }, 500);
+        });
+
+        // تحميل البيانات عند فتح الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCreditSales();
+            document.getElementById('store-name').textContent = localStorage.getItem('storeName') || 'متجري';
+        });
+        // الحصول على إعداد محدد
+        const enableBarcode = localStorage.getItem('enableBarcode') !== 'false';
+
+        if (enableBarcode) {
+            // تفعيل ميزة الباركود
+        }
+
+        // الحصول على الثيم الحالي
+        const currentTheme = localStorage.getItem('theme') || 'light';
+    </script>
+</body>
+</html>
